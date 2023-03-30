@@ -1,0 +1,6 @@
+<%= f.input :address,
+  input_html: {data: {address_autocomplete_target: "address"}},
+  wrapper_html: {data: {controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["pk.eyJ1IjoiamZtaXRjaC0yMTA2IiwiYSI6ImNsZHp5b2NiNzE1ajIzcG52aWl4cGMyc2wifQ.zKb32JnBQoHeYonDA8208A"]}}
+%>
+
+<%= f.input :address, input_html: {data: {"..."}, class: "d-none"} %>

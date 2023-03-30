@@ -1,0 +1,21 @@
+.navbar-lewagon {
+  justify-content: space-between;
+  background: #FFFFFF;
+  border-bottom: 0.2px solid #FFFFFF;
+  margin-bottom: 0px;
+}
+
+.navbar-lewagon .navbar-collapse {
+  flex-grow: 0;
+}
+
+.navbar-lewagon .navbar-brand img {
+
+  height: 35px;
+}
+
+.navbar-brand {
+  img {
+    border-radius: 5px;
+  }
+}

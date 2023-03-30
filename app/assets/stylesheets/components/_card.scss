@@ -1,0 +1,78 @@
+.card-product {
+  box-sizing: border-box;
+  position: absolute;
+  width: 1055px;
+  height: 240px;
+  left: 221px;
+  top: 364px;
+
+  background: #FFFFFF;
+  border: 10px solid #443C68;
+  box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.25);
+  border-radius: 25px;
+}
+
+.card-product img {
+  height: 100%;
+  width: 50px;
+  object-fit: cover;
+}
+
+.card-product h2 {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.card-product p {
+  font-size: 12px;
+  line-height: 1.4;
+  opacity: .7;
+  margin-bottom: 20px;
+  margin-top: 8px;
+}
+
+.card-route .card-route-infos {
+  padding: 25;
+}
+
+.card-landingpage {
+  overflow: hidden;
+  background: white;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+
+.card-landingpage > img {
+  height: 200px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.card-landingpage h2 {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.card-landingpage p {
+  font-size: 12px;
+  opacity: .7;
+  margin: 0;
+}
+
+
+.card-landingpage .card-landingpage-infos {
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  position: relative;
+}
+
+.card-landingpage-infos .card-landingpage-user {
+  position: absolute;
+  right: 16px;
+  top: -20px;
+  width: 40px;
+}

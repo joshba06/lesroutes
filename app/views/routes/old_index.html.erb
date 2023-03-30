@@ -1,0 +1,66 @@
+<h1>Welcome back!</h1>
+
+
+<header> Here are your most recent routes...</header>
+
+
+<div class="card-route clickable">
+  <%= cl_image_tag @routes.first.photo.key, height: 300, width: 400, crop: :fill %>
+
+  <div class="card-route-infos">
+    <div>
+      <h2><%= @routes.first.title %></h2>
+      <p><%#= route.route_destination.count %></p>
+      <p><%#= route.stops | route.distance | route.time %></p>
+
+
+<% @routes.each do |route| %>
+  <div class="card-route">
+    <%= cl_image_tag route.photo.key, height: 139, width: 139, top: 440, left: 259, crop: :fill %>
+
+    <button type= "button-outline-primary">Open in Google Maps</button>
+    <button type= "button-outline-primary">Edit route</button>
+    <button type= "button-outline-info"><%= route.title %></button>
+
+    <%= image_tag "https://res.cloudinary.com/dcuj8efm3/image/upload/v1678367643/routeicon_c22vib.png", :style=> "width: 20px; height: 25px; border-radius: 10px; horizontal-align: right;" %>
+    <%= image_tag "https://res.cloudinary.com/dcuj8efm3/image/upload/v1678367643/markericon_yll81j.png", :style=> "width: 20px; height: 25px; border-radius: 10px; horizontal-align: right;" %>
+    <%= image_tag "https://res.cloudinary.com/dcuj8efm3/image/upload/v1678367643/manicon_oaiatm.png", :style=> "width: 20px; height: 25px; border-radius: 10px; horizontal-align: right;" %>
+
+    <div class="card-route-infos">
+      <div>
+        <h2><%= route.title %></h2>
+        <p><%#= route.route_destination.count %></p>
+        <p><%#= route.distance | route.time %></p>
+
+        <%#= MAKE SURE TO ADD EDIT ROUTE/OPEN IN MAPS BUTTONS %>
+
+      </div>
+      <h2 class="card-route-title"></h2>
+
+    </div>
+      <h2 class="card-route-title"><%= @routes.first.title %></h2>
+      <img src="https://kitt.lewagon.com/placeholder/users/krokrob" class="card-route-user avatar-bordered" />
+      <%= cl_image_tag @routes.first.photo.key, class: "card-route-user" %>
+
+    </div>
+<% end %>
+
+<div style="width: 100%; height: 600px;"
+  data-controller="map"
+  data-map-markers-value="<%= @markers.to_json %>"
+  data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
+
+</div>
+
+<div class="footer">
+  <div class="footer-links">
+    <a href="https://github.com/ndc13/profile"><i class="fab fa-github"></i></a>
+    <a href="https://www.instagram.com/neilcairns/?hl=en"><i class="fab fa-instagram"></i></a>
+    <a href="https://www.facebook.com"><i class="fab fa-facebook"></i></a>
+    <a href="https://www.twitter.com/NeilCairns"><i class="fab fa-twitter"></i></a>
+    <a href="https://www.linkedin.com/in/neildanielcairns"><i class="fab fa-linkedin"></i></a>
+  </div>
+  <div class="footer-copyright">
+    © myRoutes 2023
+  </div>
+</div>

@@ -1,0 +1,65 @@
+<div class="heading">
+  <h1>Welcome, <%= current_user.first_name.capitalize %>!</h1>
+  <%= link_to "Add a new route", new_route_path, class: "btn btn-success mx-2"%>
+</div>
+
+<div class="main-container">
+
+  <div class="cards-routes">
+
+    <h1>My saved routes</h1>
+    <% @routes.each do |route| %>
+
+      <div class="card-route">
+        <div class="card-route-status px-3 py-2">
+          <div class="location border">
+            <%= link_to route_path(route) do %>
+              <button type="button" class="btn btn-outline-primary w-100"><%= route.city %></button>
+            <% end %>
+          </div>
+          <div class="route-action">
+            <%= link_to 'Route details', route_path(route), class: "btn btn-outline-primary mx-2"%>
+            <%= link_to '<i class="fa-solid fa-map-location-dot"></i> Navigate'.html_safe, route.google_url, target: "_blank", class: "btn btn-outline-primary mx-2"%>
+          </div>
+        </div>
+        <div class="card-route-details px-3 pb-2">
+          <div class="route-title-and-img">
+            <div class="img">
+              <%= link_to route_path(route) do %>
+                <% if route.photo.attached? %>
+                  <%= cl_image_tag route.photo.key, class: "avatar-bordered-large" %>
+                <% else %>
+                  <%= image_tag "city_placeholder.jpg", class: "avatar-bordered-large" %>
+                <% end %>
+              <% end %>
+            </div>
+            <div class="text">
+              <h2><%= route.title %></h2>
+            </div>
+          </div>
+          <div class="route-specs px-3">
+            <div class="">
+              <p class="mb-0"><i class="fa-solid fa-location-dot me-2"></i> <%= route.route_destinations.length %> stops</p>
+              <p class="mb-0">
+                <i class="fa-solid fa-stopwatch me-2"></i>
+                <% if route.time.nil? %>
+                  <%= 0 %> min
+                <% else %>
+                  <%= route.time %> min
+                <% end %>
+              </p>
+              <p class="mb-0">
+                <i class="fa-solid fa-person-walking me-2"></i>
+                <% if route.distance.nil? %>
+                  <%= 0 %> km
+                <% else %>
+                <%= route.distance %> km
+                <% end %>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

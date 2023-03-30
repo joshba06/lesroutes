@@ -1,0 +1,209 @@
+<div class="landingpage-container">
+  <div class="animation">
+    <div class="banner" style="background-color: black">
+      <%= video_tag "https://res.cloudinary.com/dcuj8efm3/video/upload/v1678286863/routes_tc0g77.mp4", loop: true, autoplay: "autoplay", muted: true, class: "home-video" %>
+      <div class="banner-content">
+
+        <div class="home-title-container">
+          <div class="d-flex justify-content-center align-items-center" data-controller="gif-loop">
+            <%= image_tag "https://res.cloudinary.com/dcuj8efm3/image/upload/v1678444548/map_animated_d4rahd.gif", height: 120 , data: {gif_loop_target: "gif"} %>
+            <h1 id="home-title" style="font-weight: bold"> myRoutes </h1>
+          </div>
+          <%= link_to "Begin your journey", routes_path, class: "btn-byj btn btn-primary" %>
+
+          <a class="ct-btn-scroll ct-js-btn-scroll scroll-btn" href="#section1"> <%= image_tag("chevron1.png", width:"80") %></a>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+
+  <section class="company-heading intro-type" id="parallax-one" style="text-align:center">
+    <div class="container">
+      <div class="row product-title-info">
+
+      </div>
+    </div>
+    <div class="parallax" id="parallax-cta" style="background-image:url(https://www.solodev.com/assets/anchor/company-hero2.jpg);"></div>
+  </section>
+
+
+  <div id="section1" class="cards-instructions mb-4">
+    <div class="card-step">
+      <h2 style="margin: 10px;"> Step 1</h2>
+      <p style="text-align:center;"> Dream of your favourite destination </p>
+      <div class="d-flex justify-content-center w-100">
+      <div class="btn-lg" style="height: 90px; width: 120px; background: #FFF; display: flex; justify-content: center; align-items: center;">
+        <%= image_tag("https://res.cloudinary.com/dcuj8efm3/image/upload/v1678962357/thought-bubble_n1nbfw.gif", :height => "80", class: "btn-lg") %>
+      </div>
+
+      </div>
+    </div>
+
+    <div class="card-step">
+      <h2 style="margin: 10px;"> Step 2</h2>
+      <p style="text-align:center;"> Add stops to create your route </p>
+      <div class="d-flex justify-content-center w-100">
+        <%= image_tag("https://res.cloudinary.com/dcuj8efm3/image/upload/v1678373261/location_marker_ordpqy.gif", :height => "90", class: "btn-lg") %>
+      </div>
+    </div>
+
+    <div class="card-step">
+      <h2 style="margin: 10px;"> Step 3</h2>
+      <p style="text-align:center;"> Save your route and enjoy! </p>
+      <div class="d-flex justify-content-center w-100">
+        <%= image_tag("https://res.cloudinary.com/dcuj8efm3/image/upload/v1678962813/ezgif.com-crop_c0tpdg.gif", :height => "90", class: "btn-lg") %>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="main">
+  <section id="section2">
+
+    <div class="p-5 mb-4 bg-light rounded-3" style= "text-align:center">
+      <div class="container-fluid py-5">
+        <h1 class="display-5 fw-bold">Maximise your travel efficiency. Use myRoutes.</h1>
+        <p class="fs-4 mb-5">Fed up of not being able to save your routes on Google Maps? <br>Join our community of users and plan your routes in advance. <br>Wherever the travel bug takes you, we've got you sorted!</p>
+        <%= link_to "Start now!", routes_path, class: "btn-byj btn btn-primary" %>
+      </div>
+    </div>
+
+  </section>
+</div>
+
+<!--Testimonials------------------->
+<section id="testimonials">
+  <!--heading--->
+  <div class="testimonial-heading">
+    <span>What our customers say:</span>
+  </div>
+  <!--testimonials-box-container------>
+  <div class="testimonial-box-container">
+      <!--BOX-1-------------->
+      <div class="testimonial-box">
+          <!--top------------------------->
+          <div class="box-top">
+              <!--profile----->
+              <div class="profile">
+                  <!--img---->
+                  <div class="profile-img">
+                    <%= image_tag "https://res.cloudinary.com/dcuj8efm3/image/upload/v1678970263/touseeq_tcr4sb.jpg" %>
+                  </div>
+                  <!--name-and-username-->
+                  <div class="name-user">
+                    <strong>Touseeq Ijaz</strong>
+                    <span>@touseeqijazweb</span>
+                  </div>
+              </div>
+              <!--reviews------>
+              <div class="reviews">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="far fa-star"></i><!--Empty star-->
+              </div>
+          </div>
+          <!--Comments---------------------------------------->
+          <div class="client-comment">
+            <p>Using myRoutes has transformed my travel experience! It's a great way to give you peace of mind on city breaks. Recommended to anyone who loves planning ahead!</p>
+          </div>
+      </div>
+      <!--BOX-2-------------->
+      <div class="testimonial-box">
+          <!--top------------------------->
+          <div class="box-top">
+              <!--profile----->
+              <div class="profile">
+                  <!--img---->
+                  <div class="profile-img">
+                    <%= image_tag "https://res.cloudinary.com/dcuj8efm3/image/upload/v1678970264/portrait-smiley-woman_crxmlt.jpg" %>
+                  </div>
+                  <!--name-and-username-->
+                  <div class="name-user">
+                    <strong>Amelia Harding </strong>
+                    <span>@ames342</span>
+                  </div>
+              </div>
+              <!--reviews------>
+              <div class="reviews">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i><!--Empty star-->
+              </div>
+          </div>
+          <!--Comments---------------------------------------->
+          <div class="client-comment">
+              <p>MyRoutes ticks all the boxes! The app looks great and it's so convenient to then be able to open them Google Maps on the go. I love being able to share my routes with my friends too!</p>
+          </div>
+      </div>
+      <!--BOX-3-------------->
+      <div class="testimonial-box">
+          <!--top------------------------->
+          <div class="box-top">
+              <!--profile----->
+              <div class="profile">
+                  <!--img---->
+                  <div class="profile-img">
+                      <%= image_tag "https://res.cloudinary.com/dcuj8efm3/image/upload/v1678970264/portrait-employee-happy-be-back-work_txusas.jpg" %>
+                  </div>
+                  <!--name-and-username-->
+                  <div class="name-user">
+                      <strong>Ben Jenkins</strong>
+                      <span>@BenjiBirmingham</span>
+                  </div>
+              </div>
+              <!--reviews------>
+              <div class="reviews">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+              </div>
+          </div>
+          <!--Comments---------------------------------------->
+          <div class="client-comment">
+               <p>I can't believe I hadn't heard of this app before! I always thought it was annoying not to be able to save routes on Google, and here is the solution - highly recommended!</p>
+          </div>
+      </div>
+      <!--BOX-4-------------->
+      <div class="testimonial-box">
+          <!--top------------------------->
+          <div class="box-top">
+              <!--profile----->
+              <div class="profile">
+                  <!--img---->
+                  <div class="profile-img">
+                    <%= image_tag "https://res.cloudinary.com/dcuj8efm3/image/upload/v1678970264/portrait-young-beautiful-woman_bykgnp.jpg" %>
+                  </div>
+                  <!--name-and-username-->
+                  <div class="name-user">
+                      <strong>Oliva</strong>
+                      <span>@Olivaadward</span>
+                  </div>
+              </div>
+              <!--reviews------>
+              <div class="reviews">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+              </div>
+          </div>
+          <!--Comments---------------------------------------->
+          <div class="client-comment">
+            <p>MyRoutes is a total game changer! Finally I can have peace of mind before a city break with all my walking tours planned out in advance.. Love this app!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
