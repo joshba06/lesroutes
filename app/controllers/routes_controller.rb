@@ -1,12 +1,21 @@
 class RoutesController < ApplicationController
-  def index
-    @routes = Route.all
 
-    # After seeding: Create URLs for all routes
+  def index
+    # render variants: [:mobile, :desktop]
+    # browser.device.mobile? ? variant = :mobile : variant = :desktop
+    @routes = Route.all
+    # After seeding: Create Google Maps URLs for all routes
     @routes.each do |route|
       route_destinations_ordered = route.route_destinations.order(position: :asc).map { |route_destination| route_destination.destination }
       update_google_redirect(route_destinations_ordered, route)
     end
+
+    if browser.device.mobile?
+      render variants: [:mobile]
+    else
+      render variants: [:desktop]
+    end
+
   end
 
   def show

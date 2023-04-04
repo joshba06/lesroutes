@@ -1,0 +1,14 @@
+<div class="private-routes-container">
+
+  <div class="page-intro mx-1 my-2">
+    <h1>Hey, <%= current_user.first_name.capitalize %>!</h1>
+    <h2>Here are all your routes</h2>
+  </div>
+
+  <div class="private-cards">
+    <% @routes.each do |route| %>
+      <%= render partial: "shared/card_route", locals: {route: route} %>
+    <% end %>
+  </div>
+
+</div>
