@@ -1,0 +1,68 @@
+<div class="showpage-container-mobile">
+
+  <div class="page-actions my-2">
+    <div class="left-side">
+       <%= link_to '<i class="fa-solid fa-arrow-left"></i> Back'.html_safe, routes_path(), class: "btn btn-outline-primary btn-sm" %>
+    </div>
+    <div class="right-side">
+      <%= link_to '<i class="fa-solid fa-map-location-dot"></i> Navigate'.html_safe, @route.google_url, target: "_blank", class: "btn btn-outline-primary btn-sm"%>
+      <%= link_to '<i class="fa-solid fa-share-nodes"></i> Share'.html_safe, "#", target: "_blank", class: "btn btn-outline-primary btn-sm"%>
+    </div>
+  </div>
+
+  <div class="route-title my-3">
+    <h1 class="text-center"><%= @route.title %>  <%= link_to '<i class="fa-solid fa-pen-to-square"></i>'.html_safe, edit_route_path(@route), style: "padding-left:10px;margin-right:15px;" %></h1>
+  </div>
+
+  <div id="map-mobile"
+    data-controller="map"
+    data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>"
+    data-map-markers-value="<%= @markers.to_json %>"
+  ></div>
+
+  <div class="route-specs mx-3 my-2 py-1">
+    <div><i class="fa-solid fa-location-dot me-2"></i><%= @route.route_destinations.length %> stops</div>
+    <div><i class="fa-solid fa-stopwatch me-2"></i><%= @route.time.nil? ? "0 min" : "#{@route.time} min"%></div>
+    <div><i class="fa-solid fa-road me-2"></i><%= @route.distance.nil? ? "0 km" : "#{@route.distance} km" %></div>
+  </div>
+
+  <div class="route-itinerary my-2">
+    <h1 class="text-center pt-2">Itinerary</h1>
+    <% @route.route_destinations.order(position: :asc).each_with_index do |route_destination, index| %>
+
+      <div class="card-destination">
+
+        <div class="destination-circle-icon">
+          <span class="dest-position text-center"><%= route_destination.position %></span>
+        </div>
+
+        <%# Overlay circle connector %>
+        <% unless index == @route.route_destinations.length - 1 %>
+          <div class="destination-connector">
+            <div class="connector-line-top"></div>
+            <div class="route-mode-icon my-0">
+              <i class="fa-solid fa-person-walking fa-sm"></i>
+            </div>
+            <div class="connector-line-bottom"></div>
+          </div>
+        <% end %>
+        <%# Overlay end %>
+
+        <div class="destination-text">
+          <div class="destination-title">
+            <%= route_destination.destination.title %>
+          </div>
+          <% if route_destination.destination.title == "Custom location" %>
+            <div class="destination-address"><%= route_destination.destination.address%></div>
+          <% else %>
+            <div class="destination-address"><%= route_destination.destination.address.split(",")[1..-1].join(", ") %></div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+  </div>
+
+  <div class="page-navigator">
+  </div>
+</div>
