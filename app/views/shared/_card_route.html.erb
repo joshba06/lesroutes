@@ -1,0 +1,49 @@
+<div class="card-route-private-mobile p-1 my-2">
+
+  <div class="card-top mt-2 mx-2">
+    <div class="title">
+      <%= route.title %>
+    </div>
+    <div class="menu">
+      <i class="fa-solid fa-ellipsis-vertical"></i>
+    </div>
+  </div>
+
+  <div class="card-middle mx-2">
+      <span class="text-description" style="width: 280px;">Route destinations</span>
+      <span class="text-description">Route details</span>
+  </div>
+
+  <div class="card-bottom my-1 mx-2">
+
+    <div class="card-route-destinations">
+      <div class="top">
+        <div class="destination-circle-icon"></div>
+        <div class="route-destination"><%= route.destinations.first.title %></div>
+      </div>
+
+      <div class="middle">
+        <div class="connector-line-top"></div>
+        <div class="route-mode-icon my-0">
+          <i class="fa-solid fa-person-walking fa-xs"></i>
+        </div>
+        <div class="connector-line-bottom"></div>
+      </div>
+
+      <div class="bottom">
+        <div class="destination-circle-icon"></div>
+        <div class="route-destination">
+          <%= route.destinations.last.title %>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="card-route-details">
+      <p class="mb-0"><i class="fa-solid fa-location-dot me-2"></i><%= route.route_destinations.length %> stops</p>
+      <p class="mb-0"><i class="fa-solid fa-stopwatch me-2"></i><%= route.time.nil? ? "0 min" : "#{route.time} min"%></p>
+      <p class="mb-0"><i class="fa-solid fa-person-walking me-2"></i><%= route.distance.nil? ? "0 km" : "#{route.distance} km" %></p>
+    </div>
+  </div>
+
+</div>

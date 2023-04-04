@@ -1,3 +1,15 @@
+.private-routes-container {
+  width: 95vw;
+  margin: 2px auto;
+  h1 {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  h2 {
+    font-size: 15px;
+  }
+}
+
 
 .heading {
   display: flex;
@@ -202,7 +214,7 @@
 //   }
 
 // Cut-out
-.top { top: -12px; }
-.bottom { bottom: -8px; }
-.left { left: -13px; }
-.right { right: -8px; }
+// .top { top: -12px; }
+// .bottom { bottom: -8px; }
+// .left { left: -13px; }
+// .right { right: -8px; }
