@@ -35,14 +35,6 @@
     <div class="route-destinations" data-controller="sortable" data-sortable-url="/routes/<%= @route.id %>/route_destinations/:id/move" data-count="<%= @route.route_destinations.count %>" data-route-destinations-count="<%= @route.route_destinations.count %>" data-route-id="<%= @route.id %>">
       <% @route.route_destinations.order(position: :asc).each_with_index do |route_destination, index| %>
         <%= render partial: "shared/card_route_destination", locals: {route_destination: route_destination, showpage: false} %>
-
-        <%# Overlay empty circle connector %>
-        <% unless index == @route.route_destinations.length - 1 %>
-          <div class="destination-connector">
-            <div class="empty_div"></div>
-          </div>
-        <% end %>
-        <%# Overlay end %>
       <% end %>
     </div>
   </div>

@@ -1,7 +1,6 @@
-<div class="card-route-destination">
+<div class="card-route-destination <%= showpage ? 'show-page' : "edit-page"%>">
 
   <%# Slider only on edit page %>
-
   <div class="destination-slider">
     <% if showpage != true %>
       <i class="fa-solid fa-bars"></i>
