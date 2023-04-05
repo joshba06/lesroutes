@@ -30,11 +30,7 @@
     <h1 class="text-center pt-2">Itinerary</h1>
     <% @route.route_destinations.order(position: :asc).each_with_index do |route_destination, index| %>
 
-      <div class="card-destination">
-
-        <div class="destination-circle-icon">
-          <span class="dest-position text-center"><%= route_destination.position %></span>
-        </div>
+      <%= render partial: "shared/card_route_destination", locals: {route_destination: route_destination} %>
 
         <%# Overlay circle connector %>
         <% unless index == @route.route_destinations.length - 1 %>
@@ -47,18 +43,6 @@
           </div>
         <% end %>
         <%# Overlay end %>
-
-        <div class="destination-text">
-          <div class="destination-title">
-            <%= route_destination.destination.title %>
-          </div>
-          <% if route_destination.destination.title == "Custom location" %>
-            <div class="destination-address"><%= route_destination.destination.address%></div>
-          <% else %>
-            <div class="destination-address"><%= route_destination.destination.address.split(",")[1..-1].join(", ") %></div>
-          <% end %>
-        </div>
-      </div>
     <% end %>
 
   </div>
