@@ -26,15 +26,11 @@
     <div><i class="fa-solid fa-road me-2"></i><%= @route.distance.nil? ? "0 km" : "#{@route.distance} km" %></div>
   </div>
 
-  <div class="route-itinerary my-2">
+  <div class="route-itinerary pb-2 my-2">
     <h1 class="text-center pt-2">Itinerary</h1>
-    <% @route.route_destinations.order(position: :asc).each_with_index do |route_destination, index| %>
-
-      <div class="card-destination">
-
-        <div class="destination-circle-icon">
-          <span class="dest-position text-center"><%= route_destination.position %></span>
-        </div>
+    <div class="route-destinations">
+      <% @route.route_destinations.order(position: :asc).each_with_index do |route_destination, index| %>
+        <%= render partial: "shared/card_route_destination", locals: {route_destination: route_destination, showpage: true} %>
 
         <%# Overlay circle connector %>
         <% unless index == @route.route_destinations.length - 1 %>
@@ -47,20 +43,8 @@
           </div>
         <% end %>
         <%# Overlay end %>
-
-        <div class="destination-text">
-          <div class="destination-title">
-            <%= route_destination.destination.title %>
-          </div>
-          <% if route_destination.destination.title == "Custom location" %>
-            <div class="destination-address"><%= route_destination.destination.address%></div>
-          <% else %>
-            <div class="destination-address"><%= route_destination.destination.address.split(",")[1..-1].join(", ") %></div>
-          <% end %>
-        </div>
-      </div>
-    <% end %>
-
+      <% end %>
+    </div>
   </div>
 
   <div class="page-navigator">

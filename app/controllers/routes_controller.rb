@@ -71,6 +71,13 @@ class RoutesController < ApplicationController
         marker_html: render_to_string(partial: "marker#{@route.route_destinations.where(destination: destination).first.position}")
       }
     end
+
+    if browser.device.mobile?
+      render variants: [:mobile]
+    else
+      render variants: [:desktop]
+    end
+
   end
 
   def update

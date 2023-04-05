@@ -1,0 +1,62 @@
+// Mobile
+.editpage-container-mobile {
+  width: 90vw;
+  margin: 2px auto;
+  .page-actions {
+    display: flex;
+    justify-content: space-between;
+  }
+  .route-title > h1 {
+    font-size: 20px;
+    font-weight: 600;
+  }
+  .route-specs {
+    font-size: 14px;
+    color: #444242c2;
+    border-top: 0.5px solid grey;
+    border-bottom: 0.5px solid grey;
+    display: flex;
+    justify-content: space-between;
+  }
+  .route-settings {
+    display: flex;
+    align-items: flex-start;
+  }
+  .route-itinerary {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    h1 {
+      font-size: 23px;
+      font-weight: 400;
+    }
+    .destination-connector {
+      width: 350px;
+      margin: 0px auto;
+      height: 16px;
+      .connector-line-top {
+        position: relative;
+        left: 36px;
+        top: 1px;
+        width: 10px;
+        height: 7px;
+        border-right: 3px dotted rgba(170, 166, 166, 0.61);
+      }
+      .connector-line-bottom {
+        position: relative;
+        left: 36px;
+        top: -1px;
+        z-index: 1;
+        width: 10px;
+        height: 7px;
+        border-right: 3px dotted rgba(170, 166, 166, 0.61);
+      }
+      .route-mode-icon {
+        margin-left: 40px;
+        height: 18px;
+        position: relative;
+        top: -2px;
+      }
+    }
+   }
+}

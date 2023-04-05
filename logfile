@@ -55,3 +55,12 @@
 2023-04-04 11:50:23.926 CEST [5217] ERROR:  column "city" of relation "destinations" does not exist
 2023-04-04 11:50:23.926 CEST [5217] STATEMENT:  ALTER TABLE "destinations" DROP COLUMN "city"
 2023-04-04 11:52:22.792 CEST [5452] FATAL:  database "my_routes_development" does not exist
+2023-04-05 11:32:48.615 CEST [3195] LOG:  starting PostgreSQL 14.7 (Homebrew) on x86_64-apple-darwin22.1.0, compiled by Apple clang version 14.0.0 (clang-1400.0.29.202), 64-bit
+2023-04-05 11:32:48.616 CEST [3195] LOG:  listening on IPv6 address "::1", port 5432
+2023-04-05 11:32:48.616 CEST [3195] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2023-04-05 11:32:48.618 CEST [3195] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2023-04-05 11:32:48.630 CEST [3196] LOG:  database system was shut down at 2023-04-05 11:32:46 CEST
+2023-04-05 11:32:48.649 CEST [3195] LOG:  database system is ready to accept connections
+2023-04-05 11:35:53.824 CEST [3413] FATAL:  database "my_routes_development" does not exist
+2023-04-05 11:46:00.875 CEST [3768] FATAL:  database "my_routes_development" does not exist
+2023-04-05 11:46:19.048 CEST [4274] FATAL:  database "my_routes_development" does not exist
