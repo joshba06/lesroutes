@@ -1,6 +1,9 @@
 // Import page-specific CSS files here.
 @import "home";
-@import "new_route";
+
 @import "routes_index";
+@import "routes_show";
+@import "routes_edit";
+@import "routes_new";
+
 @import "show_and_edit";
-@import "show";

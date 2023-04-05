@@ -26,11 +26,11 @@
     <div><i class="fa-solid fa-road me-2"></i><%= @route.distance.nil? ? "0 km" : "#{@route.distance} km" %></div>
   </div>
 
-  <div class="route-itinerary my-2">
+  <div class="route-itinerary pb-2 my-2">
     <h1 class="text-center pt-2">Itinerary</h1>
-    <% @route.route_destinations.order(position: :asc).each_with_index do |route_destination, index| %>
-
-      <%= render partial: "shared/card_route_destination", locals: {route_destination: route_destination} %>
+    <div class="route-destinations">
+      <% @route.route_destinations.order(position: :asc).each_with_index do |route_destination, index| %>
+        <%= render partial: "shared/card_route_destination", locals: {route_destination: route_destination, showpage: true} %>
 
         <%# Overlay circle connector %>
         <% unless index == @route.route_destinations.length - 1 %>
@@ -43,8 +43,8 @@
           </div>
         <% end %>
         <%# Overlay end %>
-    <% end %>
-
+      <% end %>
+    </div>
   </div>
 
   <div class="page-navigator">

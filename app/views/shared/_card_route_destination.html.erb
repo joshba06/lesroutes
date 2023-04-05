@@ -1,8 +1,13 @@
 <div class="card-route-destination">
 
+  <%# Slider only on edit page %>
+
   <div class="destination-slider">
-    <i class="fa-solid fa-bars"></i>
+    <% if showpage != true %>
+      <i class="fa-solid fa-bars"></i>
+    <% end %>
   </div>
+  <%# Slider end %>
 
   <div class="destination-circle-icon">
     <span class="dest-position text-center"><%= route_destination.position %></span>
@@ -19,8 +24,11 @@
       <% end %>
   </div>
 
-  <div class="delete-button">
-    <i class="fa-regular fa-trash-can"></i>
-  </div>
-
+  <%# Delete button only on edit page %>
+  <% if showpage != true %>
+    <div class="delete-button">
+      <i class="fa-regular fa-trash-can"></i>
+    </div>
+  <% end %>
+  <%# Delete button end %>
 </div>

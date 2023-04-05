@@ -1,0 +1,52 @@
+<div class="editpage-container-mobile">
+
+  <div class="page-actions my-2">
+    <div class="left-side">
+    </div>
+    <div class="right-side">
+      <%= link_to '<i class="fa-regular fa-trash-can"></i> Delete'.html_safe, "#", class: "btn btn-outline-danger btn-sm"%>
+      <%= link_to '<i class="fa-solid fa-floppy-disk"></i> Save'.html_safe, "#", class: "btn btn-outline-primary btn-sm"%>
+    </div>
+  </div>
+
+  <div class="route-title my-3">
+    <h1 class="text-center"><%= @route.title %> (editing)</h1>
+  </div>
+
+  <div id="map-mobile"
+    data-controller="map"
+    data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>"
+    data-map-markers-value="<%= @markers.to_json %>"
+  ></div>
+
+  <div class="route-specs mx-3 my-2 py-1">
+    <div><i class="fa-solid fa-location-dot me-2"></i><%= @route.route_destinations.length %> stops</div>
+    <div><i class="fa-solid fa-stopwatch me-2"></i><%= @route.time.nil? ? "0 min" : "#{@route.time} min"%></div>
+    <div><i class="fa-solid fa-road me-2"></i><%= @route.distance.nil? ? "0 km" : "#{@route.distance} km" %></div>
+  </div>
+
+  <div class="route-settings">
+    <%= link_to "Route mode", "#", class: "btn btn-outline-primary btn-sm"%>
+    <%= link_to "Route optimisation", "#", class: "btn btn-outline-primary btn-sm mx-2"%>
+  </div>
+
+  <div class="route-itinerary pb-2 my-2">
+    <h1 class="text-center pt-2">Itinerary</h1>
+    <div class="route-destinations" data-controller="sortable" data-sortable-url="/routes/<%= @route.id %>/route_destinations/:id/move" data-count="<%= @route.route_destinations.count %>" data-route-destinations-count="<%= @route.route_destinations.count %>" data-route-id="<%= @route.id %>">
+      <% @route.route_destinations.order(position: :asc).each_with_index do |route_destination, index| %>
+        <%= render partial: "shared/card_route_destination", locals: {route_destination: route_destination, showpage: false} %>
+
+        <%# Overlay empty circle connector %>
+        <% unless index == @route.route_destinations.length - 1 %>
+          <div class="destination-connector">
+            <div class="empty_div"></div>
+          </div>
+        <% end %>
+        <%# Overlay end %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="page-navigator">
+  </div>
+</div>
