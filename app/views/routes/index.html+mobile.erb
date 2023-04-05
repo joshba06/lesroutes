@@ -7,7 +7,9 @@
 
   <div class="private-cards">
     <% @routes.each do |route| %>
-      <%= render partial: "shared/card_route", locals: {route: route} %>
+      <%= link_to route_path(route), :action => 'go', style: 'color:black; text-decoration:none' do %>
+        <%= render partial: "shared/card_route", locals: {route: route} %>
+      <% end %>
     <% end %>
   </div>
 
