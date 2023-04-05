@@ -15,23 +15,17 @@ export default class extends Controller {
       ghostClass: "blue-background-class",
       onEnd: this.end.bind(this),
     });
-
-    // console.log(this.element.dataset.count);
-    // console.log(this.element.dataset.routeDestinationsCount);
   }
 
   end(event) {
-    console.log(event);
+
+    // Get index before change
+    const oldIndex = event.oldIndex
 
     // * Route Destination ID
     let id = event.item.dataset.id;
-    // console.log(id);
-
-    // console.log(this.element.dataset.count);
 
     let data = new FormData();
-    // console.log("Data")
-    // console.log(data)
 
     if (event.newIndex === 0) {
       data.append("position", 1);
@@ -39,16 +33,19 @@ export default class extends Controller {
       data.append("position", event.newIndex + 1);
     }
 
-    for (const [key, value] of data.entries()) {
-      console.log(`${key}: ${value}`);
-    }
+    // for (const [key, value] of data.entries()) {
+    //   console.log(`${key}: ${value}`);
+    // }
 
     // * Route ID
     let routeId = this.element.dataset.routeId;
-    // console.log("Route ID");
-    // console.log(routeId);
+
+    console.log(`Changing order of route id: ${this.element.dataset.routeId}`)
+    console.log(`${oldIndex + 1} -> ${event.newIndex + 1}`)
+
     console.log(this.data.get("url").replace(":id", id))
 
+    // Update route_destination position in "route_destination" table
     Rails.ajax({
       url: this.data.get("url").replace(":id", id),
       type: "PATCH",

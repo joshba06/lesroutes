@@ -17,12 +17,13 @@
     data-controller="map"
     data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>"
     data-map-markers-value="<%= @markers.to_json %>"
+    data-map-route-id-value="<%= @route.id %>"
   ></div>
 
-  <div class="route-specs mx-3 my-2 py-1">
+  <div class="route-specs mx-3 my-2 py-1" id="testnik" data-controller="niklas">
     <div><i class="fa-solid fa-location-dot me-2"></i><%= @route.route_destinations.length %> stops</div>
-    <div><i class="fa-solid fa-stopwatch me-2"></i><%= @route.time.nil? ? "0 min" : "#{@route.time} min"%></div>
-    <div><i class="fa-solid fa-road me-2"></i><%= @route.distance.nil? ? "0 km" : "#{@route.distance} km" %></div>
+    <div><i class="fa-solid fa-stopwatch me-2"></i><span data-niklas-target="time"><%= @route.time.nil? ? "0" : "#{@route.time}"%></span> min</div>
+    <div><i class="fa-solid fa-road me-2"></i><span data-niklas-target="distance"><%= @route.distance.nil? ? "0" : "#{@route.distance}" %></span> km</div>
   </div>
 
   <div class="route-settings">

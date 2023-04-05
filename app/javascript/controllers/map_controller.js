@@ -130,8 +130,6 @@ export default class extends Controller {
     fetch(fetchQueryString)
       .then((response) => response.json())
       .then((data) => {
-        // console.log(data)
-        // this.#addingDistanceInfo()
 
         const route = data.routes[0].geometry.coordinates;
         const geojson = {
@@ -163,53 +161,33 @@ export default class extends Controller {
       });
   }
 
-  // #addingDistanceInfo() {
-  //   const distance = document.querySelector(".distance")
-  //   const duration = document.querySelector(".duration")
-  //   console.log(distance)
-  //   console.log(duration)
-  //   console.log(data.routes[0].distance);
-  //   console.log(data.routes[0].duration);
-
-  //   distance.textContent = `Distance: ${data.routes[0].distance}`
-  //   duration.textContent = `Duration: ${data.routes[0].duration}`
-  // }
-
   #sendPatch(data) {
-    // console.log(this.routeIdValue)
-    // console.log('RouteId again?')
+    const routeId = this.routeIdValue
     const form = new FormData();
-    // console
+
     const DistanceInMetres = data.routes[0].distance
     const TimeInSeconds = data.routes[0].duration
-
     const DistanceInKm = parseFloat((DistanceInMetres / 1000).toFixed(2))
-
-    // const TimeInMinutes = parseFloat((TimeInSeconds / 60).toFixed(0))
     const TimeInMinutes = Math.round((TimeInSeconds / 60))
-    console.log("Time in minutes")
-    console.log(TimeInMinutes)
 
-    form.append("route[distance]", DistanceInKm)
-    form.append("route[time]", TimeInMinutes)
+    console.log(`Time in min: ${TimeInMinutes}`)
+    console.log(`Distance in km: ${DistanceInKm}`)
 
-    // fetch(`/routes/${this.routeIdValue}`, {
-    //   method: "PATCH",
-    //   headers: { "Content-Type": "application/json", "Accept": "application/json" },
-    //   body: JSON.stringify(form)
-    // })
-    //   .then((response) => console.log(response))
-    //   // .then((data) => console.log(data))
+    form.append('route[distance]', DistanceInKm)
+    form.append('route[time]', TimeInMinutes)
 
     Rails.ajax({
-      url: `/routes/${this.routeIdValue}/move`,
+      url: `/routes/${routeId}/move`,
       type: "PATCH",
-      data: form
+      data: form,
+      success: function () {
+        console.log("Successfully updated route information")
+        document.querySelector('#testnik').niklas.add(TimeInMinutes, DistanceInKm)
+      },
+      error: function () {
+        console.log("Could not update route info")
+      }
     })
-
-    console.log("I am here now")
-    document.querySelector('#testnik').niklas.add(TimeInMinutes, DistanceInKm)
-
   }
 
 }
