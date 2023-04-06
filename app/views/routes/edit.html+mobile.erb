@@ -4,8 +4,8 @@
     <div class="left-side">
     </div>
     <div class="right-side">
-      <%= link_to '<i class="fa-regular fa-trash-can"></i> Delete'.html_safe, "#", class: "btn btn-outline-danger btn-sm"%>
-      <%= link_to '<i class="fa-solid fa-floppy-disk"></i> Save'.html_safe, "#", class: "btn btn-outline-primary btn-sm"%>
+      <%= link_to '<i class="fa-regular fa-trash-can"></i> Delete'.html_safe, route_path(@route), data: {turbo_method: :delete, turbo_confirm: 'Are you sure you want to delete the entire route?'}, class: "btn btn-outline-danger btn-sm"%>
+      <%= link_to '<i class="fa-solid fa-floppy-disk"></i> Save'.html_safe, route_path(@route), class: "btn btn-outline-primary btn-sm"%>
     </div>
   </div>
 
@@ -20,10 +20,10 @@
     data-map-route-id-value="<%= @route.id %>"
   ></div>
 
-  <div class="route-specs mx-3 my-2 py-1" id="testnik" data-controller="niklas">
+  <div class="route-specs mx-3 my-2 py-1" id="nikspecs" data-controller="route">
     <div><i class="fa-solid fa-location-dot me-2"></i><%= @route.route_destinations.length %> stops</div>
-    <div><i class="fa-solid fa-stopwatch me-2"></i><span data-niklas-target="time"><%= @route.time.nil? ? "0" : "#{@route.time}"%></span> min</div>
-    <div><i class="fa-solid fa-road me-2"></i><span data-niklas-target="distance"><%= @route.distance.nil? ? "0" : "#{@route.distance}" %></span> km</div>
+    <div><i class="fa-solid fa-stopwatch me-2"></i><span data-route-target="time"><%= @route.time.nil? ? "0" : "#{@route.time}"%></span> min</div>
+    <div><i class="fa-solid fa-road me-2"></i><span data-route-target="distance"><%= @route.distance.nil? ? "0" : "#{@route.distance}" %></span> km</div>
   </div>
 
   <div class="route-settings">

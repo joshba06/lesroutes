@@ -64,3 +64,17 @@
 2023-04-05 11:35:53.824 CEST [3413] FATAL:  database "my_routes_development" does not exist
 2023-04-05 11:46:00.875 CEST [3768] FATAL:  database "my_routes_development" does not exist
 2023-04-05 11:46:19.048 CEST [4274] FATAL:  database "my_routes_development" does not exist
+2023-04-06 10:46:33.226 CEST [3387] LOG:  starting PostgreSQL 14.7 (Homebrew) on x86_64-apple-darwin22.1.0, compiled by Apple clang version 14.0.0 (clang-1400.0.29.202), 64-bit
+2023-04-06 10:46:33.227 CEST [3387] LOG:  listening on IPv6 address "::1", port 5432
+2023-04-06 10:46:33.227 CEST [3387] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2023-04-06 10:46:33.229 CEST [3387] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2023-04-06 10:46:33.240 CEST [3388] LOG:  database system was shut down at 2023-04-06 10:46:31 CEST
+2023-04-06 10:46:33.260 CEST [3387] LOG:  database system is ready to accept connections
+2023-04-06 10:46:51.457 CEST [3448] FATAL:  database "my_routes_development" does not exist
+2023-04-06 10:47:00.089 CEST [3452] ERROR:  column "city" of relation "destinations" does not exist
+2023-04-06 10:47:00.089 CEST [3452] STATEMENT:  ALTER TABLE "destinations" DROP COLUMN "city"
+2023-04-06 10:47:37.607 CEST [4009] ERROR:  column "city" of relation "destinations" does not exist
+2023-04-06 10:47:37.607 CEST [4009] STATEMENT:  ALTER TABLE "destinations" DROP COLUMN "city"
+2023-04-06 10:48:27.327 CEST [4152] ERROR:  database "my_routes_development" is being accessed by other users
+2023-04-06 10:48:27.327 CEST [4152] DETAIL:  There is 1 other session using the database.
+2023-04-06 10:48:27.327 CEST [4152] STATEMENT:  DROP DATABASE IF EXISTS "my_routes_development"

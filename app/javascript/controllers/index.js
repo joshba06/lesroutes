@@ -19,8 +19,8 @@ application.register("hello", HelloController)
 import MapController from "./map_controller"
 application.register("map", MapController)
 
-import NiklasController from "./niklas_controller"
-application.register("niklas", NiklasController)
+import RouteController from "./route_controller"
+application.register("route", RouteController)
 
 import SortableController from "./sortable_controller"
 application.register("sortable", SortableController)

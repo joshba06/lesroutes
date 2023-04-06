@@ -15,52 +15,43 @@ export default class extends Controller {
     console.log("Hello from MAP controller");
     mapboxgl.accessToken = this.apiKeyValue;
 
-    // 0. Load map on page load
-    // const map = new mapboxgl.Map({
-    //   container: this.element,
-    //   style: "mapbox://styles/mapbox/streets-v10",
-    //   center: [sortedmarkers[1].lng, sortedmarkers[1].lat],
-    //   zoom: 13,
-    //   });
-
-    // 1. Convert markers
+    // 0. Convert markers
     const markersarray = this.markersValue;
-
-    // Sort markers to be in correct order and return hash {1: {lat, lng}}
     const sortedmarkers = {}
     markersarray.forEach((marker) => {
       sortedmarkers[marker.pos] = {lat: marker.lat, lng: marker.lng, marker_html: marker.marker_html}
     })
 
+    // 1. Load empty map
+    let map = new mapboxgl.Map({
+      container: this.element,
+      style: "mapbox://styles/mapbox/streets-v10",
+      center: [-0.118092, 51.509865],
+      zoom: 6,
+      });
+    // console.log("Created empty map")
 
-    // 3.1 If there is one destination, zoom onto that destination
+
+    // 2.1 If there is one destination, zoom onto that destination
     if (Object.keys(sortedmarkers).length == 1) {
+      console.log("There is one destination")
 
-      const map = new mapboxgl.Map({
-        container: this.element,
-        style: "mapbox://styles/mapbox/streets-v10",
-        center: [sortedmarkers[1].lng, sortedmarkers[1].lat],
-        zoom: 13,
-        });
+      map.setCenter([sortedmarkers[1].lng, sortedmarkers[1].lat]);
+      map.setZoom(13);
 
-      this.#addMarkersToMap(sortedmarkers);
+      this.#addMarkersToMap(sortedmarkers, map);
     }
 
-    // 3.2 If there are at least two destinations, fit coordinate bounds
+    // 2.2 If there are at least two destinations, fit coordinate bounds
     else if (Object.keys(sortedmarkers).length >= 2) {
+      console.log("There are at least 2 destinations")
 
-      // Create new map
-      this.map = new mapboxgl.Map({
-        container: this.element,
-        style: "mapbox://styles/mapbox/streets-v10",
-        zoom: 6,
-      });
+      this.#addMarkersToMap(sortedmarkers, map);
+      this.#fitMapToMarkers(sortedmarkers, map);
 
-      this.#addMarkersToMap(sortedmarkers);
-      this.#fitMapToMarkers(sortedmarkers);
+      // 2.3.1 Get route data from mapbox
 
-
-      // Display route
+      // Create  query string
       let fetchQueryString =
       "https://api.mapbox.com/directions/v5/mapbox/walking/";
 
@@ -81,38 +72,24 @@ export default class extends Controller {
         i += 1;
       };
 
-      this.#fetchRoute(fetchQueryString);
+      this.#fetchRoute(fetchQueryString, map);
     }
-
-    // 3.3 If there is no destination, display Le Wagon London
-    else {
-      this.map = new mapboxgl.Map({
-        container: this.element,
-        center: [-0.07689440189122204, 51.53294032339022],
-        style: "mapbox://styles/mapbox/streets-v10",
-        zoom: 10,
-      });
-    }
-
   }
 
-  #addMarkersToMap(sortedmarkers) {
+  #addMarkersToMap(sortedmarkers, map) {
     for (const key in sortedmarkers) {
 
       const customMarker = document.createElement("div")
       customMarker.innerHTML = sortedmarkers[key].marker_html
 
-      // console.log(customMarker.innerHTML)
-      // console.log(sortedmarkers[key])
-
       new mapboxgl.Marker(customMarker)
         .setLngLat([sortedmarkers[key].lng, sortedmarkers[key].lat])
-        .addTo(this.map);
-      // console.log("Added marker")
+        .addTo(map);
     };
+    console.log("Added markers to map")
   }
 
-  #fitMapToMarkers(sortedmarkers) {
+  #fitMapToMarkers(sortedmarkers, map) {
     const bounds = new mapboxgl.LngLatBounds();
 
     // Extend the 'LngLatBounds' to include every coordinate in the bounds result.
@@ -120,13 +97,14 @@ export default class extends Controller {
       bounds.extend([sortedmarkers[key].lng, sortedmarkers[key].lat]);
     }
 
-    this.map.fitBounds(bounds, {
+    map.fitBounds(bounds, {
       padding: 80,
       duration: 0,
     });
+    console.log("Fitted map bounds to markers")
   }
 
-  #fetchRoute(fetchQueryString) {
+  #fetchRoute(fetchQueryString, map) {
     fetch(fetchQueryString)
       .then((response) => response.json())
       .then((data) => {
@@ -140,23 +118,33 @@ export default class extends Controller {
             coordinates: route,
           },
         };
-        this.map.addLayer({
-          id: "route",
-          type: "line",
-          source: {
-            type: "geojson",
+
+        map.on('load', function() {
+          console.log("Map has loaded")
+
+          map.addSource("route-details", {
+            type: 'geojson',
             data: geojson,
-          },
-          layout: {
-            "line-join": "round",
-            "line-cap": "round",
-          },
-          paint: {
-            "line-color": "#3887be",
-            "line-width": 5,
-            "line-opacity": 0.75,
-          },
-        });
+          });
+          console.log("1 Added route data to map")
+
+          map.addLayer({
+            id: 'route',
+            type: 'line',
+            source: 'route-details',
+            layout: {
+              "line-join": "round",
+              "line-cap": "round",
+            },
+            paint: {
+              "line-color": "#3887be",
+              "line-width": 5,
+              "line-opacity": 0.75,
+            },
+          });
+          console.log("2 Added route layer to map")
+        })
+
         this.#sendPatch(data)
       });
   }
@@ -182,7 +170,7 @@ export default class extends Controller {
       data: form,
       success: function () {
         console.log("Successfully updated route information")
-        document.querySelector('#testnik').niklas.add(TimeInMinutes, DistanceInKm)
+        document.querySelector('#nikspecs').route.add(TimeInMinutes, DistanceInKm)
       },
       error: function () {
         console.log("Could not update route info")

@@ -100,9 +100,9 @@
   <%# Right side of page %>
   <div class="destination-map-and-specs">
 
-    <div class="destination-specs" id="testnik" data-controller="niklas">
-      <p><i class="fa-solid fa-person-walking" ></i> &nbsp<strong> <span data-niklas-target="distance"> <%= @route.distance %></span></strong> km<br>
-         <i class="fa-solid fa-stopwatch"></i> &nbsp<strong><span data-niklas-target="time"><%= @route.time %></span></strong> mins  <br>
+    <div class="destination-specs" id="nikspecs" data-controller="route">
+      <p><i class="fa-solid fa-person-walking" ></i> &nbsp<strong> <span data-route-target="distance"> <%= @route.distance %></span></strong> km<br>
+         <i class="fa-solid fa-stopwatch"></i> &nbsp<strong><span data-route-target="time"><%= @route.time %></span></strong> mins  <br>
       </p>
     </div>
 
