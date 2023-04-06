@@ -4,8 +4,8 @@
     <div class="left-side">
     </div>
     <div class="right-side">
-      <%= link_to '<i class="fa-regular fa-trash-can"></i> Delete'.html_safe, "#", class: "btn btn-outline-danger btn-sm"%>
-      <%= link_to '<i class="fa-solid fa-floppy-disk"></i> Save'.html_safe, "#", class: "btn btn-outline-primary btn-sm"%>
+      <%= link_to '<i class="fa-regular fa-trash-can"></i> Delete'.html_safe, route_path(@route), data: {turbo_method: :delete, turbo_confirm: 'Are you sure you want to delete the entire route?'}, class: "btn btn-outline-danger btn-sm"%>
+      <%= link_to '<i class="fa-solid fa-floppy-disk"></i> Save'.html_safe, route_path(@route), class: "btn btn-outline-primary btn-sm"%>
     </div>
   </div>
 

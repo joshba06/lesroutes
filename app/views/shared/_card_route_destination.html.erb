@@ -26,7 +26,7 @@
   <%# Delete button only on edit page %>
   <% if showpage != true %>
     <div class="delete-button">
-      <i class="fa-regular fa-trash-can"></i>
+      <%= link_to '<i class="fa-regular fa-trash-can"></i>'.html_safe, destination_path(route_destination.destination), data: {turbo_method: :delete, turbo_confirm: 'Remove this stop from your route?'} %>
     </div>
   <% end %>
   <%# Delete button end %>

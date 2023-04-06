@@ -27,7 +27,7 @@ export default class extends Controller {
       container: this.element,
       style: "mapbox://styles/mapbox/streets-v10",
       center: [-0.118092, 51.509865],
-      zoom: 13,
+      zoom: 6,
       });
     // console.log("Created empty map")
 
@@ -37,7 +37,7 @@ export default class extends Controller {
       console.log("There is one destination")
 
       map.setCenter([sortedmarkers[1].lng, sortedmarkers[1].lat]);
-      map.setZoom(6);
+      map.setZoom(13);
 
       this.#addMarkersToMap(sortedmarkers, map);
     }
@@ -74,17 +74,6 @@ export default class extends Controller {
 
       this.#fetchRoute(fetchQueryString, map);
     }
-
-    // // 3.3 If there is no destination, display Le Wagon London
-    // else {
-    //   this.map = new mapboxgl.Map({
-    //     container: this.element,
-    //     center: [-0.07689440189122204, 51.53294032339022],
-    //     style: "mapbox://styles/mapbox/streets-v10",
-    //     zoom: 10,
-    //   });
-    // }
-
   }
 
   #addMarkersToMap(sortedmarkers, map) {
