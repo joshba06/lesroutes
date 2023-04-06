@@ -41,11 +41,7 @@ export default class extends Controller {
 
       this.#addMarkersToMap(sortedmarkers, map);
 
-      window.onload = function () {
-        console.log("Document loaded")
-        document.querySelector('#nikspecs').route.add(0,0)
-      }
-
+      this.#sendPatch("_", true);
     }
 
     // 2.2 If there are at least two destinations, fit coordinate bounds
@@ -84,10 +80,7 @@ export default class extends Controller {
     // 2.3 If there is no destination, place default value as route specs
     else {
       console.log("No destination found")
-      window.onload = function () {
-        console.log("Document loaded")
-        document.querySelector('#nikspecs').route.add(0,0)
-      }
+      this.#sendPatch("_", true);
     }
   }
 
@@ -164,14 +157,24 @@ export default class extends Controller {
       });
   }
 
-  #sendPatch(data) {
+  #sendPatch(data, route_too_short = false) {
     const routeId = this.routeIdValue
     const form = new FormData();
 
-    const DistanceInMetres = data.routes[0].distance
-    const TimeInSeconds = data.routes[0].duration
-    const DistanceInKm = parseFloat((DistanceInMetres / 1000).toFixed(2))
-    const TimeInMinutes = Math.round((TimeInSeconds / 60))
+    let TimeInMinutes = 0
+    let DistanceInKm = 0
+
+
+    if (route_too_short) {
+      console.log("Route is too short. Overwriting time, distance with 0")
+
+    }
+    else {
+      const DistanceInMetres = data.routes[0].distance
+      const TimeInSeconds = data.routes[0].duration
+      DistanceInKm = parseFloat((DistanceInMetres / 1000).toFixed(2))
+      TimeInMinutes = Math.round((TimeInSeconds / 60))
+    }
 
     console.log(`Time in min: ${TimeInMinutes}`)
     console.log(`Distance in km: ${DistanceInKm}`)
