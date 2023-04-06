@@ -40,6 +40,12 @@ export default class extends Controller {
       map.setZoom(13);
 
       this.#addMarkersToMap(sortedmarkers, map);
+
+      window.onload = function () {
+        console.log("Document loaded")
+        document.querySelector('#nikspecs').route.add(0,0)
+      }
+
     }
 
     // 2.2 If there are at least two destinations, fit coordinate bounds
@@ -73,6 +79,15 @@ export default class extends Controller {
       };
 
       this.#fetchRoute(fetchQueryString, map);
+    }
+
+    // 2.3 If there is no destination, place default value as route specs
+    else {
+      console.log("No destination found")
+      window.onload = function () {
+        console.log("Document loaded")
+        document.querySelector('#nikspecs').route.add(0,0)
+      }
     }
   }
 
@@ -177,5 +192,4 @@ export default class extends Controller {
       }
     })
   }
-
 }
