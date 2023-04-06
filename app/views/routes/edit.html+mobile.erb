@@ -9,8 +9,11 @@
     </div>
   </div>
 
-  <div class="route-title my-3">
-    <h1 class="text-center"><%= @route.title %> (editing)</h1>
+  <div class="route-title my-3" data-controller="route">
+    <h1 class="text-center" data-route-target="routeTitle"><%= @route.title %> (editing) <i class="fa-solid fa-pen-nib fa-xs" data-action="click->route#edit_title"></i></h1>
+    <div class="form-update-route-title hidden" data-route-target="formUpdateRouteTitle">
+      <%= render partial: "shared/form_edit_route_name", locals: {route: @route} %>
+    </div>
   </div>
 
   <div id="map-mobile"
@@ -36,7 +39,7 @@
     <h1 class="text-center pt-2">Itinerary</h1>
 
     <div class="route-destinations-form mobile">
-      <%= render partial: "shared/form_add_destination", locals: {route: @route, destination: @destination, mobile: true} %>
+      <%= render partial: "shared/form_add_destination", locals: {route: @route, destination: @destination} %>
     </div>
 
     <div class="route-destinations" data-controller="sortable" data-sortable-url="/routes/<%= @route.id %>/route_destinations/:id/move" data-count="<%= @route.route_destinations.count %>" data-route-destinations-count="<%= @route.route_destinations.count %>" data-route-id="<%= @route.id %>">

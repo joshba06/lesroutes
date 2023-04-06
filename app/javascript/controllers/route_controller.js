@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="route"
 export default class extends Controller {
-  static targets = ["time", "distance"]
+  static targets = ["time", "distance", "routeTitle", "formUpdateRouteTitle"]
   static values = {
     time: Number,
     distance: Number,
@@ -22,4 +22,13 @@ export default class extends Controller {
     console.log("Updated display of time and distance on edit page")
     console.log("Goodbye from route controller")
   }
+
+  edit_title (event) {
+    this.routeTitleTarget.style.display = "none";
+    this.formUpdateRouteTitleTarget.classList.remove("hidden")
+
+
+  }
+
+
 }
