@@ -181,7 +181,7 @@ export default class extends Controller {
       data: form,
       success: function () {
         console.log("Successfully updated route information")
-        document.querySelector('#testnik').niklas.add(TimeInMinutes, DistanceInKm)
+        document.querySelector('#nikspecs').route.add(TimeInMinutes, DistanceInKm)
       },
       error: function () {
         console.log("Could not update route info")

@@ -9,18 +9,18 @@ export default class extends Controller {
   };
 
   connect() {
-    console.log("Ciao from niklas controller")
+    console.log("Ciao from route controller")
     this.element[this.identifier] = this
 
   }
 
   add(TimeInMinutes, DistanceInKm) {
-    console.log("Routed to niklas controller")
+    console.log("Routed to route controller")
     console.log(`New time: ${TimeInMinutes}`)
 
     this.distanceTarget.innerText = DistanceInKm
     this.timeTarget.innerText = TimeInMinutes
     console.log("Updated display of time and distance on edit page")
-    console.log("Goodbye from Niklas controller")
+    console.log("Goodbye from route controller")
   }
 }
