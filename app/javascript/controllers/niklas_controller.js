@@ -20,7 +20,7 @@ export default class extends Controller {
 
     this.distanceTarget.innerText = DistanceInKm
     this.timeTarget.innerText = TimeInMinutes
-    console.log("Updated display of time and distance")
+    console.log("Updated display of time and distance on edit page")
     console.log("Goodbye from Niklas controller")
   }
 }
