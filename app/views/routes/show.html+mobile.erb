@@ -30,7 +30,7 @@
     <h1 class="text-center pt-2">Itinerary</h1>
     <div class="route-destinations">
       <% @route.route_destinations.order(position: :asc).each_with_index do |route_destination, index| %>
-        <%= render partial: "shared/card_route_destination", locals: {route_destination: route_destination, showpage: true} %>
+        <%= render partial: "shared/card_route_destination", locals: {route: @route, route_destination: route_destination, showpage: true, index: index} %>
 
         <%# Overlay circle connector %>
         <% unless index == @route.route_destinations.length - 1 %>

@@ -1,4 +1,4 @@
-<div class="card-route-destination <%= showpage ? 'show-page' : "edit-page"%>" data-id="<%= route_destination.id %>" data-sortable-target="results">
+<div class="card-route-destination <%= "last-destination" if index == route.route_destinations.length - 1 %> <%= showpage ? 'show-page' : "edit-page"%>" data-id="<%= route_destination.id %>" data-sortable-target="results">
 
   <%# Slider only on edit page %>
   <div class="destination-slider">
