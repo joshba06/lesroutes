@@ -8,10 +8,10 @@ Rails.application.routes.draw do
   get '/routes', to: 'routes#index', as: :myroutes
   get '/routes/:id/update_title', to: 'routes#updateroutetitle', as: :updateroutetitle
   get '/maptest', to: 'pages#directionstestpage', as: :directionstestpage
+  get '/routes/:id/save', to: 'routes#save', as: :save_route
 
 
   # Defines the root path route ("/")
-  # root "articles#index"
   resources :routes do
     member do
       patch :move
