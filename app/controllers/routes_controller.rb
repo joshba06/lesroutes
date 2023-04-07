@@ -1,7 +1,9 @@
 class RoutesController < ApplicationController
 
   def index
-    @routes = Route.all
+    routes_unfiltered = Route.all
+    # Filter for routes with more than 2 destinations
+    @routes = routes_unfiltered.select { |route| route.route_destinations.length > 2}
 
     # Create Google Maps URLs for all routes
     @routes.each do |route|
@@ -61,6 +63,9 @@ class RoutesController < ApplicationController
     # If the current route has more than 2 destinations, update the routes google maps link
     if @route_destinations_ordered.length >= 2
       update_google_redirect(@route_destinations_ordered, @route)
+    else
+      @route.google_url = "not_enough_destinations"
+      @route.save
     end
 
     @markers = @route.destinations.geocoded.map do |destination|
@@ -84,6 +89,18 @@ class RoutesController < ApplicationController
     @route = Route.find(params[:id])
     @route.update(route_params)
     redirect_to route_path(@route)
+  end
+
+  # Used for "saving" route on edit page -> Making sure user has at least two destinations
+  # If user leaves webpage (since route is still saved in background) index page will filter routes with less than two destinations
+  def save
+    @route = Route.find(params[:id])
+    if @route.route_destinations.length <= 2
+      flash.alert = "You need at least 2 destinations to save a route"
+      redirect_to edit_route_path(@route)
+    else
+      redirect_to route_path(@route)
+    end
   end
 
   def move
