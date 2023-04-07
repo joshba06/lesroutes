@@ -24,8 +24,8 @@
 /tmp/storage/*
 !/tmp/storage/
 !/tmp/storage/.keep
-tmp/cache/assets/sprockets/
-tmp/cache/bootsnap/
+tmp/cache/*
+!/tmp/cache/.keep
 /public/assets
 
 # Ignore master key for decrypting credentials and more.
