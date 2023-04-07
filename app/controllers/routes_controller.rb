@@ -85,6 +85,12 @@ class RoutesController < ApplicationController
 
   end
 
+  def updateroutetitle
+    @route = Route.find(params[:id])
+    @route.update(route_params)
+    redirect_to edit_route_path(@route)
+  end
+
   def update
     @route = Route.find(params[:id])
     @route.update(route_params)

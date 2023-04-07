@@ -1,0 +1,9 @@
+<%= simple_form_for [route], html: { class: 'form-inline d-flex update-title-form' }, url: updateroutetitle_path(route), method: :get do |f| %>
+    <%= f.input :title,
+          label: false
+          %>
+
+  <%= f.submit "Update", class: "btn btn-outline-primary update-title-button #{"btn-sm" if browser.device.mobile?}" do %>
+    <i class="fa-solid fa-floppy-disk"></i>
+  <% end %>
+<% end %>
