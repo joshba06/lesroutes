@@ -2,15 +2,11 @@ require "test_helper"
 
 ## Pseudo code for tests
 
-# Should not save without a title
+
 # Should not permit profanity in the title
 # Should allow a route to be copied by the user who created it
 # Should add a public route to a user if he or she "copies" it
-# Should not save without a user assigned to it
-# Should not save without a city
-# Should not save without a "shared" property
-# Should not save without a "likes" property
-# Should not save unless city exists (in the world)
+
 # Should have a default "mode" value of "walking"
 # Should only allow mode values "walking", "cycling", "driving"
 # Should have a default "time" and "distance" value of 0
@@ -36,9 +32,81 @@ require "test_helper"
 
 class RouteTest < ActiveSupport::TestCase
 
-  test "should not save article without title" do
-    article = Article.new
-    assert_not article.save
-  end
+  # it 'should take one parameter' do
+  #   initialize_parameters_count = Chicken.allocate.method(:initialize).arity
+  #   expect(initialize_parameters_count).to eq 1
+  # end
+
+  # Checking default values
+  # route = Route.new
+
+  # test "should have a title" do
+  #   assert_respond_to(route, :title, ["msg"] )
+  #   assert_respond_to(route.title, NilClass, "Route has 'title' value of type string" )
+  #   # expect(Route.new).to respond_to :title
+  #   # expect(new_route.age).to be_a :string
+  # end
+
+
+
+
+  # test "should not save route without a title" do
+  #   route = Route.new
+  #   assert_not route.save, "Cannot save route without a title"
+  # end
+
+  # test "should not save route without a city" do
+  #   route = Route.new(title: "Some title")
+  #   assert_not route.save, "Cannot save route without a city"
+  # end
+
+
+  # it "OrangeTree constructor (initialize method) should not take any parameters" do
+  #   initialize_parameters_count = OrangeTree.allocate.method(:initialize).arity
+  #   expect(initialize_parameters_count).to eq 0
+  # end
+
+  # it "should have an age" do
+  #   expect(orange_tree).to respond_to :age
+  #   expect(orange_tree.age).to be_a Integer
+  # end
+
+  # it "should be 0 years old when created" do
+  #   expect(orange_tree.age).to eq 0
+  # end
+
+  # it "should have a height" do
+  #   expect(orange_tree).to respond_to :height
+  #   expect(orange_tree.height).to be_a Integer
+  # end
+
+  # it "should measure 0 meters when 0 years old" do
+  #   expect(orange_tree.height).to eq 0
+  # end
+
+  # it "should have fruits" do
+  #   expect(orange_tree).to respond_to :fruits
+  #   expect(orange_tree.fruits).to be_a Integer
+  # end
+
+  # it "should have 0 fruits when 0 years old" do
+  #   expect(orange_tree.fruits).to eq 0
+  # end
+
+  # it "should let us check whether the tree is dead or alive" do
+  #   expect(orange_tree).to respond_to(:dead?)
+  #   expect(orange_tree.dead?).to eq(false)
+  # end
+
+  # it "should have an `one_year_passes!` method to simulate a year pass
+
+
+
+
+  # Should not save without a user assigned to it
+# Should not save without a city
+# Should not save without a "shared" property
+# Should not save without a "likes" property
+# Should not save unless city exists (in the world)
 
 end
