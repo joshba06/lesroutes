@@ -1,0 +1,35 @@
+<div class="navbar navbar-expand-sm navbar-light navbar-lewagon" style="position: sticky; top: 0; z-index: 1;">
+  <div class="container-fluid">
+
+    <div class="left-section">
+      <div class="brand-logo">
+      </div>
+    </div>
+
+    <div class="right-section">
+      <div class="quicklinks">
+        <a class="nav-link" <%= "style=display:none;" if user_signed_in? %> href="#">Public Routes</a>
+        <a class="nav-link" <%= "style=display:none;" unless user_signed_in? %> href="#">New route</a>
+      </div>
+
+      <button class="navbar-toggler" <%= "style=display:none;" unless user_signed_in? %> type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        <div class="navbar-avatar" style="background-image: url(https://kitt.lewagon.com/placeholder/users/arthur-littm);">
+        </div>
+      </button>
+
+      <%= link_to "Login", new_user_session_path, class: "nav-link", style: "#{"display: none;" if user_signed_in?}"%>
+
+    </div>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><%= link_to "My routes", myroutes_path, class: "nav-link" %></li>
+        <li class="nav-item"><%= link_to "Public routes", "#", class: "nav-link" %></li>
+        <li class="nav-item"><%= link_to "FAQ", "#", class: "nav-link" %></li>
+        <li class="nav-item"><%= link_to "Account settings", "#", class: "nav-link" %></li>
+        <li class="nav-item"><%= link_to "Log out", destroy_user_session_path, data: {turbo_method: :delete}, class: "nav-link" %>
+      </ul>
+    </div>
+  </div>
+</div>

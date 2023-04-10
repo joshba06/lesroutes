@@ -1,21 +1,48 @@
-.navbar-lewagon {
+// Mobile
+.navbar {
+  background-color: $routes-primary;
+  color: $routes-light;
+  display: flex;
   justify-content: space-between;
-  background: #FFFFFF;
-  border-bottom: 0.2px solid #FFFFFF;
-  margin-bottom: 0px;
-}
-
-.navbar-lewagon .navbar-collapse {
-  flex-grow: 0;
-}
-
-.navbar-lewagon .navbar-brand img {
-
-  height: 35px;
-}
-
-.navbar-brand {
-  img {
-    border-radius: 5px;
+  align-items: center;
+  .left-section {
+    .brand-logo{
+      height: 25px;
+      width: 50px;
+      border: 1px solid black;
+    }
+  }
+  .right-section{
+    display: flex;
+    justify-content: flex-end;
+    .quicklinks {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-right: 15px;
+    }
+    .navbar-toggler {
+      border-radius: 25px;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      background-color: white;
+      .navbar-toggler-icon {
+        width: 20px;
+        height: 20px;
+        margin-right: 3px;
+      }
+      .navbar-avatar{
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        border: 1px solid black;
+        background-size: cover;
+        background-position: center;
+      }
+    }
+  }
+  .nav-link{
+    color: $routes-light;
   }
 }

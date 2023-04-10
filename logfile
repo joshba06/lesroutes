@@ -78,3 +78,10 @@
 2023-04-06 10:48:27.327 CEST [4152] ERROR:  database "my_routes_development" is being accessed by other users
 2023-04-06 10:48:27.327 CEST [4152] DETAIL:  There is 1 other session using the database.
 2023-04-06 10:48:27.327 CEST [4152] STATEMENT:  DROP DATABASE IF EXISTS "my_routes_development"
+2023-04-10 14:50:27.492 CEST [9833] LOG:  starting PostgreSQL 14.7 (Homebrew) on x86_64-apple-darwin22.1.0, compiled by Apple clang version 14.0.0 (clang-1400.0.29.202), 64-bit
+2023-04-10 14:50:27.493 CEST [9833] LOG:  listening on IPv6 address "::1", port 5432
+2023-04-10 14:50:27.494 CEST [9833] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2023-04-10 14:50:27.495 CEST [9833] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2023-04-10 14:50:27.507 CEST [9834] LOG:  database system was shut down at 2023-04-10 14:50:26 CEST
+2023-04-10 14:50:27.518 CEST [9833] LOG:  database system is ready to accept connections
+2023-04-10 14:50:40.497 CEST [9874] FATAL:  database "my_routes_development" does not exist
