@@ -1,0 +1,39 @@
+.container-filter.hidden {
+  display: none;
+}
+
+.container-filter {
+  width: 100%;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+  margin-bottom: 100px;
+  .form-row {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 40px;
+    .col-field-description {
+      width: 85px;
+      display: flex;
+      text-align: center;
+    }
+    .col-field-options {
+      width: 100%;
+    }
+  }
+  .route-mode{
+    display: flex;
+    justify-content: space-around;
+  }
+  .route-shared {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .row-button {
+    display: flex;
+    justify-content: space-around;
+  }
+
+}

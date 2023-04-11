@@ -1,12 +1,22 @@
-<div class="private-routes-container">
+<div class="private-routes-container" data-controller="route">
 
   <div class="page-intro mx-1 my-2">
     <h1>Hey, <%= current_user.first_name.capitalize %>!</h1>
     <h2>Here are all your routes</h2>
   </div>
 
+  <div class="page-actions mx-1 mt-3 mb-2" >
+    <i class="fa-solid fa-filter" data-action="click->route#toggle_filter_menu"></i>
+    <%= link_to "New route", new_route_path, class: "btn btn-outline-primary btn-sm"%>
+  </div>
+
+  <div class="container-filter hidden" data-route-target="filterMenu">
+    <%= render partial: "shared/form_filter_routes", locals: {routes: @routes, filter_params: @filter_params} %>
+  </div>
+
+
   <div class="private-cards">
-    <% @routes.each do |route| %>
+    <% @routes_filtered.each do |route| %>
       <%= link_to route_path(route), :action => 'go', style: 'color:black; text-decoration:none' do %>
         <%= render partial: "shared/card_route", locals: {route: route} %>
       <% end %>
