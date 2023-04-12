@@ -1,7 +1,7 @@
 // Mobile
 .navbar {
-  background-color: $routes-primary;
-  color: $routes-light;
+  background-color: $lr-primary;
+  color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -36,13 +36,12 @@
         width: 25px;
         height: 25px;
         border-radius: 50%;
-        border: 1px solid black;
         background-size: cover;
         background-position: center;
       }
     }
   }
   .nav-link{
-    color: $routes-light;
+    color: white;
   }
 }

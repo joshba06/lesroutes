@@ -50,21 +50,21 @@
       Shared
     </div>
     <div class="col-field-options route-shared">
-      <div class="shared-yes">
-        <% if filter_params[:shared] == "yes"%>
-          <%= radio_button_tag 'shared', 'yes', true %>
+      <div class="private">
+        <% if filter_params[:private] == "true" %>
+          <%= check_box_tag "private", "true", true %>
         <% else %>
-          <%= radio_button_tag 'shared', 'yes', false %>
+          <%= check_box_tag "private", "true", false %>
         <% end %>
-        <label for="shared_yes"> Public</label>
+        <label for="private"> Private </label>
       </div>
-      <div class="shared-no">
-        <% if filter_params[:shared] == "yes"%>
-          <%= radio_button_tag 'shared', 'no', false %>
+      <div class="public">
+        <% if filter_params[:public] == "true" %>
+          <%= check_box_tag "public", "true", true %>
         <% else %>
-          <%= radio_button_tag 'shared', 'no', true %>
+          <%= check_box_tag "public", "true", false %>
         <% end %>
-        <label for="shared_no"> Private</label>
+        <label for="public"> Public</label>
       </div>
     </div>
   </div>

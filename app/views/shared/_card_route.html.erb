@@ -1,4 +1,4 @@
-<div class="card-route-private-mobile p-1 my-2">
+<div class="card-route-private-mobile p-1 my-2 <%= "public" if route.shared %>">
   <div class="card-top mt-2 mx-2">
     <div class="title">
       <%= route.title %>
@@ -23,8 +23,16 @@
 
       <div class="middle">
         <div class="connector-line-top"></div>
-        <div class="route-mode-icon my-0">
-          <i class="fa-solid fa-person-walking fa-xs"></i>
+        <div class="route-mode-icon my-0" <%= "style=margin-left:2px;" if route.mode == "cycling"%> <%= "style=margin-left:3px;" if route.mode == "driving"%> >
+          <% if route.mode == "walking" %>
+            <i class="fa-solid fa-person-walking fa-xs" style="color: $lr-font-dark;"></i>
+          <% elsif route.mode == "cycling" %>
+            <i class="fa-solid fa-person-biking fa-xs" style="color: $lr-font-dark;"></i>
+          <% elsif route.mode == "driving" %>
+            <i class="fa-solid fa-car fa-xs" style="color: $lr-font-dark;"></i>
+          <% else %>
+            Error
+          <% end %>
         </div>
         <div class="connector-line-bottom"></div>
       </div>

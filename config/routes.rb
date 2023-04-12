@@ -9,7 +9,9 @@ Rails.application.routes.draw do
   get '/routes/:id/update_title', to: 'routes#updateroutetitle', as: :updateroutetitle
   get '/maptest', to: 'pages#directionstestpage', as: :directionstestpage
   get '/routes/:id/save', to: 'routes#save', as: :save_route
-
+  get '/routes/:id/update_mode_walking', to: 'routes#update_mode_walking', as: :update_mode_walking
+  get '/routes/:id/update_mode_cycling', to: 'routes#update_mode_cycling', as: :update_mode_cycling
+  get '/routes/:id/update_mode_driving', to: 'routes#update_mode_driving', as: :update_mode_driving
 
   # Defines the root path route ("/")
   resources :routes do

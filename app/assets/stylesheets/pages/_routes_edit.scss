@@ -21,6 +21,12 @@
   .route-settings {
     display: flex;
     align-items: flex-start;
+
+    a {
+      list-style-type: none;
+      color: $lr-font-dark;
+    }
+
   }
   .route-itinerary {
     background: white;

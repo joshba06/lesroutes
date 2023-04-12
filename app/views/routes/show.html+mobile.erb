@@ -36,8 +36,17 @@
         <% unless index == @route.route_destinations.length - 1 %>
           <div class="destination-connector">
             <div class="connector-line-top"></div>
-            <div class="route-mode-icon my-0">
-              <i class="fa-solid fa-person-walking fa-sm"></i>
+            <div class="route-mode-icon my-0" <%= "style=margin-left:36px;" if @route.mode == "cycling"%> <%= "style=margin-left:38px;" if @route.mode == "driving"%> >
+              <% if @route.mode == "walking" %>
+                <i class="fa-solid fa-person-walking fa-sm" style="color: $lr-font-dark;"></i>
+              <% elsif @route.mode == "cycling" %>
+                <i class="fa-solid fa-person-biking fa-sm" style="color: $lr-font-dark;"></i>
+              <% elsif @route.mode == "driving" %>
+                <i class="fa-solid fa-car fa-sm" style="color: $lr-font-dark;"></i>
+              <% else %>
+                Error
+              <% end %>
+
             </div>
             <div class="connector-line-bottom"></div>
           </div>
