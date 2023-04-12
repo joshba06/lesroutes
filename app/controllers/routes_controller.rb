@@ -2,46 +2,7 @@ class RoutesController < ApplicationController
 
   def index
     routes_unfiltered = Route.all
-
-    # Filter for routes with more than 2 destinations
-    routes = routes_unfiltered.select { |route| route.route_destinations.length > 2}
-
-     # Define variable that passes filter values to be filled in form
-     @filter_params = {}
-
-    # Filter routes according to user selection
-    # Filter for city and shared status first to narrow down results
-    @routes_filtered = routes
-    if params[:city].present?
-      @routes_filtered = @routes_filtered.select { |route| route.city == params[:city]}
-    end
-    @filter_params[:city] = nil || params[:city]
-
-    if params[:shared].present? && params[:shared] == "yes"
-      @routes_filtered = @routes_filtered.select { |route| route.shared == true }
-    else
-      @routes_filtered = @routes_filtered.select { |route| route.shared == false }
-    end
-    @filter_params[:shared] = nil || params[:shared]
-
-    # Filter for route mode
-    user_selected_modes = []
-    if params[:mode_walking].present?
-      user_selected_modes << "walking"
-    end
-    if params[:mode_cycling].present?
-      user_selected_modes << "cycling"
-    end
-    if params[:mode_driving].present?
-      user_selected_modes << "driving"
-    end
-    unless user_selected_modes.length == 0
-      @routes_filtered = @routes_filtered.select { |route| user_selected_modes.include? route.mode }
-    end
-    @filter_params[:mode_walking] = nil || params[:mode_walking]
-    @filter_params[:mode_cycling] = nil || params[:mode_cycling]
-    @filter_params[:mode_driving] = nil || params[:mode_driving]
-
+    filter_routes_for_query(routes_unfiltered)
 
     # Create Google Maps URLs for all routes
     @routes_filtered.each do |route|
@@ -123,6 +84,27 @@ class RoutesController < ApplicationController
 
   end
 
+  def update_mode_cycling
+    @route = Route.find(params[:id])
+    @route.mode = "cycling"
+    @route.save
+    redirect_to edit_route_path(@route)
+  end
+
+  def update_mode_walking
+    @route = Route.find(params[:id])
+    @route.mode = "walking"
+    @route.save
+    redirect_to edit_route_path(@route)
+  end
+
+  def update_mode_driving
+    @route = Route.find(params[:id])
+    @route.mode = "driving"
+    @route.save
+    redirect_to edit_route_path(@route)
+  end
+
   def updateroutetitle
     @route = Route.find(params[:id])
     @route.update(route_params)
@@ -160,6 +142,54 @@ class RoutesController < ApplicationController
   end
 
   private
+
+  def filter_routes_for_query(routes_unfiltered)
+
+    # Filter for routes with more than 2 destinations
+    routes = routes_unfiltered.select { |route| route.route_destinations.length > 2}
+
+    # Define variable that passes filter values to be filled in form
+    @filter_params = {}
+
+    # Filter routes according to user selection
+    # Filter for city and shared status first to narrow down results
+    @routes_filtered = routes
+    if params[:city].present?
+      @routes_filtered = @routes_filtered.select { |route| route.city == params[:city]}
+    end
+    @filter_params[:city] = nil || params[:city]
+
+    if params[:public].present? && params[:public] == "true" && (not params[:private].present?)
+      @routes_filtered = @routes_filtered.select { |route| route.shared == true }
+    elsif params[:private].present? && params[:private] == "true" && (not params[:public].present?)
+      @routes_filtered = @routes_filtered.select { |route| route.shared == false }
+    elsif (not params[:private].present?) && (not params[:public].present?)
+      @routes_filtered = []
+    else
+      @routes_filtered = @routes_filtered
+    end
+    @filter_params[:public] = nil || params[:public]
+    @filter_params[:private] = nil || params[:private]
+
+    # Filter for route mode
+    user_selected_modes = []
+    if params[:mode_walking].present?
+      user_selected_modes << "walking"
+    end
+    if params[:mode_cycling].present?
+      user_selected_modes << "cycling"
+    end
+    if params[:mode_driving].present?
+      user_selected_modes << "driving"
+    end
+    unless user_selected_modes.length == 0
+      @routes_filtered = @routes_filtered.select { |route| user_selected_modes.include? route.mode }
+    end
+    @filter_params[:mode_walking] = nil || params[:mode_walking]
+    @filter_params[:mode_cycling] = nil || params[:mode_cycling]
+    @filter_params[:mode_driving] = nil || params[:mode_driving]
+
+  end
 
   def update_google_redirect(route_destinations_ordered, route)
 

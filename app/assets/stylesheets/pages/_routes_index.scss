@@ -1,8 +1,8 @@
 // Private routes - mobile
-
 .private-routes-container {
   width: 95vw;
   margin: 2px auto;
+  color: $lr-font-dark;
   h1 {
     font-size: 16px;
     font-weight: bold;
@@ -16,6 +16,8 @@
     align-items: center;
   }
 }
+
+// Mobile end
 
 .heading {
   display: flex;

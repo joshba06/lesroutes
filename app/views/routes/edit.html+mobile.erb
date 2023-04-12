@@ -30,7 +30,15 @@
   </div>
 
   <div class="route-settings">
-    <%= link_to "Route mode", "#", class: "btn btn-outline-primary btn-sm"%>
+    <div class="dropdown">
+      <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Route mode</button>
+      <ul class="dropdown-menu">
+        <li class="dropdown-item <%="active" if @route.mode == "walking"%>"><%= link_to "Walking", update_mode_walking_path(@route)%></li>
+        <li class="dropdown-item <%="active" if @route.mode == "cycling"%>"><%= link_to "Cycling", update_mode_cycling_path(@route)%></li>
+        <li class="dropdown-item <%="active" if @route.mode == "driving"%>"><%= link_to "Driving", update_mode_driving_path(@route)%></li>
+      </ul>
+    </div>
+
     <%= link_to "Route optimisation", "#", class: "btn btn-outline-primary btn-sm mx-2"%>
   </div>
 
