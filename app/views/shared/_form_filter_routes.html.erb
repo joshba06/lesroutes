@@ -1,0 +1,75 @@
+
+<%= form_with url: myroutes_path, method: :get  do |form| %>
+  <div class="form-row mx-2 pt-2">
+    <div class="col-field-description">
+      City
+    </div>
+    <div class="col-field-options route-city">
+      <%= text_field_tag :city,
+          filter_params[:city],
+          class: "form-control",
+          placeholder: "E.g. London"
+        %>
+    </div>
+  </div>
+
+  <div class="form-row mx-2 ">
+    <div class="col-field-description">
+      Mode
+    </div>
+    <div class="col-field-options route-mode">
+      <div class="mode-walking">
+        <% if filter_params[:mode_walking] == "walking"%>
+          <%= check_box_tag "mode_walking", "walking", true %>
+        <% else %>
+          <%= check_box_tag "mode_walking", "walking", false %>
+        <% end %>
+        <label for="route_mode"> Walking</label>
+      </div>
+      <div class="mode-cycling">
+        <% if filter_params[:mode_cycling] == "cycling"%>
+          <%= check_box_tag "mode_cycling", "cycling", true %>
+        <% else %>
+          <%= check_box_tag "mode_cycling", "cycling", false %>
+        <% end %>
+        <label for="mode_cycling"> Cycling</label>
+      </div>
+      <div class="mode-driving">
+        <% if filter_params[:mode_driving] == "driving"%>
+          <%= check_box_tag "mode_driving", "driving", true %>
+        <% else %>
+          <%= check_box_tag "mode_driving", "driving", false %>
+        <% end %>
+        <label for="mode_driving"> Driving</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-row mx-2 ">
+    <div class="col-field-description">
+      Shared
+    </div>
+    <div class="col-field-options route-shared">
+      <div class="shared-yes">
+        <% if filter_params[:shared] == "yes"%>
+          <%= radio_button_tag 'shared', 'yes', true %>
+        <% else %>
+          <%= radio_button_tag 'shared', 'yes', false %>
+        <% end %>
+        <label for="shared_yes"> Public</label>
+      </div>
+      <div class="shared-no">
+        <% if filter_params[:shared] == "yes"%>
+          <%= radio_button_tag 'shared', 'no', false %>
+        <% else %>
+          <%= radio_button_tag 'shared', 'no', true %>
+        <% end %>
+        <label for="shared_no"> Private</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="row-button mx-2 pb-2">
+    <%= submit_tag "Apply filter", class: "btn btn-primary w-80" %>
+  </div>
+<% end %>

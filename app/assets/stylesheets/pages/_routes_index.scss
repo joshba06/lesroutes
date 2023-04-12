@@ -1,3 +1,5 @@
+// Private routes - mobile
+
 .private-routes-container {
   width: 95vw;
   margin: 2px auto;
@@ -8,8 +10,12 @@
   h2 {
     font-size: 15px;
   }
+  .page-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 }
-
 
 .heading {
   display: flex;

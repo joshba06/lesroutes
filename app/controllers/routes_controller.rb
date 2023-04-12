@@ -2,11 +2,49 @@ class RoutesController < ApplicationController
 
   def index
     routes_unfiltered = Route.all
+
     # Filter for routes with more than 2 destinations
-    @routes = routes_unfiltered.select { |route| route.route_destinations.length > 2}
+    routes = routes_unfiltered.select { |route| route.route_destinations.length > 2}
+
+     # Define variable that passes filter values to be filled in form
+     @filter_params = {}
+
+    # Filter routes according to user selection
+    # Filter for city and shared status first to narrow down results
+    @routes_filtered = routes
+    if params[:city].present?
+      @routes_filtered = @routes_filtered.select { |route| route.city == params[:city]}
+    end
+    @filter_params[:city] = nil || params[:city]
+
+    if params[:shared].present? && params[:shared] == "yes"
+      @routes_filtered = @routes_filtered.select { |route| route.shared == true }
+    else
+      @routes_filtered = @routes_filtered.select { |route| route.shared == false }
+    end
+    @filter_params[:shared] = nil || params[:shared]
+
+    # Filter for route mode
+    user_selected_modes = []
+    if params[:mode_walking].present?
+      user_selected_modes << "walking"
+    end
+    if params[:mode_cycling].present?
+      user_selected_modes << "cycling"
+    end
+    if params[:mode_driving].present?
+      user_selected_modes << "driving"
+    end
+    unless user_selected_modes.length == 0
+      @routes_filtered = @routes_filtered.select { |route| user_selected_modes.include? route.mode }
+    end
+    @filter_params[:mode_walking] = nil || params[:mode_walking]
+    @filter_params[:mode_cycling] = nil || params[:mode_cycling]
+    @filter_params[:mode_driving] = nil || params[:mode_driving]
+
 
     # Create Google Maps URLs for all routes
-    @routes.each do |route|
+    @routes_filtered.each do |route|
       route_destinations_ordered = route.route_destinations.order(position: :asc).map { |route_destination| route_destination.destination }
       update_google_redirect(route_destinations_ordered, route)
     end

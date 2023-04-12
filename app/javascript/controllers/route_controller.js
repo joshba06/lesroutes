@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="route"
 export default class extends Controller {
-  static targets = ["time", "distance", "routeTitle", "formUpdateRouteTitle"]
+  static targets = ["time", "distance", "routeTitle", "formUpdateRouteTitle", "filterMenu", "dropdownElement"]
   static values = {
     time: Number,
     distance: Number,
@@ -26,9 +26,22 @@ export default class extends Controller {
   edit_title (event) {
     this.routeTitleTarget.style.display = "none";
     this.formUpdateRouteTitleTarget.classList.remove("hidden")
+  }
 
+  toggle_filter_menu () {
+    console.log("I am here")
+    if (this.filterMenuTarget.classList.contains("hidden")) {
+      this.filterMenuTarget.classList.remove("hidden")
+    }
+    else {
+      this.filterMenuTarget.classList.add("hidden")
+    }
 
   }
 
+  toggle_dropdown (event) {
+    event.stopPropagation();
+    event.preventDefault();
+  }
 
 }
