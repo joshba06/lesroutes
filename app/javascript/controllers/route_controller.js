@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="route"
 export default class extends Controller {
-  static targets = ["time", "distance", "routeTitle", "formUpdateRouteTitle", "filterMenu"]
+  static targets = ["time", "distance", "routeTitle", "formUpdateRouteTitle", "filterMenu", "dropdownElement"]
   static values = {
     time: Number,
     distance: Number,
@@ -39,5 +39,9 @@ export default class extends Controller {
 
   }
 
+  toggle_dropdown (event) {
+    event.stopPropagation();
+    event.preventDefault();
+  }
 
 }
