@@ -18,6 +18,7 @@
     data-controller="map"
     data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>"
     data-map-markers-value="<%= @markers.to_json %>"
+    data-map-route-mode-value="<%= @route.mode %>"
   ></div>
 
   <div class="route-specs mx-3 my-2 py-1">

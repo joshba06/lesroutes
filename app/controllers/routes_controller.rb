@@ -207,7 +207,8 @@ class RoutesController < ApplicationController
         destination << route_destinations_ordered.last.city.gsub(/\s/, "+")
       end
 
-      url = "https://www.google.com/maps/dir/?api=1&origin=#{origin}&destination=#{destination}&travelmode=walking"
+      route.mode == "cycling" ? travelmode = "bicycling" : travelmode = route.mode
+      url = "https://www.google.com/maps/dir/?api=1&origin=#{origin}&destination=#{destination}&travelmode=#{travelmode}"
 
       if route_destinations_ordered.length >= 3
         if route_destinations_ordered[1].title == "Custom location"
