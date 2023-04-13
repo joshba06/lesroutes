@@ -8,7 +8,8 @@ export default class extends Controller {
   static values = {
     apiKey: String,
     markers: Array,
-    routeId: Number
+    routeId: Number,
+    routeMode: String,
   };
 
   connect() {
@@ -54,8 +55,10 @@ export default class extends Controller {
       // 2.3.1 Get route data from mapbox
 
       // Create  query string
+      console.log(`Route mode: ${this.routeModeValue}`)
+
       let fetchQueryString =
-      "https://api.mapbox.com/directions/v5/mapbox/walking/";
+      `https://api.mapbox.com/directions/v5/mapbox/${this.routeModeValue === "driving" ? "driving-traffic" : this.routeModeValue}/`;
 
       let i = 1;
       for (const key in sortedmarkers) {
@@ -66,13 +69,14 @@ export default class extends Controller {
             sortedmarkers[key].lng +
             "," +
             sortedmarkers[key].lat +
-            `?exclude=ferry&geometries=geojson&access_token=${mapboxgl.accessToken}`;
+            `?${this.routeModeValue === "driving" ? "exclude=ferry%2Ctoll" : "exclude=ferry"}&geometries=geojson&access_token=${mapboxgl.accessToken}`;
         } else {
           fetchQueryString =
             fetchQueryString + sortedmarkers[key].lng + "," + sortedmarkers[key].lat + ";";
         }
         i += 1;
       };
+      console.log(`Query string: ${fetchQueryString}`)
 
       this.#fetchRoute(fetchQueryString, map);
     }
@@ -158,41 +162,48 @@ export default class extends Controller {
   }
 
   #sendPatch(data, route_too_short = false) {
-    const routeId = this.routeIdValue
-    const form = new FormData();
 
-    let TimeInMinutes = 0
-    let DistanceInKm = 0
+    // Only update db and route specs on edit page, not on show page
+    if (window.location.href.includes("edit")) {
+      console.log("We are on the edit page")
 
+      const routeId = this.routeIdValue
+      const form = new FormData();
 
-    if (route_too_short) {
-      console.log("Route is too short. Overwriting time, distance with 0")
+      let TimeInMinutes = 0
+      let DistanceInKm = 0
 
+      if (route_too_short) {
+        console.log("Route is too short. Overwriting time, distance with 0")
+      }
+      else {
+        const DistanceInMetres = data.routes[0].distance
+        const TimeInSeconds = data.routes[0].duration
+        DistanceInKm = parseFloat((DistanceInMetres / 1000).toFixed(2))
+        TimeInMinutes = Math.round((TimeInSeconds / 60))
+      }
+
+      console.log(`Time in min: ${TimeInMinutes}`)
+      console.log(`Distance in km: ${DistanceInKm}`)
+
+      form.append('route[distance]', DistanceInKm)
+      form.append('route[time]', TimeInMinutes)
+
+      Rails.ajax({
+        url: `/routes/${routeId}/move`,
+        type: "PATCH",
+        data: form,
+        success: function () {
+          console.log("Successfully updated route information")
+          document.querySelector('#nikspecs').route.add(TimeInMinutes, DistanceInKm)
+        },
+        error: function () {
+          console.log("Could not update route info")
+        }
+      })
     }
     else {
-      const DistanceInMetres = data.routes[0].distance
-      const TimeInSeconds = data.routes[0].duration
-      DistanceInKm = parseFloat((DistanceInMetres / 1000).toFixed(2))
-      TimeInMinutes = Math.round((TimeInSeconds / 60))
+      console.log("We are on the show page")
     }
-
-    console.log(`Time in min: ${TimeInMinutes}`)
-    console.log(`Distance in km: ${DistanceInKm}`)
-
-    form.append('route[distance]', DistanceInKm)
-    form.append('route[time]', TimeInMinutes)
-
-    Rails.ajax({
-      url: `/routes/${routeId}/move`,
-      type: "PATCH",
-      data: form,
-      success: function () {
-        console.log("Successfully updated route information")
-        document.querySelector('#nikspecs').route.add(TimeInMinutes, DistanceInKm)
-      },
-      error: function () {
-        console.log("Could not update route info")
-      }
-    })
   }
 }

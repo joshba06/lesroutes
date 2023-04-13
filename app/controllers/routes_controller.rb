@@ -148,46 +148,42 @@ class RoutesController < ApplicationController
     # Filter for routes with more than 2 destinations
     routes = routes_unfiltered.select { |route| route.route_destinations.length > 2}
 
-    # Define variable that passes filter values to be filled in form
-    @filter_params = {}
+    # Filter according to user selection
+    if params[:commit].present?
 
-    # Filter routes according to user selection
-    # Filter for city and shared status first to narrow down results
-    @routes_filtered = routes
-    if params[:city].present?
-      @routes_filtered = @routes_filtered.select { |route| route.city == params[:city]}
-    end
-    @filter_params[:city] = nil || params[:city]
+      # Filter for city and shared status first to narrow down results
+      @routes_filtered = routes
+      if params[:city].present?
+        @routes_filtered = @routes_filtered.select { |route| route.city == params[:city]}
+      end
 
-    if params[:public].present? && params[:public] == "true" && (not params[:private].present?)
-      @routes_filtered = @routes_filtered.select { |route| route.shared == true }
-    elsif params[:private].present? && params[:private] == "true" && (not params[:public].present?)
-      @routes_filtered = @routes_filtered.select { |route| route.shared == false }
-    elsif (not params[:private].present?) && (not params[:public].present?)
-      @routes_filtered = []
-    else
-      @routes_filtered = @routes_filtered
-    end
-    @filter_params[:public] = nil || params[:public]
-    @filter_params[:private] = nil || params[:private]
+      if params[:private].present? && params[:public].present?
+        @routes_filtered = @routes_filtered
+      elsif params[:private].present?
+        @routes_filtered = @routes_filtered.select { |route| route.shared == false }
+      elsif params[:public].present?
+        @routes_filtered = @routes_filtered.select { |route| route.shared == true }
+      else
+        @routes_filtered = []
+      end
 
-    # Filter for route mode
-    user_selected_modes = []
-    if params[:mode_walking].present?
-      user_selected_modes << "walking"
-    end
-    if params[:mode_cycling].present?
-      user_selected_modes << "cycling"
-    end
-    if params[:mode_driving].present?
-      user_selected_modes << "driving"
-    end
-    unless user_selected_modes.length == 0
+      # Filter for route mode
+      user_selected_modes = []
+      if params[:walking].present?
+        user_selected_modes << "walking"
+      end
+      if params[:cycling].present?
+        user_selected_modes << "cycling"
+      end
+      if params[:driving].present?
+        user_selected_modes << "driving"
+      end
+
       @routes_filtered = @routes_filtered.select { |route| user_selected_modes.include? route.mode }
+
+    else
+      @routes_filtered = routes
     end
-    @filter_params[:mode_walking] = nil || params[:mode_walking]
-    @filter_params[:mode_cycling] = nil || params[:mode_cycling]
-    @filter_params[:mode_driving] = nil || params[:mode_driving]
 
   end
 
@@ -211,7 +207,8 @@ class RoutesController < ApplicationController
         destination << route_destinations_ordered.last.city.gsub(/\s/, "+")
       end
 
-      url = "https://www.google.com/maps/dir/?api=1&origin=#{origin}&destination=#{destination}&travelmode=walking"
+      route.mode == "cycling" ? travelmode = "bicycling" : travelmode = route.mode
+      url = "https://www.google.com/maps/dir/?api=1&origin=#{origin}&destination=#{destination}&travelmode=#{travelmode}"
 
       if route_destinations_ordered.length >= 3
         if route_destinations_ordered[1].title == "Custom location"

@@ -6,7 +6,7 @@
     </div>
     <div class="col-field-options route-city">
       <%= text_field_tag :city,
-          filter_params[:city],
+          params[:city],
           class: "form-control",
           placeholder: "E.g. London"
         %>
@@ -19,28 +19,36 @@
     </div>
     <div class="col-field-options route-mode">
       <div class="mode-walking">
-        <% if filter_params[:mode_walking] == "walking"%>
-          <%= check_box_tag "mode_walking", "walking", true %>
+        <% if (not params[:commit].present?) || (params[:commit] != "Apply filter") %>
+          <%= check_box_tag "walking", "true", true %>
+        <% elsif params[:commit].present? && params[:walking] != "true" %>
+          <%= check_box_tag "walking", "true", false %>
         <% else %>
-          <%= check_box_tag "mode_walking", "walking", false %>
+          <%= check_box_tag "walking", "true", true %>
         <% end %>
-        <label for="route_mode"> Walking</label>
+        <label for="walking"> Walking</label>
       </div>
+
       <div class="mode-cycling">
-        <% if filter_params[:mode_cycling] == "cycling"%>
-          <%= check_box_tag "mode_cycling", "cycling", true %>
+        <% if (not params[:commit].present?) || (params[:commit] != "Apply filter") %>
+          <%= check_box_tag "cycling", "true", true %>
+        <% elsif params[:commit].present? && params[:cycling] != "true" %>
+          <%= check_box_tag "cycling", "true", false %>
         <% else %>
-          <%= check_box_tag "mode_cycling", "cycling", false %>
+          <%= check_box_tag "cycling", "true", true %>
         <% end %>
-        <label for="mode_cycling"> Cycling</label>
+        <label for="cycling"> Cycling</label>
       </div>
+
       <div class="mode-driving">
-        <% if filter_params[:mode_driving] == "driving"%>
-          <%= check_box_tag "mode_driving", "driving", true %>
+        <% if (not params[:commit].present?) || (params[:commit] != "Apply filter") %>
+          <%= check_box_tag "driving", "true", true %>
+        <% elsif params[:commit].present? && params[:driving] != "true" %>
+          <%= check_box_tag "driving", "true", false %>
         <% else %>
-          <%= check_box_tag "mode_driving", "driving", false %>
+          <%= check_box_tag "driving", "true", true %>
         <% end %>
-        <label for="mode_driving"> Driving</label>
+        <label for="driving"> Driving</label>
       </div>
     </div>
   </div>
@@ -51,18 +59,22 @@
     </div>
     <div class="col-field-options route-shared">
       <div class="private">
-        <% if filter_params[:private] == "true" %>
+        <% if (not params[:commit].present?) || (params[:commit] != "Apply filter") %>
           <%= check_box_tag "private", "true", true %>
-        <% else %>
+        <% elsif params[:commit].present? && params[:private] != "true" %>
           <%= check_box_tag "private", "true", false %>
+        <% else %>
+          <%= check_box_tag "private", "true", true %>
         <% end %>
-        <label for="private"> Private </label>
+        <label for="private"> Private</label>
       </div>
       <div class="public">
-        <% if filter_params[:public] == "true" %>
+        <% if (not params[:commit].present?) || (params[:commit] != "Apply filter") %>
           <%= check_box_tag "public", "true", true %>
-        <% else %>
+        <% elsif params[:commit].present? && params[:public] != "true" %>
           <%= check_box_tag "public", "true", false %>
+        <% else %>
+          <%= check_box_tag "public", "true", true %>
         <% end %>
         <label for="public"> Public</label>
       </div>
