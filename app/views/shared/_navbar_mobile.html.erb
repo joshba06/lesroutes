@@ -2,14 +2,15 @@
   <div class="container-fluid">
 
     <div class="left-section">
-      <div class="brand-logo">
-      </div>
+      <a href=<%= root_path%>>
+        <%= image_tag "Logo_bright_with_text.png" %>
+      </a>
     </div>
 
     <div class="right-section">
       <div class="quicklinks">
-        <a class="nav-link" <%= "style=display:none;" if user_signed_in? %> href="#">Public Routes</a>
-         <%= link_to "New route", new_route_path() , class: "btn btn-success btn-sm" "#{', style=display:none;' unless user_signed_in? }" %>
+        <a class="nav-link mx-2" <%= "style=display:none;" if user_signed_in? %> href=<%= public_routes_path%> >Public Routes</a>
+        <a class="nav-link mx-2 btn btn-success btn-sm" <%= "style=display:none;" unless user_signed_in? %> href=<%= new_route_path%> >New route</a>
       </div>
 
       <button class="navbar-toggler" <%= "style=display:none;" unless user_signed_in? %> type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -25,7 +26,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto">
         <li class="nav-item"><%= link_to "My routes", myroutes_path, class: "nav-link" %></li>
-        <li class="nav-item"><%= link_to "Public routes", "#", class: "nav-link" %></li>
+        <li class="nav-item"><%= link_to "Public routes", public_routes_path, class: "nav-link" %></li>
         <li class="nav-item"><%= link_to "FAQ", "#", class: "nav-link" %></li>
         <li class="nav-item"><%= link_to "Account settings", "#", class: "nav-link" %></li>
         <li class="nav-item"><%= link_to "Log out", destroy_user_session_path, data: {turbo_method: :delete}, class: "nav-link" %>

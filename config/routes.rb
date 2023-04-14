@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   get '/routes', to: 'routes#index', as: :myroutes
+  get '/routes/public', to: 'routes#index_public', as: :public_routes
   get '/routes/:id/update_title', to: 'routes#updateroutetitle', as: :updateroutetitle
   get '/routes/:id/update_city', to: 'routes#updateroutecity', as: :updateroutecity
   get '/maptest', to: 'pages#directionstestpage', as: :directionstestpage

@@ -1,4 +1,5 @@
 class RoutesController < ApplicationController
+  skip_before_action :authenticate_user!, only: [ :index_public]
 
   def index
     routes_unfiltered = Route.all
@@ -17,6 +18,20 @@ class RoutesController < ApplicationController
     end
 
   end
+
+  def index_public
+
+    routes_unfiltered = Route.all
+    filter_routes_for_query(routes_unfiltered, true)
+
+    if browser.device.mobile?
+      render variants: [:mobile]
+    else
+      render variants: [:desktop]
+    end
+
+  end
+
 
   def show
     @route = Route.find(params[:id])
@@ -164,7 +179,7 @@ class RoutesController < ApplicationController
 
   private
 
-  def filter_routes_for_query(routes_unfiltered)
+  def filter_routes_for_query(routes_unfiltered, public = false)
 
     # Filter for routes with more than 2 destinations
     routes = routes_unfiltered.select { |route| route.route_destinations.length > 2}
@@ -178,16 +193,21 @@ class RoutesController < ApplicationController
         @routes_filtered = @routes_filtered.select { |route| route.city == params[:city]}
       end
 
-      if params[:private].present? && params[:public].present?
-        @routes_filtered = @routes_filtered
-      elsif params[:private].present?
-        @routes_filtered = @routes_filtered.select { |route| route.shared == false }
-      elsif params[:public].present?
-        @routes_filtered = @routes_filtered.select { |route| route.shared == true }
+      # Only allow public / private filter for private index page
+      if public == false
+        if params[:private].present? && params[:public].present?
+          @routes_filtered = @routes_filtered
+        elsif params[:private].present?
+          @routes_filtered = @routes_filtered.select { |route| route.shared == false }
+        elsif params[:public].present?
+          @routes_filtered = @routes_filtered.select { |route| route.shared == true }
+        else
+          @routes_filtered = []
+        end
+      # Filter only public routes on public index page
       else
-        @routes_filtered = []
+        @routes_filtered = @routes_filtered.select { |route| route.shared == true }
       end
-
       # Filter for route mode
       user_selected_modes = []
       if params[:walking].present?
@@ -203,7 +223,11 @@ class RoutesController < ApplicationController
       @routes_filtered = @routes_filtered.select { |route| user_selected_modes.include? route.mode }
 
     else
-      @routes_filtered = routes
+      if public == false
+        @routes_filtered = routes
+      else
+        @routes_filtered = routes.select { |route| route.shared == true }
+      end
     end
 
   end

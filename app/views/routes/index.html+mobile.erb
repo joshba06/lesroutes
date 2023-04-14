@@ -1,4 +1,4 @@
-<div class="private-routes-container" data-controller="route">
+<div class="index-routes-container private" data-controller="route">
 
   <div class="page-intro mx-1 my-2">
     <h1>Hey, <%= current_user.first_name.capitalize %>!</h1>
@@ -11,7 +11,7 @@
   </div>
 
   <div class="container-filter hidden" data-route-target="filterMenu">
-    <%= render partial: "shared/form_filter_routes", locals: {routes: @routes, filter_params: @filter_params} %>
+    <%= render partial: "shared/form_filter_routes", locals: {routes: @routes, url: "/routes"} %>
   </div>
 
   <div class="private-cards">
