@@ -41,6 +41,11 @@ class RoutesController < ApplicationController
 
   def new
     @route = Route.new
+    if browser.device.mobile?
+      render variants: [:mobile]
+    else
+      render variants: [:desktop]
+    end
   end
 
   def create
