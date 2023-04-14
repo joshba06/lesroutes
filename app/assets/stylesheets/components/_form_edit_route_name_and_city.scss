@@ -1,0 +1,52 @@
+.form-update-route-title.hidden {
+  display: none;
+}
+
+.form-update-route-title {
+  border-radius: 10px;
+  width: 100%;
+  margin: 5px auto;
+
+  .form-control:valid.form-control.is-valid {
+    border-color: $lr-primary;
+    background-image: none;
+  }
+  .route_title {
+    width: 100%;
+  }
+  .update-title-form {
+    margin: 0px auto;
+    justify-content: space-between;
+  }
+  .update-title-button {
+    margin-left: 5px;
+  }
+}
+
+.form-update-route-city.hidden {
+  display: none;
+}
+
+.form-update-route-city {
+  border-radius: 10px;
+  width: 100%;
+  margin: 5px auto;
+
+  .form-control:valid.form-control.is-valid {
+    border-color: $lr-primary;
+    background-image: none;
+  }
+  .route_city {
+    width: 100%;
+  }
+  .update-city-form {
+    margin: 0px auto;
+    justify-content: space-between;
+  }
+  .update-city-button {
+    margin-left: 5px;
+  }
+  .update-city-form > div {
+    margin-bottom: 0px !important;
+  }
+}

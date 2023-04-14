@@ -57,6 +57,11 @@ class RoutesController < ApplicationController
     @route = Route.find(params[:id])
     @destination = Destination.new
 
+    # Display warning, if mapbox could not determine route between points
+    if @route.google_url == "no_route_found"
+      flash.now.alert = "No #{@route.mode} directions found for these destinations!"
+    end
+
     @route_destinations_ordered = @route.route_destinations.order(position: :asc).map { |route_destination| route_destination.destination }
 
     # If the current route has more than 2 destinations, update the routes google maps link
@@ -111,6 +116,12 @@ class RoutesController < ApplicationController
     redirect_to edit_route_path(@route)
   end
 
+  def updateroutecity
+    @route = Route.find(params[:id])
+    @route.update(route_params)
+    redirect_to edit_route_path(@route)
+  end
+
   def update
     @route = Route.find(params[:id])
     @route.update(route_params)
@@ -132,6 +143,11 @@ class RoutesController < ApplicationController
   def move
     @route = Route.find(params[:id])
     @route.update(ajax_params)
+  end
+
+  def noroute
+    @route = Route.find(params[:id])
+    @route.update(no_route_params)
   end
 
   def destroy
@@ -246,4 +262,9 @@ class RoutesController < ApplicationController
   def ajax_params
     params.require(:route).permit(:distance, :time)
   end
+
+  def no_route_params
+    params.require(:route).permit(:google_url)
+  end
+
 end

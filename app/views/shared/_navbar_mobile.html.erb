@@ -9,7 +9,7 @@
     <div class="right-section">
       <div class="quicklinks">
         <a class="nav-link" <%= "style=display:none;" if user_signed_in? %> href="#">Public Routes</a>
-        <a class="nav-link" <%= "style=display:none;" unless user_signed_in? %> href="#">New route</a>
+         <%= link_to "New route", new_route_path() , class: "btn btn-success btn-sm" "#{', style=display:none;' unless user_signed_in? }" %>
       </div>
 
       <button class="navbar-toggler" <%= "style=display:none;" unless user_signed_in? %> type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

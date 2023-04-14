@@ -8,13 +8,13 @@ export default class extends Controller {
 
 
   connect() {
-
     console.log("Hello from autocomplete controller")
 
     this.geocoder = new MapboxGeocoder({
       accessToken: this.apiKeyValue,
       types: "neighborhood,address,poi"
     })
+    
     this.geocoder.addTo(this.element)
     this.geocoder.on("result", event => this.#setInputValue(event))
     this.geocoder.on("clear", () => this.#clearInputValue())
