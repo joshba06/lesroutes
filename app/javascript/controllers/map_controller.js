@@ -121,43 +121,72 @@ export default class extends Controller {
       .then((response) => response.json())
       .then((data) => {
 
-        const route = data.routes[0].geometry.coordinates;
-        const geojson = {
-          type: "Feature",
-          properties: {},
-          geometry: {
-            type: "LineString",
-            coordinates: route,
-          },
-        };
+        // Overwrite google_url with "no_route_found" if mapbox cannot determine route
+        if (data.code === "NoRoute") {
 
-        map.on('load', function() {
-          console.log("Map has loaded")
+          if (window.location.href.includes("edit")) {
+            // On Edit page, replace route.google_url with "no_route_found". Update route.time and distance
+            const form = new FormData();
+            form.append('route[google_url]', "no_route_found")
 
-          map.addSource("route-details", {
-            type: 'geojson',
-            data: geojson,
-          });
-          console.log("1 Added route data to map")
-
-          map.addLayer({
-            id: 'route',
-            type: 'line',
-            source: 'route-details',
-            layout: {
-              "line-join": "round",
-              "line-cap": "round",
+            Rails.ajax({
+              url: `/routes/${this.routeIdValue}/noroute`,
+              type: "PATCH",
+              data: form,
+              success: function () {
+                console.log("Successfully updated route information for error")
+              },
+              error: function () {
+                console.log("Could not update route info for error")
+              }
+            })
+            this.#sendPatch(data, true)
+          }
+          else {
+            // On Show page, don't do anything
+            console.log("Show page. No database update needed")
+          }
+        }
+        else {
+          const route = data.routes[0].geometry.coordinates;
+          const geojson = {
+            type: "Feature",
+            properties: {},
+            geometry: {
+              type: "LineString",
+              coordinates: route,
             },
-            paint: {
-              "line-color": "#3887be",
-              "line-width": 5,
-              "line-opacity": 0.75,
-            },
-          });
-          console.log("2 Added route layer to map")
-        })
+          };
 
-        this.#sendPatch(data)
+          map.on('load', function() {
+            console.log("Map has loaded")
+
+            map.addSource("route-details", {
+              type: 'geojson',
+              data: geojson,
+            });
+            console.log("1 Added route data to map")
+
+            map.addLayer({
+              id: 'route',
+              type: 'line',
+              source: 'route-details',
+              layout: {
+                "line-join": "round",
+                "line-cap": "round",
+              },
+              paint: {
+                "line-color": "#3887be",
+                "line-width": 5,
+                "line-opacity": 0.75,
+              },
+            });
+            console.log("2 Added route layer to map")
+          })
+
+          this.#sendPatch(data)
+        }
+
       });
   }
 
@@ -174,7 +203,7 @@ export default class extends Controller {
       let DistanceInKm = 0
 
       if (route_too_short) {
-        console.log("Route is too short. Overwriting time, distance with 0")
+        console.log("Route is too short or non-existent. Overwriting time, distance with 0")
       }
       else {
         const DistanceInMetres = data.routes[0].distance

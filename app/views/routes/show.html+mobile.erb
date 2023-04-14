@@ -22,9 +22,10 @@
   ></div>
 
   <div class="route-specs mx-3 my-2 py-1">
-    <div><i class="fa-solid fa-location-dot me-2"></i><%= @route.route_destinations.length %> stops</div>
-    <div><i class="fa-solid fa-stopwatch me-2"></i><%= @route.time.nil? ? "0 min" : "#{@route.time} min"%></div>
-    <div><i class="fa-solid fa-road me-2"></i><%= @route.distance.nil? ? "0 km" : "#{@route.distance} km" %></div>
+    <div><i class="fa-solid fa-location-dot me-1" style="color: $lr-font-light;"></i><%= @route.route_destinations.length %> stops</div>
+    <div><i class="fa-solid fa-stopwatch me-1" style="color: $lr-font-light";></i><%= @route.time.nil? ? "0 min" : "#{@route.time} min"%></div>
+    <div><i class="fa-solid fa-road me-1" style="color: $lr-font-light"></i><%= @route.distance.nil? ? "0 km" : "#{@route.distance} km" %></div>
+    <div><i class="fa-solid fa-globe me-1" style="color: $lr-font-light"></i><%= @route.city %></div>
   </div>
 
   <div class="route-itinerary pb-2 my-2">

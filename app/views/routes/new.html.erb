@@ -1,15 +1,10 @@
-<div class="container">
+<div class="container-new-route">
   <div class="page-actions">
-    <div class="page-actions-back">
-    </div>
+    <%= link_to '<i class="fa-solid fa-arrow-left"></i> Back'.html_safe, routes_path(), class: "btn btn-outline-primary" %>
   </div>
 
   <div class="route-title">
-
-    <div class="info-and-back" style="margin-top:30px; margin-bottom:15px;">
-      <%= link_to '<i class="fa-solid fa-arrow-left"></i> Back'.html_safe, routes_path(), class: "btn btn-outline-primary" %>
-    </div>
-
+  
     <h1>Create a new route</h1>
 
     <%= simple_form_for @route, html: { class: 'form-inline w-100 route-title my-3' } do |f| %>
@@ -32,17 +27,4 @@
         <% end %>
       </div>
   </div>
-</div>
-
-<div class="main">
-  <section id="section2">
-
-    <div class="p-5 mb-4 bg-light rounded-3" style= "text-align:center">
-      <div class="container-fluid py-5">
-        <h1 class="display-5 fw-bold">Maximise your travel efficiency. Use myRoutes.</h1>
-        <p class="fs-4 mb-5">Fed up of not being able to save your routes on GoogleMaps? Join our community of users to maximize your travel efficiency. From storing your routes on our website to viewing your saved routes, we've got you sorted!</p>
-      </div>
-    </div>
-
-  </section>
 </div>

@@ -6,7 +6,9 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   get '/routes', to: 'routes#index', as: :myroutes
+  get '/routes/public', to: 'routes#index_public', as: :public_routes
   get '/routes/:id/update_title', to: 'routes#updateroutetitle', as: :updateroutetitle
+  get '/routes/:id/update_city', to: 'routes#updateroutecity', as: :updateroutecity
   get '/maptest', to: 'pages#directionstestpage', as: :directionstestpage
   get '/routes/:id/save', to: 'routes#save', as: :save_route
   get '/routes/:id/update_mode_walking', to: 'routes#update_mode_walking', as: :update_mode_walking
@@ -17,6 +19,7 @@ Rails.application.routes.draw do
   resources :routes do
     member do
       patch :move
+      patch :noroute
     end
     resources :destinations, except: [:destroy]
     resources :route_destinations do

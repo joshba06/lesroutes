@@ -6,10 +6,10 @@
   justify-content: space-between;
   align-items: center;
   .left-section {
-    .brand-logo{
-      height: 25px;
-      width: 50px;
-      border: 1px solid black;
+    display: flex;
+    align-items: center;
+    img {
+      width: 140px;
     }
   }
   .right-section{

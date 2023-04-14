@@ -25,9 +25,15 @@
   ></div>
 
   <div class="route-specs mx-3 my-2 py-1" id="nikspecs" data-controller="route">
-    <div><i class="fa-solid fa-location-dot me-2"></i><%= @route.route_destinations.length %> stops</div>
-    <div><i class="fa-solid fa-stopwatch me-2"></i><span data-route-target="time"><%= @route.time.nil? ? "0" : "#{@route.time}"%></span> min</div>
-    <div><i class="fa-solid fa-road me-2"></i><span data-route-target="distance"><%= @route.distance.nil? ? "0" : "#{@route.distance}" %></span> km</div>
+    <div data-route-target="specElement"><i class="fa-solid fa-location-dot me-1"></i><%= @route.route_destinations.length %> stops</div>
+    <div data-route-target="specElement"><i class="fa-solid fa-stopwatch me-1"></i><span data-route-target="time"><%= @route.time.nil? ? "0" : "#{@route.time}"%></span> min</div>
+    <div data-route-target="specElement"><i class="fa-solid fa-road me-1"></i><span data-route-target="distance"><%= @route.distance.nil? ? "0" : "#{@route.distance}" %></span> km</div>
+    <div data-route-target="specElement">
+      <i class="fa-solid fa-globe me-1" style="color: $lr-font-light"></i><%= @route.city %> <i class="fa-solid fa-pen-nib fa-xs" data-action="click->route#edit_city"></i>
+    </div>
+    <div class="form-update-route-city hidden" data-route-target="formUpdateRouteCity">
+      <%= render partial: "shared/form_edit_route_city", locals: {route: @route} %>
+    </div>
   </div>
 
   <div class="route-settings">
@@ -39,8 +45,6 @@
         <li class="dropdown-item <%="active" if @route.mode == "driving"%>"><%= link_to "Driving", update_mode_driving_path(@route)%></li>
       </ul>
     </div>
-
-    <%= link_to "Route optimisation", "#", class: "btn btn-outline-primary btn-sm mx-2"%>
   </div>
 
   <div class="route-itinerary pb-2 my-2">

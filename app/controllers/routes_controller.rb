@@ -1,4 +1,5 @@
 class RoutesController < ApplicationController
+  skip_before_action :authenticate_user!, only: [ :index_public]
 
   def index
     routes_unfiltered = Route.all
@@ -17,6 +18,20 @@ class RoutesController < ApplicationController
     end
 
   end
+
+  def index_public
+
+    routes_unfiltered = Route.all
+    filter_routes_for_query(routes_unfiltered, true)
+
+    if browser.device.mobile?
+      render variants: [:mobile]
+    else
+      render variants: [:desktop]
+    end
+
+  end
+
 
   def show
     @route = Route.find(params[:id])
@@ -41,6 +56,11 @@ class RoutesController < ApplicationController
 
   def new
     @route = Route.new
+    if browser.device.mobile?
+      render variants: [:mobile]
+    else
+      render variants: [:desktop]
+    end
   end
 
   def create
@@ -56,6 +76,11 @@ class RoutesController < ApplicationController
   def edit
     @route = Route.find(params[:id])
     @destination = Destination.new
+
+    # Display warning, if mapbox could not determine route between points
+    if @route.google_url == "no_route_found"
+      flash.now.alert = "No #{@route.mode} directions found for these destinations!"
+    end
 
     @route_destinations_ordered = @route.route_destinations.order(position: :asc).map { |route_destination| route_destination.destination }
 
@@ -111,6 +136,12 @@ class RoutesController < ApplicationController
     redirect_to edit_route_path(@route)
   end
 
+  def updateroutecity
+    @route = Route.find(params[:id])
+    @route.update(route_params)
+    redirect_to edit_route_path(@route)
+  end
+
   def update
     @route = Route.find(params[:id])
     @route.update(route_params)
@@ -134,6 +165,11 @@ class RoutesController < ApplicationController
     @route.update(ajax_params)
   end
 
+  def noroute
+    @route = Route.find(params[:id])
+    @route.update(no_route_params)
+  end
+
   def destroy
     @route = Route.find(params[:id])
     @route.destroy
@@ -143,7 +179,7 @@ class RoutesController < ApplicationController
 
   private
 
-  def filter_routes_for_query(routes_unfiltered)
+  def filter_routes_for_query(routes_unfiltered, public = false)
 
     # Filter for routes with more than 2 destinations
     routes = routes_unfiltered.select { |route| route.route_destinations.length > 2}
@@ -157,16 +193,21 @@ class RoutesController < ApplicationController
         @routes_filtered = @routes_filtered.select { |route| route.city == params[:city]}
       end
 
-      if params[:private].present? && params[:public].present?
-        @routes_filtered = @routes_filtered
-      elsif params[:private].present?
-        @routes_filtered = @routes_filtered.select { |route| route.shared == false }
-      elsif params[:public].present?
-        @routes_filtered = @routes_filtered.select { |route| route.shared == true }
+      # Only allow public / private filter for private index page
+      if public == false
+        if params[:private].present? && params[:public].present?
+          @routes_filtered = @routes_filtered
+        elsif params[:private].present?
+          @routes_filtered = @routes_filtered.select { |route| route.shared == false }
+        elsif params[:public].present?
+          @routes_filtered = @routes_filtered.select { |route| route.shared == true }
+        else
+          @routes_filtered = []
+        end
+      # Filter only public routes on public index page
       else
-        @routes_filtered = []
+        @routes_filtered = @routes_filtered.select { |route| route.shared == true }
       end
-
       # Filter for route mode
       user_selected_modes = []
       if params[:walking].present?
@@ -182,7 +223,11 @@ class RoutesController < ApplicationController
       @routes_filtered = @routes_filtered.select { |route| user_selected_modes.include? route.mode }
 
     else
-      @routes_filtered = routes
+      if public == false
+        @routes_filtered = routes
+      else
+        @routes_filtered = routes.select { |route| route.shared == true }
+      end
     end
 
   end
@@ -246,4 +291,9 @@ class RoutesController < ApplicationController
   def ajax_params
     params.require(:route).permit(:distance, :time)
   end
+
+  def no_route_params
+    params.require(:route).permit(:google_url)
+  end
+
 end
