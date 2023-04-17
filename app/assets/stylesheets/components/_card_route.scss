@@ -19,6 +19,9 @@
       margin-top: 5px;
       margin-bottom: 5px;
     }
+    .shared {
+      width: 180px;
+    }
 
     a {
       list-style-type: none;
@@ -33,9 +36,12 @@
     }
 
     .dropdown-submenu .dropdown-menu {
-      transform: translate3d(-100%, 0px, 0px) !important;
+      transform: translate3d(-82%, 0px, 0px) !important;
     }
 
+    .dropdown-submenu .menu-shared {
+      transform: translate3d(-100%, 0px, 0px) !important;
+    }
   }
 }
 

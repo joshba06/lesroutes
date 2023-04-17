@@ -23,10 +23,16 @@
           <div class="dropdown">
           <a type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-ellipsis-vertical"></i></a>
           <ul class="dropdown-menu">
+            <% if route.shared %>
+              <li class="shared" data-action="click->route#stop_sharing_route" data-route-id="<%= route.id %>" ><i class="fa-solid fa-earth-europe"></i> Stop public sharing </li>
+            <% end %>
             <li><%= link_to '<i class="fa-solid fa-map-location-dot"></i> Navigate'.html_safe, route.google_url, target: "_blank"%></li>
             <li class="dropdown-submenu">
               <a class="test" type="button" data-action="click->route#toggle_dropdown" data-bs-toggle="dropdown" aria-expanded="false" tabindex="-1" href="#"><i class="fa-solid fa-share-nodes"></i> Share route</a>
-              <ul class="dropdown-menu" data-route-target="dropdownElement">
+              <ul class="dropdown-menu <%= "menu-shared" if route.shared%>" data-route-target="dropdownElement">
+              <% if route.shared == false %>
+                <li class="shared" data-action="click->route#share_route" data-route-id="<%= route.id %>" ><i class="fa-solid fa-earth-europe"></i> Share with public</li>
+              <% end %>
                 <li><a tabindex="-1" href="#">Email</a></li>
                 <li><a tabindex="-1" href="#">Whatsapp</a></li>
                 <li><a tabindex="-1" href="#">SMS</a></li>
