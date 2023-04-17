@@ -1,8 +1,8 @@
 <div class="showpage-container-mobile">
-
   <div class="page-actions my-2">
     <div class="left-side">
-       <%= link_to '<i class="fa-solid fa-arrow-left"></i> Back'.html_safe, routes_path(), class: "btn btn-outline-primary btn-sm" %>
+      <%# Back button leads to index page or public index page depending on last visited url %>
+       <%= link_to '<i class="fa-solid fa-arrow-left"></i> Back'.html_safe, request.referrer, class: "btn btn-outline-primary btn-sm" %>
     </div>
     <div class="right-side">
       <%= link_to '<i class="fa-solid fa-map-location-dot"></i> Navigate'.html_safe, @route.google_url, target: "_blank", class: "btn btn-outline-primary btn-sm"%>
@@ -11,7 +11,12 @@
   </div>
 
   <div class="route-title my-3">
-    <h1 class="text-center"><%= @route.title %>  <%= link_to '<i class="fa-solid fa-pen-to-square"></i>'.html_safe, edit_route_path(@route), style: "padding-left:10px;margin-right:15px;" %></h1>
+    <h1 class="text-center"><%= @route.title %>
+      <%# Show edit route icon only to user who owns route %>
+      <% if @route.user == current_user %>
+        <%= link_to '<i class="fa-solid fa-pen-to-square"></i>'.html_safe, edit_route_path(@route), style: "padding-left:10px;margin-right:15px;" %>
+      <% end %>
+    </h1>
   </div>
 
   <div id="map-mobile"

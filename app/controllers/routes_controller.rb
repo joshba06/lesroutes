@@ -1,5 +1,5 @@
 class RoutesController < ApplicationController
-  skip_before_action :authenticate_user!, only: [ :index_public]
+  skip_before_action :authenticate_user!, only: [ :index_public, :show]
 
   def index
     routes_unfiltered = Route.all
