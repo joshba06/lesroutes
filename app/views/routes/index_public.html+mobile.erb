@@ -13,29 +13,13 @@
     <%= render partial: "shared/form_filter_routes", locals: {routes: @routes, url: "/routes/public"} %>
   </div>
 
-  <div class="private-cards">
+  <div class="route-cards">
     <% @routes_filtered.each do |route| %>
 
       <div class="card-route-stack p-1 my-3">
 
         <div class="link-route-options">
-          <div class="dropdown">
-          <a type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-ellipsis-vertical"></i></a>
-          <ul class="dropdown-menu">
-            <li><%= link_to '<i class="fa-solid fa-map-location-dot"></i> Navigate'.html_safe, route.google_url, target: "_blank"%></li>
-            <li class="dropdown-submenu">
-              <a class="test" type="button" data-action="click->route#toggle_dropdown" data-bs-toggle="dropdown" aria-expanded="false" tabindex="-1" href="#"><i class="fa-solid fa-share-nodes"></i> Share route</a>
-              <ul class="dropdown-menu" data-route-target="dropdownElement">
-                <li><a tabindex="-1" href="#">Email</a></li>
-                <li><a tabindex="-1" href="#">Whatsapp</a></li>
-                <li><a tabindex="-1" href="#">SMS</a></li>
-              </ul>
-            </li>
-            <li><%= link_to '<i class="fa-solid fa-eye"></i> Show route'.html_safe, route_path(route)%></li>
-            <li><%= link_to '<i class="fa-solid fa-pen-to-square"></i> Edit route'.html_safe, edit_route_path(route)%></li>
-            <li><%= link_to '<i class="fa-regular fa-trash-can"></i> Delete route'.html_safe, route_path(route), data: {turbo_method: :delete, turbo_confirm: 'Are you sure you want to delete the entire route?'}%></li>
-          </ul>
-        </div>
+         <%= render partial: "shared/options_menu_route", locals: {route: route} %>
         </div>
 
         <%= link_to route_path(route), :action => 'go', style: 'color:black;text-decoration:none;' do %>

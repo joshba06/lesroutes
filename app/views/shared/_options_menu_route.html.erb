@@ -24,7 +24,8 @@
     </li>
 
     <li><%= link_to '<i class="fa-solid fa-eye"></i> Show route'.html_safe, route_path(route)%></li>
-    <% if (not request.original_url.include? "routes/public") %>
+
+    <% unless request.original_url.include? "routes/public" %>
       <li><%= link_to '<i class="fa-solid fa-pen-to-square"></i> Edit route'.html_safe, edit_route_path(route)%></li>
       <li><%= link_to '<i class="fa-regular fa-trash-can"></i> Delete route'.html_safe, route_path(route), data: {turbo_method: :delete, turbo_confirm: 'Are you sure you want to delete the entire route?'}%></li>
     <% end %>
