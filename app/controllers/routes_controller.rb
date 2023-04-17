@@ -1,5 +1,5 @@
 class RoutesController < ApplicationController
-  skip_before_action :authenticate_user!, only: [ :index_public]
+  skip_before_action :authenticate_user!, only: [ :index_public, :show]
 
   def index
     routes_unfiltered = Route.all
@@ -148,6 +148,16 @@ class RoutesController < ApplicationController
     redirect_to route_path(@route)
   end
 
+  def share_route
+    @route = Route.find(params[:id])
+    @route.update(ajax_params)
+  end
+
+  def stop_sharing_route
+    @route = Route.find(params[:id])
+    @route.update(ajax_params)
+  end
+
   # Used for "saving" route on edit page -> Making sure user has at least two destinations
   # If user leaves webpage (since route is still saved in background) index page will filter routes with less than two destinations
   def save
@@ -230,6 +240,9 @@ class RoutesController < ApplicationController
       end
     end
 
+    # Sort routes alphabetically
+    @routes_filtered = @routes_filtered.sort { |a, b| a.title <=> b.title}
+
   end
 
   def update_google_redirect(route_destinations_ordered, route)
@@ -289,7 +302,7 @@ class RoutesController < ApplicationController
   end
 
   def ajax_params
-    params.require(:route).permit(:distance, :time)
+    params.require(:route).permit(:distance, :time, :shared)
   end
 
   def no_route_params

@@ -1,12 +1,11 @@
 <div class="container-new-route-mobile">
   <div class="page-actions">
-    <%= link_to '<i class="fa-solid fa-arrow-left"></i> Back'.html_safe, routes_path(), class: "btn btn-outline-primary" %>
+    <%= link_to '<i class="fa-solid fa-arrow-left"></i> Back'.html_safe, request.referrer, class: "btn btn-outline-primary" %>
   </div>
 
   <div class="form-new-route">
     <div class="page-title mx-2 py-2">
       <h1>Create a new route</h1>
-
     </div>
 
     <%= simple_form_for @route, html: { class: 'form-inline w-100 my-3' } do |f| %>
