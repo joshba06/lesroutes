@@ -1,0 +1,60 @@
+// Mobile
+.container-login-mobile {
+  width: 95vw;
+  margin: 2px auto;
+  color: $lr-font-dark;
+  .page-actions{
+    margin-top:30px;
+    margin-bottom:15px;
+  }
+  .form-inputs {
+    width: 90%;
+    background: white;
+    margin: 0px auto;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    .page-title {
+      display: flex;
+      justify-content: space-around;
+    }
+    .page-info {
+      display: flex;
+      justify-content: flex-start;
+      text-align: center;
+    }
+    .form-actions {
+      display: flex;
+      justify-content: space-around;
+    }
+  }
+}
+
+.container-signup-mobile {
+  width: 95vw;
+  margin: 2px auto;
+  color: $lr-font-dark;
+  .page-actions{
+    margin-top:30px;
+    margin-bottom:15px;
+  }
+  .form-inputs {
+    width: 90%;
+    background: white;
+    margin: 0px auto;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    .page-title {
+      display: flex;
+      justify-content: space-around;
+    }
+    .page-info {
+      display: flex;
+      justify-content: flex-start;
+      text-align: center;
+    }
+    .form-actions {
+      display: flex;
+      justify-content: space-around;
+    }
+  }
+}
