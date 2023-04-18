@@ -1,0 +1,51 @@
+// Mobile
+.container-devise-user-mobile{
+  width: 95vw;
+  margin: 2px auto;
+  color: $lr-font-dark;
+  .page-actions{
+    margin-top:30px;
+    margin-bottom:15px;
+  }
+  .form-inputs {
+    width: 90%;
+    background: white;
+    margin: 0px auto;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    .form-title {
+      display: flex;
+      justify-content: space-around;
+      padding-top: 1rem;
+    }
+    .form-name, .form-email, .form-password, .form-password-confirm, .form-others {
+      margin: 0.5rem 1.5rem;
+    }
+    .form-actions {
+      display: flex;
+      justify-content: space-around;
+      margin: 0.5rem 1.5rem;
+      padding-bottom: 1rem;
+    }
+  }
+  .other-devise-links {
+    margin: 0.5rem 2rem;
+  }
+}
+
+.delete-account {
+  width: 90%;
+  margin: 2px auto;
+  color: $lr-font-dark;
+  h2 {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-around;
+  }
+  .delete-account-button {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-around;
+    padding-bottom: 1rem;
+  }
+}

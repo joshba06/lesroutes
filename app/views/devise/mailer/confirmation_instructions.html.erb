@@ -1,5 +1,16 @@
-<p>Welcome <%= @email %>!</p>
+<div class="container-devise-user-mobile">
+  <div class="form-inputs">
+    <div class="form-title ">
+      <h2>Welcome, <%= @resource.name %>!</h2>
+    </div>
 
-<p>You can confirm your account email through the link below:</p>
+    <p>
+    You have requested us to resend you the "confirm your account" link.<br>
+    You can confirm your account email through the link below:</p>
 
-<p><%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token) %></p>
+    <div class="form-actions">
+      <%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token), :class => "btn btn-primary btn-submit w-100%" %>
+    </div>
+
+  </div>
+</div>
