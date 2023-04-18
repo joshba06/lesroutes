@@ -8,7 +8,7 @@ User.destroy_all
 
 puts "Seeding database"
 
-user1 = User.create!(email: "rachel@gmail.com", password: "rachel", name: "Rachel", last_name: "Smith", age: 34, location: "London")
+user1 = User.create!(email: "rachel@gmail.com", password: "rachel", name: "Rachel")
 puts "Seeding 1 user..."
 # avatar1 = URI.open("https://res.cloudinary.com/dcuj8efm3/image/upload/v1678277535/rachel2_zsjgbi.png")
 # user1.photo.attach(io: avatar1, filename: "av1.jpg", content_type: "image/png")
