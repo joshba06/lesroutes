@@ -1,39 +1,39 @@
-<div class="container-login-mobile">
+<div class="container-devise-user-mobile">
   <div class="page-actions">
     <%= link_to '<i class="fa-solid fa-arrow-left"></i> Back'.html_safe, request.referrer, class: "btn btn-outline-primary" %>
   </div>
 
   <div class="form-inputs">
-    <div class="page-title mx-2 py-3">
+    <div class="form-title">
       <h2>Log in</h2>
     </div>
 
     <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name), data: { turbo: :false }) do |f| %>
-      <div class="form-email mx-2 my-2 px-3">
+      <div class="form-email">
         <%= f.input :email,
                 required: false,
                 autofocus: true,
                 input_html: { autocomplete: "email" } %>
       </div>
 
-      <div class="form-password mx-2 my-2 px-3">
+      <div class="form-password">
         <%= f.input :password,
                 required: false,
                 input_html: { autocomplete: "current-password" } %>
       </div>
 
-      <div class="form-rememberdata mx-2 my-2 px-3">
+      <div class="form-others">
         <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
       </div>
 
-      <div class="form-actions mx-2 pb-2 px-3">
+      <div class="form-actions">
         <%= f.button :submit, "Log in", :class => "btn btn-primary btn-submit w-100%"%>
       </div>
 
     <% end %>
   </div>
 
-  <div class="other-devise-links mx-3 p-3">
+  <div class="other-devise-links">
     <%= render "devise/shared/links" %>
   </div>
 
