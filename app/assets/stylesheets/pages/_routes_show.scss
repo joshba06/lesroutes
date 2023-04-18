@@ -5,6 +5,10 @@
   .page-actions {
     display: flex;
     justify-content: space-between;
+    .right-side {
+      display: flex;
+      justify-content: space-between;
+    }
   }
   .route-title > h1 {
     font-size: 23px;
