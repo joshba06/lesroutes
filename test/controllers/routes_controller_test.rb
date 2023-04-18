@@ -5,7 +5,7 @@ class RoutesControllerTest < ActionDispatch::IntegrationTest
 
   # LOGGED IN USER
   test "Logged in user should get private index page" do
-    @user_guest = User.create(first_name: "Guest")
+    @user_guest = User.create(name: "Guest")
     sign_in @user_guest
     get routes_url
     assert_response :success, "Logged in user can access private index page"
