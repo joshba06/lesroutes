@@ -2,7 +2,7 @@
   <div class="page-actions my-2">
     <div class="left-side">
       <%# Back button leads to index page or public index page depending on last visited url %>
-       <%= link_to '<i class="fa-solid fa-arrow-left"></i> Back'.html_safe, request.referrer, class: "btn btn-outline-primary btn-sm" %>
+       <%= link_to '<i class="fa-solid fa-arrow-left"></i> Back'.html_safe, "#{(request.referrer.include? "edit") ? myroutes_path : request.referrer}", class: "btn btn-outline-primary btn-sm" %>
     </div>
     <div class="right-side">
       <%= link_to '<i class="fa-solid fa-map-location-dot"></i> Navigate'.html_safe, @route.google_url, target: "_blank", class: "btn btn-outline-primary btn-sm"%>
