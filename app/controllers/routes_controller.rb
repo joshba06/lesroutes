@@ -2,7 +2,7 @@ class RoutesController < ApplicationController
   skip_before_action :authenticate_user!, only: [ :index_public, :show]
 
   def index
-    routes_unfiltered = Route.all
+    routes_unfiltered = Route.all.select { |route| route.user == current_user}
     filter_routes_for_query(routes_unfiltered)
 
     # Create Google Maps URLs for all routes
@@ -90,7 +90,7 @@ class RoutesController < ApplicationController
 
     @route_destinations_ordered = @route.route_destinations.order(position: :asc).map { |route_destination| route_destination.destination }
 
-    # If the current route has more than 2 destinations, update the routes google maps link
+    # If the current route has more than or equal to 2 destinations, update the routes google maps link
     if @route_destinations_ordered.length >= 2
       update_google_redirect(@route_destinations_ordered, @route)
     else
@@ -168,7 +168,7 @@ class RoutesController < ApplicationController
   # If user leaves webpage (since route is still saved in background) index page will filter routes with less than two destinations
   def save
     @route = Route.find(params[:id])
-    if @route.route_destinations.length <= 2
+    if @route.route_destinations.length < 2
       flash.alert = "You need at least 2 destinations to save a route"
       redirect_to edit_route_path(@route)
     else
@@ -198,7 +198,7 @@ class RoutesController < ApplicationController
   def filter_routes_for_query(routes_unfiltered, public = false)
 
     # Filter for routes with more than 2 destinations
-    routes = routes_unfiltered.select { |route| route.route_destinations.length > 2}
+    routes = routes_unfiltered.select { |route| route.route_destinations.length >= 2}
 
     # Filter according to user selection
     if params[:commit].present?
