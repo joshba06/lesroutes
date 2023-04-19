@@ -22,5 +22,8 @@ application.register("map", MapController)
 import RouteController from "./route_controller"
 application.register("route", RouteController)
 
+import SharingController from "./sharing_controller"
+application.register("sharing", SharingController)
+
 import SortableController from "./sortable_controller"
 application.register("sortable", SortableController)
