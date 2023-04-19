@@ -1,47 +1,99 @@
-// Mobile
+// Responsive logo
+@media (max-width: 661px) {
+  #logo_big {
+    display: none;
+  }
+  img {
+    width: 35px;
+  }
+}
+
+@media (min-width: 662px) {
+  #logo_small {
+    display: none;
+  }
+  img {
+    width: 140px;
+  }
+}
+
+// Responsive elements but logo
+@media (max-width: 575px) {
+  .btn-group.dropstart.big-screen, .right-section .big-screen {
+    display: none !important;
+  }
+}
+@media (min-width: 576px) {
+  .nav-bar-menu.small-screen, .navbar-toggler.small-screen {
+    display: none !important;
+  }
+}
+
+
 .navbar {
   background-color: $lr-primary;
   color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  .left-section {
+  .nav-bar-links {
+    width: 100%;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    img {
-      width: 140px;
+    color: white !important;
+    .left-section {
+      display: flex;
+      align-items: center;
     }
-  }
-  .right-section{
-    display: flex;
-    justify-content: flex-end;
-    .quicklinks {
+    .right-section{
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-right: 15px;
-    }
-    .navbar-toggler {
-      border-radius: 25px;
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      background-color: white;
-      .navbar-toggler-icon {
-        width: 20px;
-        height: 20px;
-        margin-right: 3px;
-      }
-      .navbar-avatar{
-        width: 25px;
-        height: 25px;
-        border-radius: 50%;
-        background-size: cover;
-        background-position: center;
+        a {
+          margin-left: 0.5rem;
+          margin-right: 0.5rem;
+        }
+        .btn-success{
+          color:white;
+        }
+      .navbar-toggler {
+        border-radius: 25px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        background-color: white;
+        .navbar-toggler-icon {
+          width: 20px;
+          height: 20px;
+          margin-right: 3px;
+        }
+        .navbar-avatar{
+          width: 25px;
+          height: 25px;
+          border-radius: 50%;
+          background-color: $lr-primary;
+          position: relative;
+          .initials{
+            position: absolute;
+            top: 4px;
+            left: 8px;
+            z-index: auto;
+            color: white;
+            font-weight: 400;
+            font-size: 17px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+        }
       }
     }
   }
-  .nav-link{
-    color: white;
+  .dropstart > .dropdown-menu{
+    top: 35px !important;
+    right: 10px !important;
   }
+
+}
+
+.nav-link, .nav-item{
+  color: white;
 }
