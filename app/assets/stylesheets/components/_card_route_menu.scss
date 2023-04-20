@@ -1,3 +1,7 @@
+.route-cards {
+  overflow: auto; // Allows to scroll down all route cards if they exceed the screen size
+}
+
 .link-route-options {
   li {
     margin-left: 10px;
