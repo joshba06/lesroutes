@@ -1,19 +1,18 @@
 <%# On public index page hide edit, delete and sharing route %>
-<div class="dropdown">
+<div class="btn-group dropstart dropdown">
   <a type="button" data-bs-toggle="dropdown" aria-expanded="false">
     <div class="button-space">
       <i class="fa-solid fa-ellipsis-vertical"></i>
     </div>
   </a>
   <ul class="dropdown-menu">
-
     <% if route.shared && (not request.original_url.include? "routes/public") %>
       <li class="shared" data-action="click->route#stop_sharing_route" data-route-id="<%= route.id %>" ><i class="fa-solid fa-earth-europe"></i> Stop public sharing </li>
     <% end %>
 
     <li><%= link_to '<i class="fa-solid fa-map-location-dot"></i> Navigate'.html_safe, route.google_url, target: "_blank"%></li>
 
-    <li class="dropdown-submenu">
+    <li class="btn-group dropstart dropdown-submenu">
       <a class="test" type="button" data-action="click->route#toggle_dropdown" data-bs-toggle="dropdown" aria-expanded="false" tabindex="-1" href="#"><i class="fa-solid fa-share-nodes"></i> Share route</a>
       <ul class="dropdown-menu <%= "menu-shared" if route.shared%>" data-route-target="dropdownElement">
 
