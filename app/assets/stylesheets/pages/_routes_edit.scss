@@ -20,11 +20,7 @@
   .route-settings {
     display: flex;
     align-items: flex-start;
-
-    a {
-      list-style-type: none;
-      color: $lr-font-dark;
-    }
+    justify-content: flex-end;
 
   }
   .route-itinerary {
