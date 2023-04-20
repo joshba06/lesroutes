@@ -1,9 +1,12 @@
+.route-cards {
+  overflow-y: auto; // Allows to scroll down all route cards if they exceed the screen size
+}
+
 // Link-Divs in front (z-index) of card-coute
 .card-route-stack {
   width: 100%;
   height: 145px;
   position: relative;
-
   .link-route-options {
     position: absolute;
     top: 0;
@@ -18,11 +21,11 @@
 }
 
 // Card route mobile
-.card-route-private-mobile.public {
+.card-route-mobile.public {
   border-left: 3px solid $lr-route-shared;
 }
 
-.card-route-private-mobile {
+.card-route-mobile {
   border-left: 3px solid $lr-route-private;
   background: white;
   border-radius: 10px;
@@ -36,7 +39,7 @@
     display: flex;
     justify-content: space-between;
     .title {
-      font-size: 19px;
+      font-size: 1.2rem;
       font-weight: 500;
       color: $lr-font-dark;
     }
@@ -44,20 +47,26 @@
   .card-middle {
     display: flex;
     justify-content: flex-start;
+
     .text-description {
-      font-size: 14px;
+      font-size: 0.95rem;
       color: $lr-font-light;
       font-weight: 300;
     }
+    .text-description.left {
+      width: 65%;
+    }
+
   }
   .card-bottom {
     display: flex;
     justify-content: flex-start;
 
     .card-route-destinations {
-      width: 265px;
+      width: 65%;
       border-right: 0.25px solid $lr-div-lines;
       padding-right: 5px;
+      padding-top: 3px;
       .top {
         display: flex;
         justify-content: flex-start;
@@ -77,20 +86,17 @@
         }
         .route-mode-icon {
           margin-left: 5px;
-          height: 12px;
+          height: 14px;
           position: relative;
-          top: -6px;
+          top: -4px;
         }
       }
       .bottom {
         display: flex;
         justify-content: flex-start;
-        align-items: center;
-        text-align: center;
         margin-left: 2px;
       }
       .destination-circle-icon {
-        margin-top: 2px;
         margin-right: 5px;
         background-color: white;
         height: 20px;
@@ -98,10 +104,23 @@
         border: 2px solid $lr-primary;
         border-radius: 50%;
       }
+      .route-destination {
+        width: 90%;
+        font-size: 1rem;
+        font-weight: 400;
+        overflow: hidden;
+        height: 1.1rem;
+        line-height: 1rem;
+        margin-top: 1.5px; // To make text centered in div
+      }
+      .route-destination.bottom {
+        margin-top: 1.5px;
+      }
+
     }
     .card-route-details {
       padding-left: 15px;
-      font-size: 15px;
+      font-size: 0.95rem;
     }
   }
 

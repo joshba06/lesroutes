@@ -1,5 +1,7 @@
-// Universal
+// Mobile only
 .route-destinations-form {
+  width: 90%;
+  height: 30px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -17,18 +19,6 @@
     box-shadow: none;
     background-color: transparent;
   }
-}
-
-.mapboxgl-ctrl-geocoder--input {
-  height: 100% !important;
-}
-
-
-
-// Mobile
-.route-destinations-form.mobile {
-  width: 90%;
-  height: 30px;
   .mapboxgl-ctrl-geocoder--icon.mapboxgl-ctrl-geocoder--icon-search {
     top: 0px !important;
     height: 100% !important;
@@ -38,12 +28,10 @@
   }
 }
 
-#destination_address {
-  display: none;
+.mapboxgl-ctrl-geocoder--input {
+  height: 100% !important;
 }
 
-// Desktop
-.route-destinations-form.desktop {
-  width: 90%;
-  height: 50px;
+#destination_address {
+  display: none;
 }
