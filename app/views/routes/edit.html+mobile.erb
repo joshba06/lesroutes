@@ -55,11 +55,20 @@
       <%= render partial: "shared/form_add_destination", locals: {route: @route, destination: @destination} %>
     </div>
 
-    <div class="route-destinations" data-controller="sortable" data-sortable-url="/routes/<%= @route.id %>/route_destinations/:id/move" data-count="<%= @route.route_destinations.count %>" data-route-destinations-count="<%= @route.route_destinations.count %>" data-route-id="<%= @route.id %>">
+    <div class="route-destination-cards">
+      <div class="route-destinations" data-controller="sortable" data-sortable-url="/routes/<%= @route.id %>/route_destinations/:id/move" data-count="<%= @route.route_destinations.count %>" data-route-destinations-count="<%= @route.route_destinations.count %>" data-route-id="<%= @route.id %>">
+        <% @route.route_destinations.order(position: :asc).each_with_index do |route_destination, index| %>
+          <%= render partial: "shared/card_route_destination", locals: {route: @route, route_destination: route_destination, showpage: false, index: index} %>
+        <% end %>
+      </div>
+      <%# Add delete button seperately to avoid issues with sortable %>
       <% @route.route_destinations.order(position: :asc).each_with_index do |route_destination, index| %>
-        <%= render partial: "shared/card_route_destination", locals: {route: @route, route_destination: route_destination, showpage: false, index: index} %>
+        <div class="delete-button-area" style="top:<%="#{16+(index * 72.5)}px;"%>">
+          <%= link_to '<i class="fa-regular fa-trash-can"></i>'.html_safe, destination_path(route_destination.destination), data: {turbo_method: :delete, turbo_confirm: 'Remove this stop from your route?'} %>
+        </div>
       <% end %>
     </div>
+
   </div>
 
   <div class="page-navigator">

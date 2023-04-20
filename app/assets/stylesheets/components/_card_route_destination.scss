@@ -2,7 +2,7 @@
   padding-bottom: 16px;
   padding-top: 16px;
   border-bottom: 0.5px solid rgba(170, 166, 166, 0.61);
-
+  height: 72.5px !important;
 }
 
 .card-route-destination.edit-page.last-destination {
@@ -10,7 +10,7 @@
 }
 
 .card-route-destination {
-  width: 350px;
+  width: 95%;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -44,10 +44,11 @@
     }
   }
   .destination-text {
+    width:70%;
     .destination-title {
       font-size: 18px;
       font-weight: 400;
-      width: 250px;
+      width: 100%;
       overflow: hidden;
       height: 20px;
       line-height: 18px;
@@ -57,7 +58,7 @@
       font-size: 14px;
       font-weight: 400;
       color: grey;
-      width: 250px;
+      width: 100%;
       overflow: hidden;
       height: 15px;
       line-height: 14px;

@@ -10,7 +10,7 @@
     }
   }
   .route-title > h1 {
-    font-size: 23px;
+    font-size: 1.3rem;
     font-weight: 600;
   }
   .route-specs {
@@ -29,10 +29,14 @@
       font-size: 23px;
       font-weight: 400;
     }
+    .route-destination-cards {
+      width: 95%;
+      margin: 0px auto;
+    }
     .destination-connector {
-      width: 350px;
       margin: 0px auto;
       height: 32px;
+      width: 95%;
       .connector-line-top {
         position: relative;
         left: 36px;
