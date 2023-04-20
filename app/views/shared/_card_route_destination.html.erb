@@ -22,12 +22,5 @@
         <div class="destination-address"><%= route_destination.destination.address.split(",")[1..-1].join(", ") %></div>
       <% end %>
   </div>
-
-  <%# Delete button only on edit page %>
-  <% if showpage != true %>
-    <div class="delete-button">
-      <%= link_to '<i class="fa-regular fa-trash-can"></i>'.html_safe, destination_path(route_destination.destination), data: {turbo_method: :delete, turbo_confirm: 'Remove this stop from your route?'} %>
-    </div>
-  <% end %>
-  <%# Delete button end %>
+  
 </div>

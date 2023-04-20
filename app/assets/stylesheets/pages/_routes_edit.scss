@@ -6,7 +6,7 @@
     justify-content: space-between;
   }
   .route-title > h1 {
-    font-size: 20px;
+    font-size: 1.3rem;
     font-weight: 600;
   }
   .route-specs {
@@ -20,11 +20,7 @@
   .route-settings {
     display: flex;
     align-items: flex-start;
-
-    a {
-      list-style-type: none;
-      color: $lr-font-dark;
-    }
+    justify-content: flex-end;
 
   }
   .route-itinerary {
@@ -35,32 +31,19 @@
       font-size: 23px;
       font-weight: 400;
     }
-    .destination-connector {
-      width: 350px;
+    .route-destination-cards {
+      width: 95%;
       margin: 0px auto;
-      height: 16px;
-      .connector-line-top {
-        position: relative;
-        left: 36px;
-        top: 1px;
-        width: 10px;
-        height: 7px;
-        border-right: 3px dotted rgba(170, 166, 166, 0.61);
-      }
-      .connector-line-bottom {
-        position: relative;
-        left: 36px;
-        top: -1px;
-        z-index: 1;
-        width: 10px;
-        height: 7px;
-        border-right: 3px dotted rgba(170, 166, 166, 0.61);
-      }
-      .route-mode-icon {
-        margin-left: 40px;
-        height: 18px;
-        position: relative;
-        top: -2px;
+      position: relative;
+      .delete-button-area {
+        height: 40px;
+        width: 40px;
+        position: absolute;
+        display: flex;
+        justify-content: space-around;
+        align-items:center;
+        right:0px;
+        z-index: 4;
       }
     }
    }

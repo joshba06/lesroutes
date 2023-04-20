@@ -10,12 +10,6 @@ application.register("address-autocomplete", AddressAutocompleteController)
 import ClipboardController from "./clipboard_controller"
 application.register("clipboard", ClipboardController)
 
-import GifLoopController from "./gif_loop_controller"
-application.register("gif-loop", GifLoopController)
-
-import HelloController from "./hello_controller"
-application.register("hello", HelloController)
-
 import MapController from "./map_controller"
 application.register("map", MapController)
 
