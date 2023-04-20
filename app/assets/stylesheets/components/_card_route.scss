@@ -35,7 +35,7 @@
     display: flex;
     justify-content: space-between;
     .title {
-      font-size: 19px;
+      font-size: 1.2rem;
       font-weight: 500;
       color: $lr-font-dark;
     }
@@ -43,18 +43,23 @@
   .card-middle {
     display: flex;
     justify-content: flex-start;
+
     .text-description {
-      font-size: 14px;
+      font-size: 0.95rem;
       color: $lr-font-light;
       font-weight: 300;
     }
+    .text-description.left {
+      width: 65%;
+    }
+
   }
   .card-bottom {
     display: flex;
     justify-content: flex-start;
 
     .card-route-destinations {
-      width: 265px;
+      width: 65%;
       border-right: 0.25px solid $lr-div-lines;
       padding-right: 5px;
       .top {
@@ -76,20 +81,17 @@
         }
         .route-mode-icon {
           margin-left: 5px;
-          height: 12px;
+          height: 14px;
           position: relative;
-          top: -6px;
+          top: -4px;
         }
       }
       .bottom {
         display: flex;
         justify-content: flex-start;
-        align-items: center;
-        text-align: center;
         margin-left: 2px;
       }
       .destination-circle-icon {
-        margin-top: 2px;
         margin-right: 5px;
         background-color: white;
         height: 20px;
@@ -97,10 +99,23 @@
         border: 2px solid $lr-primary;
         border-radius: 50%;
       }
+      .route-destination {
+        width: 90%;
+        font-size: 1rem;
+        font-weight: 400;
+        overflow: hidden;
+        height: 1.1rem;
+        line-height: 1rem;
+        margin-top: 1.5px; // To make text centered in div
+      }
+      .route-destination.bottom {
+        margin-top: 1.5px;
+      }
+
     }
     .card-route-details {
       padding-left: 15px;
-      font-size: 15px;
+      font-size: 1rem;
     }
   }
 
