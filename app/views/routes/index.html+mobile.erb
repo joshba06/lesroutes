@@ -1,11 +1,12 @@
 <div class="index-routes-container-mobile private" data-controller="route">
 
   <div class="page-top-action mx-1 my-3">
-    <div class="page-intro ">
-      <h1>Hey, <%= current_user.name.capitalize %>!</h1>
-      <h2>Here are all your routes</h2>
+    <div class="page-intro">
+      <h1 data-route-target="introText">Hey, <%= current_user.name.capitalize %>!</h1>
+      <h2 data-route-target="introText">Here are all your routes</h2>
+      <a href="#" class="btn btn-success hidden" role="button" aria-pressed="true" data-route-target="newRouteButton">New Route</a>
     </div>
-    <div class="page-actions" >
+    <div class="page-actions">
       <a href="#" class="btn btn-outline-primary" role="button" aria-pressed="true" data-action="click->route#toggle_filter_menu" data-route-target="filterButton"><i class="fa-solid fa-filter"> </i> Filter</a>
     </div>
   </div>
@@ -29,6 +30,13 @@
 
       </div>
 
+    <% end %>
+
+    <% if @routes_filtered.length == 0 %>
+      <p class="no-routes-text">You don't have any routes yet! Create a new route or have a look at public routes...</p>
+      <div class="no-routes-actions">
+        <%= link_to "Public Routes", public_routes_path, class: "btn btn-primary" %>
+      </div>
     <% end %>
   </div>
 

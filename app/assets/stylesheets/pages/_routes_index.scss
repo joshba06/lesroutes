@@ -12,5 +12,16 @@
   .page-top-action {
     display: flex;
     justify-content: space-between;
+    .hidden{
+      display: none;
+    }
   }
+  .no-routes-text {
+    text-align: center;
+  }
+  .no-routes-actions {
+    display:flex;
+    justify-content: space-evenly;
+  }
+
 }
