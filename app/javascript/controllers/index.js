@@ -10,6 +10,9 @@ application.register("address-autocomplete", AddressAutocompleteController)
 import ClipboardController from "./clipboard_controller"
 application.register("clipboard", ClipboardController)
 
+import IndexpageviewerController from "./indexpageviewer_controller"
+application.register("indexpageviewer", IndexpageviewerController)
+
 import MapController from "./map_controller"
 application.register("map", MapController)
 
