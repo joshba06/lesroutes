@@ -1,14 +1,13 @@
 <div class="index-routes-container-mobile private" data-controller="route">
 
-
-  <div class="page-intro mx-1 my-2">
-    <h1>Hey, <%= current_user.name.capitalize %>!</h1>
-    <h2>Here are all your routes</h2>
-  </div>
-
-  <div class="page-actions mx-1 mt-3 mb-2" >
-    <i class="fa-solid fa-filter" data-action="click->route#toggle_filter_menu"></i>
-    <%= link_to "New route", new_route_path, class: "btn btn-outline-primary btn-sm"%>
+  <div class="page-top-action mx-1 my-3">
+    <div class="page-intro ">
+      <h1>Hey, <%= current_user.name.capitalize %>!</h1>
+      <h2>Here are all your routes</h2>
+    </div>
+    <div class="page-actions" >
+      <a href="#" class="btn btn-outline-primary" role="button" aria-pressed="true" data-action="click->route#toggle_filter_menu" data-route-target="filterButton"><i class="fa-solid fa-filter"> </i> Filter</a>
+    </div>
   </div>
 
   <div class="container-filter hidden" data-route-target="filterMenu">
@@ -21,7 +20,7 @@
       <div class="card-route-stack p-1 my-3">
 
         <div class="link-route-options">
-         <%= render partial: "shared/options_menu_route", locals: {route: route} %>
+          <%= render partial: "shared/options_menu_route", locals: {route: route} %>
         </div>
 
         <%= link_to route_path(route), :action => 'go', style: 'color:black;text-decoration:none;' do %>

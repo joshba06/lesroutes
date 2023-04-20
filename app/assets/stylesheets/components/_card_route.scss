@@ -62,6 +62,7 @@
       width: 65%;
       border-right: 0.25px solid $lr-div-lines;
       padding-right: 5px;
+      padding-top: 3px;
       .top {
         display: flex;
         justify-content: flex-start;
@@ -115,7 +116,7 @@
     }
     .card-route-details {
       padding-left: 15px;
-      font-size: 1rem;
+      font-size: 0.95rem;
     }
   }
 

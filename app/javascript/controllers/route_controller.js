@@ -3,7 +3,7 @@ import Rails from "rails-ujs";
 
 // Connects to data-controller="route"
 export default class extends Controller {
-  static targets = ["time", "distance", "routeTitle", "formUpdateRouteCity", "specElement", "formUpdateRouteTitle", "filterMenu", "dropdownElement"]
+  static targets = ["time", "distance", "routeTitle", "formUpdateRouteCity", "specElement", "formUpdateRouteTitle", "filterButton", "filterMenu", "dropdownElement"]
   static values = {
     time: Number,
     distance: Number,
@@ -37,8 +37,8 @@ export default class extends Controller {
   }
 
 
-  toggle_filter_menu () {
-    console.log("I am here")
+  toggle_filter_menu (event) {
+    event.stopPropagation();
     if (this.filterMenuTarget.classList.contains("hidden")) {
       this.filterMenuTarget.classList.remove("hidden")
     }

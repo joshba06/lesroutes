@@ -1,6 +1,10 @@
 <%# On public index page hide edit, delete and sharing route %>
 <div class="dropdown">
-  <a type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-ellipsis-vertical"></i></a>
+  <a type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <div class="button-space">
+      <i class="fa-solid fa-ellipsis-vertical"></i>
+    </div>
+  </a>
   <ul class="dropdown-menu">
 
     <% if route.shared && (not request.original_url.include? "routes/public") %>

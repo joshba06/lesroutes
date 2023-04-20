@@ -7,13 +7,20 @@
   .shared {
     width: 180px;
   }
-
+  .button-space {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
   a {
     list-style-type: none;
     color: $lr-font-dark;
+    text-decoration: none !important;
   }
   .dropdown-menu {
-    transform: translate3d(-10px, -5px, 0px) !important;
+    transform: translate3d(-35px, 5px, 0px) !important;
   }
 
   .dropdown-submenu {
