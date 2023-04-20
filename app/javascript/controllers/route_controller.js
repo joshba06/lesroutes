@@ -3,7 +3,7 @@ import Rails from "rails-ujs";
 
 // Connects to data-controller="route"
 export default class extends Controller {
-  static targets = ["time", "distance", "routeTitle", "newRouteButton", "introText", "formUpdateRouteCity", "specElement", "formUpdateRouteTitle", "filterButton", "filterMenu", "dropdownElement"]
+  static targets = ["time", "distance", "routeTitle", "formUpdateRouteCity", "specElement", "formUpdateRouteTitle", "filterButton", "filterMenu", "dropdownElement"]
   static values = {
     time: Number,
     distance: Number,
@@ -12,15 +12,6 @@ export default class extends Controller {
   connect() {
     console.log("Ciao from route controller")
     this.element[this.identifier] = this
-    const awaitTimeout = delay =>
-    new Promise(resolve => setTimeout(resolve, delay));
-
-    awaitTimeout(4000).then(() => {
-      this.introTextTargets.forEach((element) => {
-        element.classList.add("hidden")
-      })
-      this.newRouteButtonTarget.classList.remove("hidden")
-    });
   }
 
   add(TimeInMinutes, DistanceInKm) {

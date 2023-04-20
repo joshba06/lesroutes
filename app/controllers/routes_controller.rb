@@ -11,27 +11,15 @@ class RoutesController < ApplicationController
       update_google_redirect(route_destinations_ordered, route)
     end
 
-    if browser.device.mobile?
-      render variants: [:mobile]
-    else
-      render variants: [:desktop]
-    end
-
+    render_device_specific_view
   end
 
   def index_public
-
     routes_unfiltered = Route.all
     filter_routes_for_query(routes_unfiltered, true)
 
-    if browser.device.mobile?
-      render variants: [:mobile]
-    else
-      render variants: [:desktop]
-    end
-
+    render_device_specific_view
   end
-
 
   def show
     @route = Route.find(params[:id])
@@ -53,20 +41,12 @@ class RoutesController < ApplicationController
     @whatsapp_url = "whatsapp://send?text=#{@message}"
     @email_url = "mailto:''?subject=#{@subject}&body=#{@message}"
 
-    if browser.device.mobile?
-      render variants: [:mobile]
-    else
-      render variants: [:desktop]
-    end
+    render_device_specific_view
   end
 
   def new
     @route = Route.new
-    if browser.device.mobile?
-      render variants: [:mobile]
-    else
-      render variants: [:desktop]
-    end
+    render_device_specific_view
   end
 
   def create
@@ -75,7 +55,11 @@ class RoutesController < ApplicationController
     if @route.save
       redirect_to edit_route_path(@route), alert: "You created a new route. Add no more than 9 destinations."
     else
-      render :new
+      if @route.errors.where(:too_many).length != 0
+        redirect_to routes_path, alert: "You can only have 10 routes assigned to your account."
+      else
+        render_device_specific_view("new")
+      end
     end
   end
 
@@ -194,6 +178,22 @@ class RoutesController < ApplicationController
   end
 
   private
+
+  def render_device_specific_view(view = false)
+    if view
+      if browser.device.mobile?
+        render "#{view}", variants: [:mobile]
+      else
+        render "#{view}", variants: [:desktop]
+      end
+    else
+      if browser.device.mobile?
+        render variants: [:mobile]
+      else
+        render variants: [:desktop]
+      end
+    end
+  end
 
   def filter_routes_for_query(routes_unfiltered, public = false)
 
