@@ -3,7 +3,6 @@
   width: 100%;
   height: 145px;
   position: relative;
-
   .link-route-options {
     position: absolute;
     top: 0;
@@ -18,11 +17,11 @@
 }
 
 // Card route mobile
-.card-route-private-mobile.public {
+.card-route-mobile.public {
   border-left: 3px solid $lr-route-shared;
 }
 
-.card-route-private-mobile {
+.card-route-mobile {
   border-left: 3px solid $lr-route-private;
   background: white;
   border-radius: 10px;
