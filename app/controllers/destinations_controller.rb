@@ -1,8 +1,4 @@
 class DestinationsController < ApplicationController
-  # def new
-  #   @destination = Destination.new
-  # end
-
   def create
     @route = Route.find(params[:route_id])
 
