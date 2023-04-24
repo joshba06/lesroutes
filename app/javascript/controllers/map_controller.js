@@ -13,7 +13,7 @@ export default class extends Controller {
   };
 
   connect() {
-    console.log("Hello from MAP controller");
+    // console.log("Hello from MAP controller");
     mapboxgl.accessToken = this.apiKeyValue;
 
     // 0. Convert markers
@@ -31,6 +31,9 @@ export default class extends Controller {
       zoom: 6,
       });
     // console.log("Created empty map")
+
+    // Update count of api calls
+    this.#countApiCalls("maploads")
 
 
     // 2.1 If there is one destination, zoom onto that destination
@@ -120,6 +123,9 @@ export default class extends Controller {
     fetch(fetchQueryString)
       .then((response) => response.json())
       .then((data) => {
+
+        // Update count of api calls
+        this.#countApiCalls("directions")
 
         // Overwrite google_url with "no_route_found" if mapbox cannot determine route
         if (data.code === "NoRoute") {
@@ -234,5 +240,24 @@ export default class extends Controller {
     else {
       console.log("We are on the show page")
     }
+  }
+
+  #countApiCalls(apiName) {
+    // apiName: "directions", "geocoding", or "maploads"
+
+    const form = new FormData();
+    form.append(`api_call[${apiName}]`, "update")
+
+    Rails.ajax({
+      url: `/apicalls/${this.routeIdValue}/${apiName}`,
+      type: "PATCH",
+      data: form,
+      success: function () {
+        console.log(`Successfully updated api count for: ${apiName}`)
+      },
+      error: function () {
+        console.log(`Could not update api count for: ${apiName}`)
+      }
+    })
   }
 }
