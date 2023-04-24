@@ -125,3 +125,38 @@
 2023-04-17 13:21:07.749 CEST [10986] LOG:  database system was shut down at 2023-04-17 13:21:06 CEST
 2023-04-17 13:21:07.763 CEST [10985] LOG:  database system is ready to accept connections
 2023-04-17 13:21:20.064 CEST [11026] FATAL:  database "my_routes_development" does not exist
+2023-04-24 11:38:02.247 CEST [8579] LOG:  starting PostgreSQL 14.7 (Homebrew) on x86_64-apple-darwin22.1.0, compiled by Apple clang version 14.0.0 (clang-1400.0.29.202), 64-bit
+2023-04-24 11:38:02.249 CEST [8579] LOG:  listening on IPv6 address "::1", port 5432
+2023-04-24 11:38:02.249 CEST [8579] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2023-04-24 11:38:02.250 CEST [8579] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2023-04-24 11:38:02.257 CEST [8580] LOG:  database system was shut down at 2023-04-24 11:38:01 CEST
+2023-04-24 11:38:02.269 CEST [8579] LOG:  database system is ready to accept connections
+2023-04-24 11:38:10.896 CEST [8628] FATAL:  database "my_routes_development" does not exist
+2023-04-24 13:41:31.154 CEST [14019] ERROR:  column api_calls.user does not exist at character 45
+2023-04-24 13:41:31.154 CEST [14019] STATEMENT:  SELECT "api_calls".* FROM "api_calls" WHERE "api_calls"."user" = $1 ORDER BY "api_calls"."id" ASC LIMIT $2
+2023-04-24 13:43:11.343 CEST [14288] ERROR:  column api_calls.user does not exist at character 45
+2023-04-24 13:43:11.343 CEST [14288] STATEMENT:  SELECT "api_calls".* FROM "api_calls" WHERE "api_calls"."user" = $1 ORDER BY "api_calls"."id" ASC LIMIT $2
+2023-04-24 13:45:22.680 CEST [14288] ERROR:  column api_calls.user does not exist at character 45
+2023-04-24 13:45:22.680 CEST [14288] STATEMENT:  SELECT "api_calls".* FROM "api_calls" WHERE "api_calls"."user" = $1
+2023-04-24 13:45:30.169 CEST [14288] ERROR:  column api_calls.user does not exist at character 45
+2023-04-24 13:45:30.169 CEST [14288] STATEMENT:  SELECT "api_calls".* FROM "api_calls" WHERE "api_calls"."user" = $1
+2023-04-24 13:45:52.703 CEST [14288] ERROR:  column api_calls.user does not exist at character 45
+2023-04-24 13:45:52.703 CEST [14288] STATEMENT:  SELECT "api_calls".* FROM "api_calls" WHERE "api_calls"."user" = $1
+2023-04-24 13:46:04.250 CEST [14288] ERROR:  column api_calls.user does not exist at character 45
+2023-04-24 13:46:04.250 CEST [14288] STATEMENT:  SELECT "api_calls".* FROM "api_calls" WHERE "api_calls"."user" = $1 ORDER BY "api_calls"."id" ASC LIMIT $2
+2023-04-24 13:46:42.192 CEST [14288] ERROR:  column api_calls.user does not exist at character 45
+2023-04-24 13:46:42.192 CEST [14288] STATEMENT:  SELECT "api_calls".* FROM "api_calls" WHERE "api_calls"."user" = $1
+2023-04-24 13:46:57.530 CEST [14288] ERROR:  column api_calls.user does not exist at character 45
+2023-04-24 13:46:57.530 CEST [14288] STATEMENT:  SELECT "api_calls".* FROM "api_calls" WHERE "api_calls"."user" = $1 ORDER BY "api_calls"."id" ASC LIMIT $2
+2023-04-24 14:35:07.803 CEST [20211] ERROR:  update or delete on table "users" violates foreign key constraint "fk_rails_f01ceae07d" on table "api_calls"
+2023-04-24 14:35:07.803 CEST [20211] DETAIL:  Key (id)=(6) is still referenced from table "api_calls".
+2023-04-24 14:35:07.803 CEST [20211] STATEMENT:  DELETE FROM "users" WHERE "users"."id" = $1
+2023-04-24 14:36:33.393 CEST [20426] ERROR:  database "my_routes_development" is being accessed by other users
+2023-04-24 14:36:33.393 CEST [20426] DETAIL:  There is 1 other session using the database.
+2023-04-24 14:36:33.393 CEST [20426] STATEMENT:  DROP DATABASE IF EXISTS "my_routes_development"
+2023-04-24 15:25:28.702 CEST [24961] ERROR:  update or delete on table "users" violates foreign key constraint "fk_rails_201da86ab7" on table "routes"
+2023-04-24 15:25:28.702 CEST [24961] DETAIL:  Key (id)=(2) is still referenced from table "routes".
+2023-04-24 15:25:28.702 CEST [24961] STATEMENT:  DELETE FROM "users" WHERE "users"."id" = $1
+2023-04-24 15:31:37.722 CEST [24961] ERROR:  update or delete on table "users" violates foreign key constraint "fk_rails_f01ceae07d" on table "api_calls"
+2023-04-24 15:31:37.722 CEST [24961] DETAIL:  Key (id)=(3) is still referenced from table "api_calls".
+2023-04-24 15:31:37.722 CEST [24961] STATEMENT:  DELETE FROM "users" WHERE "users"."id" = $1

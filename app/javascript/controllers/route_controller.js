@@ -10,7 +10,7 @@ export default class extends Controller {
   };
 
   connect() {
-    console.log("Ciao from route controller")
+    // console.log("Ciao from route controller")
     this.element[this.identifier] = this
   }
 

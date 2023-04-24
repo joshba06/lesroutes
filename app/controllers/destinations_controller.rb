@@ -1,15 +1,7 @@
 class DestinationsController < ApplicationController
-  def index
-    @destinations = Destination.all
-  end
-
-  def show
-    @destination = Destination.find(params[:id])
-  end
-
-  def new
-    @destination = Destination.new
-  end
+  # def new
+  #   @destination = Destination.new
+  # end
 
   def create
     @route = Route.find(params[:route_id])
@@ -17,16 +9,14 @@ class DestinationsController < ApplicationController
     # Reload page if no input value was given
     if params[:destination][:address] == ""
       flash.alert = "Please enter a location in the search field"
-      redirect_to edit_route_path(@route), status: :unprocessable_entity
-
+      redirect_to edit_route_path(@route)
     elsif @route.route_destinations.length >= 9
       flash.alert = "You cannot add more than 9 destinations"
-      redirect_to edit_route_path(@route), status: :unprocessable_entity
-
+      redirect_to edit_route_path(@route)
     else
       dest = Destination.find_by(address: params[:destination][:address])
       if dest
-      @destination = dest
+        @destination = dest
       else
         @destination = Destination.new(destination_params)
         @destination.user = current_user
@@ -43,15 +33,6 @@ class DestinationsController < ApplicationController
       flash.notice = "Stop successfully added!"
       redirect_to edit_route_path(@route), status: :unprocessable_entity
     end
-  end
-
-  def edit
-    @destination = Destination.find(params[:id])
-  end
-
-  def update
-    @destination = Destination.find(params[:id])
-    @destination.update(destination_params)
   end
 
   def destroy

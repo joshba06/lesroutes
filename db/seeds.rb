@@ -5,6 +5,7 @@ RouteDestination.destroy_all
 Destination.destroy_all
 Route.destroy_all
 User.destroy_all
+ApiCall.destroy_all
 
 puts "Seeding database"
 
@@ -74,5 +75,20 @@ RouteDestination.create!(route: route3, destination: dest12, position: 3)
 dest13 = Destination.create!(latitude: 48.887691, longitude: 2.340607, title: "Sacré Coeur de Montmartre", user: user1, city: "Paris", address: "35 Rue du Chevalier de la Barre, 75018 Paris, France")
 RouteDestination.create!(route: route3, destination: dest13, position: 4)
 
+
+# Seed API Calls
+# directions_column = ApiCall.create
+
+# 10.times do
+#   directions_hash = directions_column.directions
+#   date = Date.today.next_day(rand(90))
+#   if directions_column.directions.key?(date.to_s)
+#     directions_hash[date.to_s] += 1
+#   else
+#     directions_hash[date.to_s] = 1
+#   end
+#   directions_column.save
+# end
+# puts "Api Calls Added"
 
 puts "Database seeded!"
