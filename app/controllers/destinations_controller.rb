@@ -35,15 +35,6 @@ class DestinationsController < ApplicationController
     end
   end
 
-  # def edit
-  #   @destination = Destination.find(params[:id])
-  # end
-
-  # def update
-  #   @destination = Destination.find(params[:id])
-  #   @destination.update(destination_params)
-  # end
-
   def destroy
     @destination = Destination.find(params[:id])
     @destination.destroy

@@ -14,9 +14,7 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    user_api_calls = ApiCall.new(user: @user)
     if @user.save
-      user_api_calls.save
       redirect_to user_path(@user)
     else
       render :new, status: :unprocessable_entity

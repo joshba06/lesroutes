@@ -154,3 +154,9 @@
 2023-04-24 14:36:33.393 CEST [20426] ERROR:  database "my_routes_development" is being accessed by other users
 2023-04-24 14:36:33.393 CEST [20426] DETAIL:  There is 1 other session using the database.
 2023-04-24 14:36:33.393 CEST [20426] STATEMENT:  DROP DATABASE IF EXISTS "my_routes_development"
+2023-04-24 15:25:28.702 CEST [24961] ERROR:  update or delete on table "users" violates foreign key constraint "fk_rails_201da86ab7" on table "routes"
+2023-04-24 15:25:28.702 CEST [24961] DETAIL:  Key (id)=(2) is still referenced from table "routes".
+2023-04-24 15:25:28.702 CEST [24961] STATEMENT:  DELETE FROM "users" WHERE "users"."id" = $1
+2023-04-24 15:31:37.722 CEST [24961] ERROR:  update or delete on table "users" violates foreign key constraint "fk_rails_f01ceae07d" on table "api_calls"
+2023-04-24 15:31:37.722 CEST [24961] DETAIL:  Key (id)=(3) is still referenced from table "api_calls".
+2023-04-24 15:31:37.722 CEST [24961] STATEMENT:  DELETE FROM "users" WHERE "users"."id" = $1

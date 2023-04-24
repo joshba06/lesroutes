@@ -6,7 +6,6 @@ import Rails from "rails-ujs";
 export default class extends Controller {
   static values = {
     apiKey: String,
-    routeId: Number,
   }
   static targets = ["title", "address", "city", "latitude", "longitude"]
 
@@ -77,7 +76,7 @@ export default class extends Controller {
     form.append(`api_call[${apiName}]`, "update")
 
     Rails.ajax({
-      url: `/apicalls/${this.routeIdValue}/${apiName}`,
+      url: `/apicalls/${apiName}`,
       type: "PATCH",
       data: form,
       success: function () {

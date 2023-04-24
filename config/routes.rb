@@ -16,9 +16,9 @@ Rails.application.routes.draw do
   get '/routes/:id/update_mode_cycling', to: 'routes#update_mode_cycling', as: :update_mode_cycling
   get '/routes/:id/update_mode_driving', to: 'routes#update_mode_driving', as: :update_mode_driving
 
-  patch '/apicalls/:route_id/geocoding', to: 'api_calls#add_geocoding'
-  patch '/apicalls/:route_id/maploads', to: 'api_calls#add_maploads'
-  patch '/apicalls/:route_id/directions', to: 'api_calls#add_directions'
+  patch '/apicalls/geocoding', to: 'api_calls#add_geocoding'
+  patch '/apicalls/maploads', to: 'api_calls#add_maploads'
+  patch '/apicalls/directions', to: 'api_calls#add_directions'
 
   # Defines the root path route ("/")
   resources :routes do

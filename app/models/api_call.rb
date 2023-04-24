@@ -3,7 +3,5 @@ class ApiCall < ApplicationRecord
   serialize :directions, Hash
   serialize :maploads, Hash
   serialize :geocoding, Hash
-
-  belongs_to :user
-
+  
 end

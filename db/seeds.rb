@@ -5,11 +5,11 @@ RouteDestination.destroy_all
 Destination.destroy_all
 Route.destroy_all
 User.destroy_all
+ApiCall.destroy_all
 
 puts "Seeding database"
 
 user1 = User.create!(email: "rachel@gmail.com", password: "rachel", name: "Rachel")
-user_api_calls = ApiCall.create!(user: user1)
 puts "Seeding 1 user..."
 # avatar1 = URI.open("https://res.cloudinary.com/dcuj8efm3/image/upload/v1678277535/rachel2_zsjgbi.png")
 # user1.photo.attach(io: avatar1, filename: "av1.jpg", content_type: "image/png")
@@ -75,5 +75,20 @@ RouteDestination.create!(route: route3, destination: dest12, position: 3)
 dest13 = Destination.create!(latitude: 48.887691, longitude: 2.340607, title: "Sacré Coeur de Montmartre", user: user1, city: "Paris", address: "35 Rue du Chevalier de la Barre, 75018 Paris, France")
 RouteDestination.create!(route: route3, destination: dest13, position: 4)
 
+
+# Seed API Calls
+# directions_column = ApiCall.create
+
+# 10.times do
+#   directions_hash = directions_column.directions
+#   date = Date.today.next_day(rand(90))
+#   if directions_column.directions.key?(date.to_s)
+#     directions_hash[date.to_s] += 1
+#   else
+#     directions_hash[date.to_s] = 1
+#   end
+#   directions_column.save
+# end
+# puts "Api Calls Added"
 
 puts "Database seeded!"

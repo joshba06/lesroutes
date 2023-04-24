@@ -249,7 +249,7 @@ export default class extends Controller {
     form.append(`api_call[${apiName}]`, "update")
 
     Rails.ajax({
-      url: `/apicalls/${this.routeIdValue}/${apiName}`,
+      url: `/apicalls/${apiName}`,
       type: "PATCH",
       data: form,
       success: function () {

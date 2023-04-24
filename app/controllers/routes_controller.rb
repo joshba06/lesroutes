@@ -1,5 +1,6 @@
 class RoutesController < ApplicationController
   skip_before_action :authenticate_user!, only: [ :index_public, :show]
+  before_action :check_number_of_api_calls
 
   def index
     routes_unfiltered = Route.all.select { |route| route.user == current_user}
@@ -22,26 +23,33 @@ class RoutesController < ApplicationController
   end
 
   def show
-    @route = Route.find(params[:id])
-    @destination = Destination.new
-    @route_destinations_ordered = @route.route_destinations.order(position: :asc).map { |route_destination| route_destination.destination }
+    # If limit of mapbox api calls is reached, redirect to index or public index page
+    if @website_offline && request.referrer.include?("routes/public")
+      redirect_to public_routes_path, alert: "We are currently experiencing a very large number of visits. Please check back at the beginning of next month. You can still start navigation from here"
+    elsif @website_offline
+      redirect_to myroutes_path, alert: "We are currently experiencing a very large number of visits. Please check back at the beginning of next month. You can still start navigation from here"
+    else
+      @route = Route.find(params[:id])
+      @destination = Destination.new
+      @route_destinations_ordered = @route.route_destinations.order(position: :asc).map { |route_destination| route_destination.destination }
 
-    @markers = @route.destinations.geocoded.map do |destination|
-      {
-        pos: @route.route_destinations.where(destination: destination).first.position,
-        lat: destination.latitude,
-        lng: destination.longitude,
-        marker_html: render_to_string(partial: "marker#{@route.route_destinations.where(destination: destination).first.position}")
-      }
+      @markers = @route.destinations.geocoded.map do |destination|
+        {
+          pos: @route.route_destinations.where(destination: destination).first.position,
+          lat: destination.latitude,
+          lng: destination.longitude,
+          marker_html: render_to_string(partial: "marker#{@route.route_destinations.where(destination: destination).first.position}")
+        }
+      end
+
+      # Generate message and link for whatsapp/sms/mail sharing
+      @subject = "LesRoutes - Route Link"
+      @message = "Hey mate, check out this route:\n\n#{@route.google_url}\n\nI found it on a free website called lesroutes.co.uk that lets you create and manage routes for Google Maps."
+      @whatsapp_url = "whatsapp://send?text=#{@message}"
+      @email_url = "mailto:''?subject=#{@subject}&body=#{@message}"
+
+      render_device_specific_view
     end
-
-    # Generate message and link for whatsapp/sms/mail sharing
-    @subject = "LesRoutes - Route Link"
-    @message = "Hey mate, check out this route:\n\n#{@route.google_url}\n\nI found it on a free website called lesroutes.co.uk that lets you create and manage routes for Google Maps."
-    @whatsapp_url = "whatsapp://send?text=#{@message}"
-    @email_url = "mailto:''?subject=#{@subject}&body=#{@message}"
-
-    render_device_specific_view
   end
 
   def new
@@ -192,6 +200,29 @@ class RoutesController < ApplicationController
       else
         render variants: [:desktop]
       end
+    end
+  end
+
+  def check_number_of_api_calls
+    current_month_startdate = Date.today.beginning_of_month
+    current_month_enddate = Date.today.end_of_month
+
+    # Count directions API calls
+    direction_calls = 0
+    directions_call_hash = ApiCall.first.directions
+    directions_call_hash.each do |date, calls|
+      direction_calls += calls if date.to_s >= current_month_startdate.to_s
+    end
+
+    # Count maploads API calls
+    maploads_calls = 0
+    maploads_call_hash = ApiCall.first.maploads
+    maploads_call_hash.each do |date, calls|
+      maploads_calls += calls if date.to_s >= current_month_startdate.to_s
+    end
+
+    if maploads_calls >= 47500 || direction_calls >= 95000
+      @website_offline = true
     end
   end
 
