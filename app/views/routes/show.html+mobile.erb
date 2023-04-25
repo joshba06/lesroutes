@@ -12,9 +12,8 @@
           <i class="fa-solid fa-share-nodes"></i> Share
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <li class="dropdown-item" data-action="click->sharing#copy_link"><i class="fa-regular fa-clipboard"></i> <span data-sharing-target="link">Copy link</span></li>
           <% if (browser.device.mobile?) %>
-            <li class="dropdown-item" href="<%=@whatsapp_url%>"><i class="fa-brands fa-whatsapp"></i> Whatsapp</li>
+            <li class="dropdown-item" data-action="click->sharing#send_whatsapp"><i class="fa-brands fa-whatsapp"></i> Whatsapp</li>
             <li class="dropdown-item" data-action="click->sharing#send_sms"><i class="fa-solid fa-comment"></i> SMS</li>
           <% end %>
           <li class="dropdown-item" data-action="click->sharing#send_email"><i class="fa-solid fa-envelope"></i> Email</li>
