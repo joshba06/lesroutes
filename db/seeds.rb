@@ -11,11 +11,8 @@ puts "Seeding database"
 
 user1 = User.create!(email: "rachel@gmail.com", password: "rachel", name: "Rachel")
 puts "Seeding 1 user..."
-# avatar1 = URI.open("https://res.cloudinary.com/dcuj8efm3/image/upload/v1678277535/rachel2_zsjgbi.png")
-# user1.photo.attach(io: avatar1, filename: "av1.jpg", content_type: "image/png")
 
 puts "Seeding routes and destinations..."
-
 
 route1 = Route.create!(title: "London Thames walking tour", user: user1, distance: 5.63, time: 71, city: "London")
 # routepic1 = URI.open("https://res.cloudinary.com/dcuj8efm3/image/upload/v1678286626/london_zas6np.jpg")
@@ -24,8 +21,6 @@ route1 = Route.create!(title: "London Thames walking tour", user: user1, distanc
 
 dest1 = Destination.create!(latitude: 51.508530, longitude: -0.076132, title: "Tower of London", user: user1, city: "London", address: "Tower Hill, London, England EC3N 4AB")
 RouteDestination.create!(route: route1, destination: dest1, position: 1)
-# destpic1 = URI.open("https://res.cloudinary.com/dcuj8efm3/image/upload/v1678286626/toweroflondon_wowyrp.jpg")
-# dest1.photo.attach(io: destpic1, filename: "dp1.jpg", content_type: "image/jpg")
 
 dest2 = Destination.create!(latitude: 51.507595, longitude: -0.099356, title: "Tate Modern", user: user1, city: "London", address: "53 Bankside, London, England SE1 9TG")
 RouteDestination.create!(route: route1, destination: dest2, position: 2)
