@@ -26,6 +26,7 @@ class DestinationsController < ApplicationController
       end
 
       RouteDestination.create(route: @route, destination: @destination, position: index)
+
       flash.notice = "Stop successfully added!"
       redirect_to edit_route_path(@route), status: :unprocessable_entity
     end
@@ -41,6 +42,6 @@ class DestinationsController < ApplicationController
   private
 
   def destination_params
-    params.require(:destination).permit(:title, :longitude, :latitude, :address, :city)
+    params.require(:destination).permit(:title, :longitude, :latitude, :address, :city, :unspecific_placename)
   end
 end

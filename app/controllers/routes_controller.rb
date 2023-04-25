@@ -41,7 +41,7 @@ class RoutesController < ApplicationController
           marker_html: render_to_string(partial: "marker#{@route.route_destinations.where(destination: destination).first.position}")
         }
       end
-      
+
       render_device_specific_view
     end
   end

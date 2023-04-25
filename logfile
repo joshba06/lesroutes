@@ -167,3 +167,5 @@
 2023-04-25 10:12:47.566 CEST [3868] LOG:  database system was shut down at 2023-04-25 10:12:46 CEST
 2023-04-25 10:12:47.578 CEST [3867] LOG:  database system is ready to accept connections
 2023-04-25 10:15:30.819 CEST [4659] FATAL:  database "my_routes_development" does not exist
+2023-04-25 13:07:00.021 CEST [16268] ERROR:  cached plan must not change result type
+2023-04-25 13:07:00.021 CEST [16268] STATEMENT:  SELECT "destinations".* FROM "destinations" WHERE "destinations"."id" = $1 LIMIT $2

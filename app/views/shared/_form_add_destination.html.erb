@@ -23,5 +23,11 @@
           input_html: {data: { class: "mb-0", address_autocomplete_target: "address"}},
           label: false
           %>
+
+    <%= f.input :unspecific_placename,
+          input_html: {data: { class: "mb-0", address_autocomplete_target: "unspecificPlacename"}},
+          label: false %>
+          <%# as: :hidden %>
+
     <%= f.submit "Add", class: "btn btn-outline-primary submit-button #{"btn-sm" if browser.device.mobile?}" %>
 <% end %>
