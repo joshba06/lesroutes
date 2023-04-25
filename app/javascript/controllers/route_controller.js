@@ -15,13 +15,13 @@ export default class extends Controller {
   }
 
   add(TimeInMinutes, DistanceInKm) {
-    console.log("Routed to route controller")
-    console.log(`New time: ${TimeInMinutes}`)
+    // console.log("Routed to route controller")
+    // console.log(`New time: ${TimeInMinutes}`)
 
     this.distanceTarget.innerText = DistanceInKm
     this.timeTarget.innerText = TimeInMinutes
-    console.log("Updated display of time and distance on edit page")
-    console.log("Goodbye from route controller")
+    // console.log("Updated display of time and distance on edit page")
+    // console.log("Goodbye from route controller")
   }
 
   edit_title (event) {

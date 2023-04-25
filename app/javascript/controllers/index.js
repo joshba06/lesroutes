@@ -7,9 +7,6 @@ import { application } from "./application"
 import AddressAutocompleteController from "./address_autocomplete_controller"
 application.register("address-autocomplete", AddressAutocompleteController)
 
-import ClipboardController from "./clipboard_controller"
-application.register("clipboard", ClipboardController)
-
 import IndexpageviewerController from "./indexpageviewer_controller"
 application.register("indexpageviewer", IndexpageviewerController)
 

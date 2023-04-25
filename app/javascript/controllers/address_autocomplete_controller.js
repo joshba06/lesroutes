@@ -23,7 +23,7 @@ export default class extends Controller {
   }
 
   #setInputValue(event) {
-    console.log(event.result)
+    // console.log(event.result)
 
     this.#checkForUnclearTitles(event.result["text"])
 
@@ -129,11 +129,11 @@ export default class extends Controller {
         const cities = places_hash[key]
         const unique_cities = [... new Set(cities)]
         if (cities.length !== unique_cities.length) {
-          console.log(`${key} exists multiple times in the same city`)
+          // console.log(`${key} exists multiple times in the same city`)
           this.unspecificPlacenameTarget.checked = true
         }
       }
-      console.log(places_hash)
+      // console.log(places_hash)
     })
   }
 }

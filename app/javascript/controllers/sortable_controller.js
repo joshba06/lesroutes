@@ -8,7 +8,7 @@ export default class extends Controller {
   // static targets = ["results"];
 
   connect() {
-    console.log("Sortable controller is connected!");
+    // console.log("Sortable controller is connected!");
 
     this.sortable = Sortable.create(this.element, {
       animation: 150,
@@ -40,10 +40,10 @@ export default class extends Controller {
     // * Route ID
     let routeId = this.element.dataset.routeId;
 
-    console.log(`Changing order of route id: ${this.element.dataset.routeId}`)
-    console.log(`${oldIndex + 1} -> ${event.newIndex + 1}`)
+    // console.log(`Changing order of route id: ${this.element.dataset.routeId}`)
+    // console.log(`${oldIndex + 1} -> ${event.newIndex + 1}`)
 
-    console.log(this.data.get("url").replace(":id", id))
+    // console.log(this.data.get("url").replace(":id", id))
 
     // Update route_destination position in "route_destination" table
     Rails.ajax({
@@ -53,10 +53,6 @@ export default class extends Controller {
       success: function () {
         console.log("Page is reloading...");
         document.location.reload();
-
-        // fetch(`/routes/${routeId}`)
-        //   .then((res) => res.json())
-        //   .then((data) => console.log(data));
       },
     });
   }

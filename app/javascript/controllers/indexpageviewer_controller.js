@@ -10,7 +10,7 @@ export default class extends Controller {
     const awaitTimeout = delay =>
     new Promise(resolve => setTimeout(resolve, delay));
 
-    awaitTimeout(4000).then(() => {
+    awaitTimeout(3500).then(() => {
       this.introTextTargets.forEach((element) => {
         element.classList.add("hidden")
       })

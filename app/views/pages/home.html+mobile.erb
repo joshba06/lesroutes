@@ -1,4 +1,4 @@
-<div class="home-landing-container">
+<div class="home-landing-container" style="background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url(<%= asset_path "background_image.jpg" %>);">
   <div class="welcome-field">
     <div class="logo">
       <%= image_tag "Logo_dark_with_text.png" %>
@@ -6,14 +6,10 @@
     <div class="welcome-text">
       <h1>Create and manage routes for Google Maps.</h1>
     </div>
+    <div class="how-it-works-button">
+      <a role="button" href="#how-it-works-section" class="btn btn-primary">How it works</a>
+    </div>
   </div>
-  <div class="how-it-works-button">
-    <h3 class="my-2">How it works<br></h3>
-    <a href="#how-it-works-section" class="btn btn-outline-success">
-      <i class="fa-solid fa-arrow-down fa-flip fa-2xl"></i>
-    </a>
-  </div>
-
 </div>
 
 <div class="how-it-works-container">
@@ -32,7 +28,8 @@
         <li>Search for a landmark or an exact address and add it to your itinerary.</li>
         <li>Repeat this step. Your route needs at least two destinations.</li>
       </ul>
-      <%= image_tag "Logo_dark_with_text.png" %>
+      <%= image_tag "step_add_destination.png" %>
+      <%= image_tag "step_add_destination2.png" %>
     </div>
 
     <div class="card">
@@ -41,7 +38,7 @@
         <li>Re-order stops by drag and drop.</li>
         <li>Route travel time and distance will be updated automatically.</li>
       </ul>
-      <%= image_tag "Logo_dark_with_text.png" %>
+      <%= image_tag "step_drag_and_drop.png" %>
       <ul>
         <li>Change route mode: Walking, Cycling, Driving</li>
         <li>Keep in mind that the estimates route time and distance may deviate from
@@ -55,7 +52,7 @@
         <li>Click the "Navigate button" to start navigation in the Google Maps app.</li>
         <li>You can still change your route options in Google Maps.</li>
       </ul>
-      <%= image_tag "Logo_dark_with_text.png" %>
+      <%= image_tag "step_navigate.png" %>
     </div>
 
     <div class="card">
@@ -63,7 +60,7 @@
       <ul>
         <li>You can share your route with friends or with our Les Routes community.</li>
       </ul>
-      <%= image_tag "Logo_dark_with_text.png" %>
+      <%= image_tag "step_share_with_public.png" %>
       <ul>
         <li>Have a look at routes that have been created by this amazing community:</li>
       </ul>

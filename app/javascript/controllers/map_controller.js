@@ -38,7 +38,7 @@ export default class extends Controller {
 
     // 2.1 If there is one destination, zoom onto that destination
     if (Object.keys(sortedmarkers).length == 1) {
-      console.log("There is one destination")
+      // console.log("There is one destination")
 
       map.setCenter([sortedmarkers[1].lng, sortedmarkers[1].lat]);
       map.setZoom(13);
@@ -50,7 +50,7 @@ export default class extends Controller {
 
     // 2.2 If there are at least two destinations, fit coordinate bounds
     else if (Object.keys(sortedmarkers).length >= 2) {
-      console.log("There are at least 2 destinations")
+      // console.log("There are at least 2 destinations")
 
       this.#addMarkersToMap(sortedmarkers, map);
       this.#fitMapToMarkers(sortedmarkers, map);
@@ -58,7 +58,7 @@ export default class extends Controller {
       // 2.3.1 Get route data from mapbox
 
       // Create  query string
-      console.log(`Route mode: ${this.routeModeValue}`)
+      // console.log(`Route mode: ${this.routeModeValue}`)
 
       let fetchQueryString =
       `https://api.mapbox.com/directions/v5/mapbox/${this.routeModeValue === "driving" ? "driving-traffic" : this.routeModeValue}/`;
@@ -79,14 +79,14 @@ export default class extends Controller {
         }
         i += 1;
       };
-      console.log(`Query string: ${fetchQueryString}`)
+      // console.log(`Query string: ${fetchQueryString}`)
 
       this.#fetchRoute(fetchQueryString, map);
     }
 
     // 2.3 If there is no destination, place default value as route specs
     else {
-      console.log("No destination found")
+      // console.log("No destination found")
       this.#sendPatch("_", true);
     }
   }
@@ -101,7 +101,7 @@ export default class extends Controller {
         .setLngLat([sortedmarkers[key].lng, sortedmarkers[key].lat])
         .addTo(map);
     };
-    console.log("Added markers to map")
+    // console.log("Added markers to map")
   }
 
   #fitMapToMarkers(sortedmarkers, map) {
@@ -116,7 +116,7 @@ export default class extends Controller {
       padding: 80,
       duration: 0,
     });
-    console.log("Fitted map bounds to markers")
+    // console.log("Fitted map bounds to markers")
   }
 
   #fetchRoute(fetchQueryString, map) {
@@ -150,7 +150,7 @@ export default class extends Controller {
           }
           else {
             // On Show page, don't do anything
-            console.log("Show page. No database update needed")
+            // console.log("Show page. No database update needed")
           }
         }
         else {
@@ -200,7 +200,7 @@ export default class extends Controller {
 
     // Only update db and route specs on edit page, not on show page
     if (window.location.href.includes("edit")) {
-      console.log("We are on the edit page")
+      // console.log("We are on the edit page")
 
       const routeId = this.routeIdValue
       const form = new FormData();
@@ -218,8 +218,8 @@ export default class extends Controller {
         TimeInMinutes = Math.round((TimeInSeconds / 60))
       }
 
-      console.log(`Time in min: ${TimeInMinutes}`)
-      console.log(`Distance in km: ${DistanceInKm}`)
+      // console.log(`Time in min: ${TimeInMinutes}`)
+      // console.log(`Distance in km: ${DistanceInKm}`)
 
       form.append('route[distance]', DistanceInKm)
       form.append('route[time]', TimeInMinutes)

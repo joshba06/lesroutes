@@ -12,16 +12,18 @@ body {
   width: 100vw;
   margin: 0px auto;
   display: flex;
-  align-items: center;
   justify-content: space-around;
   position: relative;
+  background-size: cover;
+  background-position: center;
 
   .welcome-field {
     width: 250px;
-    height: 150px;
+    height: 180px;
     background: white;
     border-radius: 10px;
     box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    margin-top: 35%;
     .logo {
       display: flex;
       justify-content: space-around;
@@ -38,13 +40,9 @@ body {
   }
 
   .how-it-works-button {
-    position: absolute;
-    bottom: 30px;
-    align-items: center;
+    display: flex;
     a {
-      background-color: white;
-      margin:0px auto;
-      display: block;
+      margin: 0px auto;
     }
   }
 }
