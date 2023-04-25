@@ -160,3 +160,10 @@
 2023-04-24 15:31:37.722 CEST [24961] ERROR:  update or delete on table "users" violates foreign key constraint "fk_rails_f01ceae07d" on table "api_calls"
 2023-04-24 15:31:37.722 CEST [24961] DETAIL:  Key (id)=(3) is still referenced from table "api_calls".
 2023-04-24 15:31:37.722 CEST [24961] STATEMENT:  DELETE FROM "users" WHERE "users"."id" = $1
+2023-04-25 10:12:47.553 CEST [3867] LOG:  starting PostgreSQL 14.7 (Homebrew) on x86_64-apple-darwin22.1.0, compiled by Apple clang version 14.0.0 (clang-1400.0.29.202), 64-bit
+2023-04-25 10:12:47.554 CEST [3867] LOG:  listening on IPv6 address "::1", port 5432
+2023-04-25 10:12:47.554 CEST [3867] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2023-04-25 10:12:47.556 CEST [3867] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2023-04-25 10:12:47.566 CEST [3868] LOG:  database system was shut down at 2023-04-25 10:12:46 CEST
+2023-04-25 10:12:47.578 CEST [3867] LOG:  database system is ready to accept connections
+2023-04-25 10:15:30.819 CEST [4659] FATAL:  database "my_routes_development" does not exist
