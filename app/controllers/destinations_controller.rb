@@ -16,6 +16,11 @@ class DestinationsController < ApplicationController
       else
         @destination = Destination.new(destination_params)
         @destination.user = current_user
+        if params[:destination][:unspecific_placename] == "1"
+          @destination.unspecific_placename = true
+        else
+          @destination.unspecific_placename = false
+        end
         @destination.save
       end
 
@@ -27,7 +32,7 @@ class DestinationsController < ApplicationController
 
       RouteDestination.create(route: @route, destination: @destination, position: index)
 
-      flash.notice = "Stop successfully added!"
+      flash.now.notice = "Stop successfully added!"
       redirect_to edit_route_path(@route), status: :unprocessable_entity
     end
   end

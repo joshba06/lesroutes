@@ -280,7 +280,7 @@ class RoutesController < ApplicationController
 
     if route_destinations_ordered.length >= 2
 
-      if route_destinations_ordered.first.title == "Custom location"
+      if route_destinations_ordered.first.title == "Custom location" || route_destinations_ordered.first.unspecific_placename
         origin = route_destinations_ordered.first.address.gsub(/\s/, "+")
       else
         origin = route_destinations_ordered.first.title.gsub(/\s/, "+")
@@ -288,7 +288,7 @@ class RoutesController < ApplicationController
         origin << route_destinations_ordered.first.city.gsub(/\s/, "+")
       end
 
-      if route_destinations_ordered.last.title == "Custom location"
+      if route_destinations_ordered.last.title == "Custom location" || route_destinations_ordered.last.unspecific_placename
         destination = route_destinations_ordered.last.address.gsub(/\s/, "+")
       else
         destination = route_destinations_ordered.last.title.gsub(/\s/, "+")
@@ -300,21 +300,24 @@ class RoutesController < ApplicationController
       url = "https://www.google.com/maps/dir/?api=1&origin=#{origin}&destination=#{destination}&travelmode=#{travelmode}"
 
       if route_destinations_ordered.length >= 3
-        if route_destinations_ordered[1].title == "Custom location"
+        if route_destinations_ordered[1].title == "Custom location" || route_destinations_ordered[1].unspecific_placename
           waypoint = route_destinations_ordered[1].address.gsub(/\s/, "+")
         else
           waypoint = route_destinations_ordered[1].title.gsub(/\s/, "+")
+          waypoint << "%2C"
+          waypoint << route_destinations_ordered[1].city.gsub(/\s/, "+")
         end
         url << "&waypoints=#{waypoint}"
 
         if route_destinations_ordered.length >= 4
-
           route_destinations_ordered.each_with_index do |destination, index|
             if index >= 2 && index != (route_destinations_ordered.length - 1)
-              if destination.title == "Custom location"
+              if destination.title == "Custom location" || destination.unspecific_placename
                 waypoint = destination.address.gsub(/\s/, "+")
               else
                 waypoint = destination.title.gsub(/\s/, "+")
+                waypoint << "%2C"
+                waypoint << destination.city.gsub(/\s/, "+")
               end
               url << "%7C#{waypoint}"
             end
@@ -329,7 +332,7 @@ class RoutesController < ApplicationController
   end
 
   def route_params
-    params.require(:route).permit(:title, :photo, :city, :distance, :time)
+    params.require(:route).permit(:title, :city, :distance, :time)
   end
 
   def ajax_params
