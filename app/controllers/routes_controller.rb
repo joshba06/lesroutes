@@ -41,14 +41,7 @@ class RoutesController < ApplicationController
           marker_html: render_to_string(partial: "marker#{@route.route_destinations.where(destination: destination).first.position}")
         }
       end
-
-      # Generate message and link for whatsapp/sms/mail sharing
-      @subject = "LesRoutes - Route Link"
-      @message = "Hey mate, check out this route:\n\n#{@route.google_url}\n\nI found it on a free website called lesroutes.co.uk that lets you create and manage routes for Google Maps."
-      # @whatsapp_url = "whatsapp://send?text=#{@message}"
-      @email_url = "mailto:''?subject=#{@subject}&body=#{@message}"
-      @whatsapp_url = "https://wa.me/15551234567?text=I'm%20interested%20in%20your%20car%20for%20sale"
-
+      
       render_device_specific_view
     end
   end

@@ -7,7 +7,7 @@
     <div class="right-side">
       <%= link_to '<i class="fa-solid fa-map-location-dot"></i> Navigate'.html_safe, @route.google_url, target: "_blank", class: "btn btn-outline-primary btn-sm"%>
 
-      <div class="dropdown ms-2" data-controller="sharing" data-sharing-route-url-value="<%=@route.google_url%>" data-sharing-message-value="<%=@message%>" data-sharing-subject-value="<%=@subject%>">
+      <div class="dropdown ms-2" data-controller="sharing" data-sharing-route-url-value="<%=@route.google_url%>">
         <button class="btn btn-outline-primary btn-sm" data-bs-toggle="dropdown" type="button" id="dropdownMenuButton3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fa-solid fa-share-nodes"></i> Share
         </button>

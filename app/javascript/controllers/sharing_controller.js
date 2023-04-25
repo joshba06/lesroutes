@@ -4,29 +4,30 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = ["link"]
   static values = {
-    message: String,
-    subject: String,
+    // message: String,
     routeUrl: String,
   };
 
   connect() {
     console.log("Hello from sharing controller")
+    this.subject = "LesRoutes - Route Link"
+    this.message = `Hey mate, check out this route:\n\n${this.routeUrlValue}\n\nI found it on a free website called lesroutes.co.uk that lets you create and manage routes for Google Maps.`
   }
 
   send_email () {
-    window.location.href = `mailto:Mate?subject=${this.subjectValue}&body=${encodeURIComponent(this.messageValue)}`;
+    window.location.href = `mailto:"Mate"?subject=${this.subject}&body=${encodeURIComponent(this.message)}`;
   }
 
   send_whatsapp () {
-    window.location.href = `https://wa.me/?text=${encodeURIComponent(this.messageValue)}`;
+    window.location.href = `https://wa.me/?text=${encodeURIComponent(this.message)}`;
   }
 
   send_sms () {
     if(navigator.userAgent.match(/Android/i)) {
-      window.open(`sms://Mate/?body=${encodeURIComponent(this.messageValue)}`)
+      window.open(`sms://1234/?body=${encodeURIComponent(this.message)}`)
     }
     else if(navigator.userAgent.match(/iPhone/i)) {
-      window.open(`sms://Mate/&body=${encodeURIComponent(this.messageValue)}`)
+      window.open(`sms://1234/&body=${encodeURIComponent(this.message)}`)
      }
   }
 }
