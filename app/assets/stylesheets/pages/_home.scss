@@ -1,5 +1,84 @@
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+.home-landing-container {
+  height: 95vh;
+  width: 100vw;
+  margin: 0px auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  position: relative;
+
+  .welcome-field {
+    width: 250px;
+    height: 150px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    .logo {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 20px;
+      img {
+        width: 150px;
+      }
+    }
+    .welcome-text h1 {
+      font-size: 1.2rem;
+      text-align: center;
+      margin: 10px auto
+    }
+  }
+
+  .how-it-works-button {
+    position: absolute;
+    bottom: 30px;
+    align-items: center;
+    a {
+      background-color: white;
+      margin:0px auto;
+      display: block;
+    }
+  }
+}
+.how-it-works-container {
+  width: 100vw;
+  margin: 0px auto;
+  text-align: center;
+  position: relative;
+  padding-top: 2rem;
+  .how-it-works-scroll-location {
+    height: 100vh;
+    position: absolute;
+  }
+  .how-it-works-cards {
+    width: 95vw;
+    margin: 0px auto;
+    .card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.2);
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      padding-right: 1rem;
+      padding-left: 1rem;
+      margin-left: 1rem;
+      margin-right: 1rem;
+      .btn-landing-page {
+        margin: 0px auto;
+      }
+      ul {
+        text-align: left;
+      }
+    }
+  }
 }

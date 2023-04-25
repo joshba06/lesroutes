@@ -1,2 +1,75 @@
-<div class="landingpage-container">
+<div class="home-landing-container">
+  <div class="welcome-field">
+    <div class="logo">
+      <%= image_tag "Logo_dark_with_text.png" %>
+    </div>
+    <div class="welcome-text">
+      <h1>Create and manage routes for Google Maps.</h1>
+    </div>
+  </div>
+  <div class="how-it-works-button">
+    <h3 class="my-2">How it works<br></h3>
+    <a href="#how-it-works-section" class="btn btn-outline-success">
+      <i class="fa-solid fa-arrow-down fa-flip fa-2xl"></i>
+    </a>
+  </div>
+
+</div>
+
+<div class="how-it-works-container">
+  <div class="how-it-works-scroll-location" id="how-it-works-section"></div>
+
+  <h1>How it works</h2>
+  <div class="how-it-works-cards">
+    <div class="card">
+      <h2>1. Create a new route</h2>
+      <%= link_to "New route", new_route_path, class: "btn btn-success btn-landing-page" %>
+    </div>
+
+    <div class="card">
+      <h2>2. Add destinations</h2>
+      <ul>
+        <li>Search for a landmark or an exact address and add it to your itinerary.</li>
+        <li>Repeat this step. Your route needs at least two destinations.</li>
+      </ul>
+      <%= image_tag "Logo_dark_with_text.png" %>
+    </div>
+
+    <div class="card">
+      <h2>3. Manage route</h2>
+      <ul>
+        <li>Re-order stops by drag and drop.</li>
+        <li>Route travel time and distance will be updated automatically.</li>
+      </ul>
+      <%= image_tag "Logo_dark_with_text.png" %>
+      <ul>
+        <li>Change route mode: Walking, Cycling, Driving</li>
+        <li>Keep in mind that the estimates route time and distance may deviate from
+            those that are computed by Google Maps.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>4. Navigate</h2>
+      <ul>
+        <li>Click the "Navigate button" to start navigation in the Google Maps app.</li>
+        <li>You can still change your route options in Google Maps.</li>
+      </ul>
+      <%= image_tag "Logo_dark_with_text.png" %>
+    </div>
+
+    <div class="card">
+      <h2>5. Public routes</h2>
+      <ul>
+        <li>You can share your route with friends or with our Les Routes community.</li>
+      </ul>
+      <%= image_tag "Logo_dark_with_text.png" %>
+      <ul>
+        <li>Have a look at routes that have been created by this amazing community:</li>
+      </ul>
+      <%= link_to "Public routes", public_routes_path, class: "btn btn-primary btn-landing-page" %>
+
+    </div>
+
+  </div>
 </div>
