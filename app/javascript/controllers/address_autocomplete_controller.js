@@ -11,11 +11,15 @@ export default class extends Controller {
 
 
   connect() {
-    // console.log("Hello from autocomplete controller")
     this.geocoder = new MapboxGeocoder({
       accessToken: this.apiKeyValue,
       types: "neighborhood,address,poi"
     })
+
+    // Event listener on search field to scroll itinerary into view
+    window.addEventListener("load", (event) => {
+      document.querySelector(".mapboxgl-ctrl-geocoder").addEventListener("click", this.#scroll_into_view);
+    });
 
     this.geocoder.addTo(this.element)
     this.geocoder.on("result", event => this.#setInputValue(event))
@@ -135,5 +139,11 @@ export default class extends Controller {
       }
       // console.log(places_hash)
     })
+  }
+
+  #scroll_into_view() {
+    const itinerary = document.getElementById("scroll-into-view-container");
+    itinerary.style.height = "100vh";
+    itinerary.scrollIntoView();
   }
 }

@@ -45,8 +45,6 @@ dest9 = Destination.create!(latitude: 38.713909, longitude: -9.133476, title: "C
 RouteDestination.create!(route: route2, destination: dest9, position: 4)
 
 route3 = Route.create!(title: "Paris architecture", user: user1, distance: 8.7, time: 112, city: "Paris", mode: "cycling")
-routepic3 = URI.open("https://res.cloudinary.com/dcuj8efm3/image/upload/v1678286627/eiffeltower_itl1at.png")
-# route3.photo.attach(io: routepic3, filename: "rp3.jpg", content_type: "image/png")
 
 dest10 = Destination.create!(latitude: 48.858093, longitude: 2.294694, title: "Eiffel Tower", user: user1, city: "Paris", address: "Tour Eiffel, Champ de Mars, 5 Av. Anatole France, 75007 Paris, France")
 RouteDestination.create!(route: route3, destination: dest10, position: 1)

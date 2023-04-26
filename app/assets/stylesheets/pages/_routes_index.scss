@@ -2,19 +2,32 @@
   width: 95vw;
   margin: 2px auto;
   color: $lr-font-dark;
-  h1 {
-    font-size: 1.3rem;
-    font-weight: bold;
-  }
-  h2 {
-    font-size: 1.2rem;
-  }
+
   .page-top-action {
-    display: flex;
-    justify-content: space-between;
-    .hidden{
-      display: none;
+    .page-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      .btn-success{
+        color: white;
+      }
     }
+    .page-intro {
+      text-align: center;
+      font-size: 0.9rem;
+    }
+  }
+  .page-actions-public{
+    display:flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    .intro-text {
+      width: 70%;
+    }
+    .filter-button {
+      margin-top: 5px;
+    }
+
   }
   .no-routes-text {
     text-align: center;

@@ -169,3 +169,10 @@
 2023-04-25 10:15:30.819 CEST [4659] FATAL:  database "my_routes_development" does not exist
 2023-04-25 13:07:00.021 CEST [16268] ERROR:  cached plan must not change result type
 2023-04-25 13:07:00.021 CEST [16268] STATEMENT:  SELECT "destinations".* FROM "destinations" WHERE "destinations"."id" = $1 LIMIT $2
+2023-04-26 10:50:38.018 CEST [4055] LOG:  starting PostgreSQL 14.7 (Homebrew) on x86_64-apple-darwin22.1.0, compiled by Apple clang version 14.0.0 (clang-1400.0.29.202), 64-bit
+2023-04-26 10:50:38.019 CEST [4055] LOG:  listening on IPv6 address "::1", port 5432
+2023-04-26 10:50:38.019 CEST [4055] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2023-04-26 10:50:38.020 CEST [4055] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2023-04-26 10:50:38.031 CEST [4056] LOG:  database system was shut down at 2023-04-26 10:50:36 CEST
+2023-04-26 10:50:38.045 CEST [4055] LOG:  database system is ready to accept connections
+2023-04-26 10:50:49.508 CEST [4099] FATAL:  database "my_routes_development" does not exist

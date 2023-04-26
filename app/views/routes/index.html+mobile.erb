@@ -1,14 +1,14 @@
 <div class="index-routes-container-mobile private" data-controller="indexpageviewer route">
 
   <div class="page-top-action mx-1 my-3">
-    <div class="page-intro">
-      <h1 data-indexpageviewer-target="introText">Hey, <%= current_user.name.capitalize %>!</h1>
-      <h2 data-indexpageviewer-target="introText">Here are all your routes</h2>
-      <a href="<%= new_route_path %>" class="btn btn-success hidden" role="button" aria-pressed="true" data-indexpageviewer-target="newRouteButton">New Route</a>
-    </div>
     <div class="page-actions">
       <a href="#" class="btn btn-outline-primary" role="button" aria-pressed="true" data-action="click->route#toggle_filter_menu" data-route-target="filterButton"><i class="fa-solid fa-filter"> </i> Filter</a>
+      <a href="<%= new_route_path %>" class="btn btn-success" role="button" aria-pressed="true"><i class="fa-solid fa-circle-plus"></i> New</a>
     </div>
+    <div class="page-intro">
+      <p>Hey, <%= current_user.name.capitalize %>. These are your <strong>own</strong> routes </p>
+    </div>
+
   </div>
 
   <div class="container-filter hidden" data-route-target="filterMenu">
