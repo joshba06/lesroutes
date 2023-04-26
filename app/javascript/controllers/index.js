@@ -7,8 +7,8 @@ import { application } from "./application"
 import AddressAutocompleteController from "./address_autocomplete_controller"
 application.register("address-autocomplete", AddressAutocompleteController)
 
-import IndexpageviewerController from "./indexpageviewer_controller"
-application.register("indexpageviewer", IndexpageviewerController)
+import AlertController from "./alert_controller"
+application.register("alert", AlertController)
 
 import MapController from "./map_controller"
 application.register("map", MapController)

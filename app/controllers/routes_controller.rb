@@ -55,7 +55,7 @@ class RoutesController < ApplicationController
     @route = Route.new(route_params)
     @route.user = current_user
     if @route.save
-      redirect_to edit_route_path(@route), alert: "You created a new route. Add no more than 9 destinations."
+      redirect_to edit_route_path(@route), notice: "You created a new route. Add no more than 9 destinations."
     else
       if @route.errors.where(:too_many).length != 0
         redirect_to routes_path, alert: "You can only have 10 routes assigned to your account."
@@ -71,7 +71,7 @@ class RoutesController < ApplicationController
 
     # Display warning, if mapbox could not determine route between points
     if @route.google_url == "no_route_found"
-      flash.now.alert = "No #{@route.mode} directions found for these destinations!"
+      flash.notice = "No #{@route.mode} directions found for these destinations!"
     end
 
     @route_destinations_ordered = @route.route_destinations.order(position: :asc).map { |route_destination| route_destination.destination }
@@ -105,6 +105,7 @@ class RoutesController < ApplicationController
     @route = Route.find(params[:id])
     @route.mode = "cycling"
     @route.save
+    flash.notice = "Route mode changed to #{@route.mode}"
     redirect_to edit_route_path(@route)
   end
 
@@ -112,6 +113,7 @@ class RoutesController < ApplicationController
     @route = Route.find(params[:id])
     @route.mode = "walking"
     @route.save
+    flash.notice = "Route mode changed to #{@route.mode}"
     redirect_to edit_route_path(@route)
   end
 
@@ -119,18 +121,21 @@ class RoutesController < ApplicationController
     @route = Route.find(params[:id])
     @route.mode = "driving"
     @route.save
+    flash.notice = "Route mode changed to #{@route.mode}"
     redirect_to edit_route_path(@route)
   end
 
   def updateroutetitle
     @route = Route.find(params[:id])
     @route.update(route_params)
+    flash.notice = "Route title updated"
     redirect_to edit_route_path(@route)
   end
 
   def updateroutecity
     @route = Route.find(params[:id])
     @route.update(route_params)
+    flash.notice = "Route city updated"
     redirect_to edit_route_path(@route)
   end
 
@@ -142,11 +147,13 @@ class RoutesController < ApplicationController
 
   def share_route
     @route = Route.find(params[:id])
+    flash.alert = "#{@route.title} is now publicly available"
     @route.update(ajax_params)
   end
 
   def stop_sharing_route
     @route = Route.find(params[:id])
+    flash.alert = "Stopped sharing #{@route.title} with community."
     @route.update(ajax_params)
   end
 
@@ -155,7 +162,7 @@ class RoutesController < ApplicationController
   def save
     @route = Route.find(params[:id])
     if @route.route_destinations.length < 2
-      flash.alert = "You need at least 2 destinations to save a route"
+      flash.notice = "You need at least 2 destinations to save a route"
       redirect_to edit_route_path(@route)
     else
       redirect_to route_path(@route)

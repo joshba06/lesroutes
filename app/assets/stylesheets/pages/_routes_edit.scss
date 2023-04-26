@@ -23,6 +23,12 @@
     justify-content: flex-end;
 
   }
+  #scroll-into-view-container {
+    z-index: -1;
+  }
+  .hidden {
+    display:none;
+  }
   .route-itinerary {
     background: white;
     border-radius: 10px;

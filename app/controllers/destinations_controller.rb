@@ -4,10 +4,10 @@ class DestinationsController < ApplicationController
 
     # Reload page if no input value was given
     if params[:destination][:address] == ""
-      flash.alert = "Please enter a location in the search field"
+      flash.notice = "Please enter a location in the search field"
       redirect_to edit_route_path(@route)
     elsif @route.route_destinations.length >= 9
-      flash.alert = "You cannot add more than 9 destinations"
+      flash.notice = "You cannot add more than 9 destinations"
       redirect_to edit_route_path(@route)
     else
       dest = Destination.find_by(address: params[:destination][:address])
@@ -32,7 +32,7 @@ class DestinationsController < ApplicationController
 
       RouteDestination.create(route: @route, destination: @destination, position: index)
 
-      flash.now.notice = "Stop successfully added!"
+      flash.notice = "Stop successfully added!"
       redirect_to edit_route_path(@route), status: :unprocessable_entity
     end
   end

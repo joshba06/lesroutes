@@ -1,13 +1,13 @@
 <div class="index-routes-container-mobile public" data-controller="route">
 
-  <div class="page-intro mx-1 my-2">
-    <h1>Welcome!</h1>
-    <h2>Here are routes that were shared by our community</h2>
+  <div class="page-actions-public mx-1 mt-3 mb-2">
+    <p class="intro-text">These routes were shared by the Les Routes community</p>
+    <div class="filter-button">
+      <a href="#" class="btn btn-outline-primary" role="button" aria-pressed="true" data-action="click->route#toggle_filter_menu" data-route-target="filterButton"><i class="fa-solid fa-filter"> </i> Filter</a>
+    </div>
   </div>
 
-  <div class="page-actions mx-1 mt-3 mb-2" >
-    <i class="fa-solid fa-filter" data-action="click->route#toggle_filter_menu"></i>
-  </div>
+
 
   <div class="container-filter hidden" data-route-target="filterMenu">
     <%= render partial: "shared/form_filter_routes", locals: {routes: @routes, url: "/routes/public"} %>
