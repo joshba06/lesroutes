@@ -16,11 +16,9 @@
       <div class="destination-title">
         <%= route_destination.destination.title %>
       </div>
-      <% if route_destination.destination.title == "Custom location" %>
-        <div class="destination-address"><%= route_destination.destination.address%></div>
-      <% else %>
-        <div class="destination-address"><%= route_destination.destination.address.split(",")[1..-1].join(", ") %></div>
-      <% end %>
+      <div class="destination-address">
+        <%= route_destination.destination.address%>
+      </div>
   </div>
-  
+
 </div>

@@ -9,7 +9,7 @@ class RoutesController < ApplicationController
     # Create Google Maps URLs for all routes
     @routes_filtered.each do |route|
       route_destinations_ordered = route.route_destinations.order(position: :asc).map { |route_destination| route_destination.destination }
-      update_google_redirect(route_destinations_ordered, route)
+      # update_google_redirect(route_destinations_ordered, route)
     end
 
     render_device_specific_view
@@ -32,6 +32,8 @@ class RoutesController < ApplicationController
       @route = Route.find(params[:id])
       @destination = Destination.new
       @route_destinations_ordered = @route.route_destinations.order(position: :asc).map { |route_destination| route_destination.destination }
+
+      update_google_redirect(@route_destinations_ordered, @route)
 
       @markers = @route.destinations.geocoded.map do |destination|
         {
@@ -287,49 +289,40 @@ class RoutesController < ApplicationController
 
     if route_destinations_ordered.length >= 2
 
-      if route_destinations_ordered.first.title == "Custom location" || route_destinations_ordered.first.unspecific_placename
-        origin = route_destinations_ordered.first.address.gsub(/\s/, "+")
-      else
-        origin = route_destinations_ordered.first.title.gsub(/\s/, "+")
-        origin << "%2C"
-        origin << route_destinations_ordered.first.city.gsub(/\s/, "+")
-      end
+      origin = route_destinations_ordered.first.title
+      origin_place_id = route_destinations_ordered.first.place_id
 
-      if route_destinations_ordered.last.title == "Custom location" || route_destinations_ordered.last.unspecific_placename
-        destination = route_destinations_ordered.last.address.gsub(/\s/, "+")
-      else
-        destination = route_destinations_ordered.last.title.gsub(/\s/, "+")
-        destination << "%2C"
-        destination << route_destinations_ordered.last.city.gsub(/\s/, "+")
-      end
+      destination = route_destinations_ordered.last.title
+      destination_place_id = route_destinations_ordered.last.place_id
 
       route.mode == "cycling" ? travelmode = "bicycling" : travelmode = route.mode
-      url = "https://www.google.com/maps/dir/?api=1&origin=#{origin}&destination=#{destination}&travelmode=#{travelmode}"
+      url = "https://www.google.com/maps/dir/?api=1&origin=#{origin}&origin_place_id=#{origin_place_id}&destination=#{destination}&destination_place_id=#{destination_place_id}&travelmode=#{travelmode}"
 
       if route_destinations_ordered.length >= 3
-        if route_destinations_ordered[1].title == "Custom location" || route_destinations_ordered[1].unspecific_placename
-          waypoint = route_destinations_ordered[1].address.gsub(/\s/, "+")
-        else
-          waypoint = route_destinations_ordered[1].title.gsub(/\s/, "+")
-          waypoint << "%2C"
-          waypoint << route_destinations_ordered[1].city.gsub(/\s/, "+")
-        end
+        waypoint_place_ids = []
+
+        waypoint = route_destinations_ordered[1].title
+        waypoint_place_ids << route_destinations_ordered[1].place_id
+
         url << "&waypoints=#{waypoint}"
 
         if route_destinations_ordered.length >= 4
           route_destinations_ordered.each_with_index do |destination, index|
             if index >= 2 && index != (route_destinations_ordered.length - 1)
-              if destination.title == "Custom location" || destination.unspecific_placename
-                waypoint = destination.address.gsub(/\s/, "+")
+              unless destination.place_id.nil?
+                waypoint = destination.title
+                waypoint_place_ids << destination.place_id
+                url << "%7C#{waypoint}"
               else
-                waypoint = destination.title.gsub(/\s/, "+")
-                waypoint << "%2C"
-                waypoint << destination.city.gsub(/\s/, "+")
+                flash.notice = "An error occurred while generating the google url"
               end
-              url << "%7C#{waypoint}"
             end
           end
         end
+
+        url << "&waypoint_place_ids="
+        waypoint_place_ids.each { |id| url << "#{id}%7C"}
+
       end
       route.google_url = url
       route.save

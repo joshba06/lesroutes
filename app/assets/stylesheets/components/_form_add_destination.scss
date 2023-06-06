@@ -8,30 +8,27 @@
   position: relative;
   margin: 0px auto;
   #new_destination {
-    height: 100% !important;
+    height: 40px !important;
     margin: 0px auto;
   }
-  .mapboxgl-ctrl-geocoder {
-    max-width: none;
-    width: 100%;
-    height: 100%;
-    border: 1px solid lightgrey;
-    box-shadow: none;
-    background-color: transparent;
+  .add-destination-form {
+    .left {
+      width: 100%;
+      height: 100%;
+    }
+    .right {
+      margin-left: 5px;
+      display: flex;
+      justify-content: flex-end;
+      .submit-button {
+        height: 100%;
+
+      }
+    }
   }
-  .mapboxgl-ctrl-geocoder--icon.mapboxgl-ctrl-geocoder--icon-search {
-    top: 0px !important;
-    height: 100% !important;
-  }
-  .submit-button {
-    margin-left: 5px;
-  }
+
 }
 
-.mapboxgl-ctrl-geocoder--input {
-  height: 100% !important;
-}
-
-#destination_address {
-  display: none;
-}
+// #destination_address {
+//   display: none;
+// }

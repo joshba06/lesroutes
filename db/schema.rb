@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_25_110605) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_06_151200) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -60,6 +60,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_25_110605) do
     t.string "address"
     t.string "city"
     t.boolean "unspecific_placename", default: false
+    t.string "place_id"
+    t.string "full_address"
     t.index ["user_id"], name: "index_destinations_on_user_id"
   end
 

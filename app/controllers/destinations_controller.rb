@@ -10,17 +10,12 @@ class DestinationsController < ApplicationController
       flash.notice = "You cannot add more than 9 destinations"
       redirect_to edit_route_path(@route)
     else
-      dest = Destination.find_by(address: params[:destination][:address])
+      dest = Destination.find_by(full_address: params[:destination][:full_address])
       if dest
         @destination = dest
       else
         @destination = Destination.new(destination_params)
         @destination.user = current_user
-        if params[:destination][:unspecific_placename] == "1"
-          @destination.unspecific_placename = true
-        else
-          @destination.unspecific_placename = false
-        end
         @destination.save
       end
 
@@ -47,6 +42,6 @@ class DestinationsController < ApplicationController
   private
 
   def destination_params
-    params.require(:destination).permit(:title, :longitude, :latitude, :address, :city, :unspecific_placename)
+    params.require(:destination).permit(:title, :longitude, :latitude, :address, :full_address, :place_id)
   end
 end
