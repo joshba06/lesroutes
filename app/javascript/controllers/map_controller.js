@@ -7,219 +7,170 @@ export default class extends Controller {
 
   static values = {
     apiKey: String,
-    markers: Array,
+    markersHash: Object,
     routeId: Number,
     routeMode: String,
   };
 
   connect() {
-    // console.log("Hello from MAP controller");
     mapboxgl.accessToken = this.apiKeyValue;
+    const markers = this.markersHashValue
 
-    // 0. Convert markers
-    const markersarray = this.markersValue;
-    const sortedmarkers = {}
-    markersarray.forEach((marker) => {
-      sortedmarkers[marker.pos] = {lat: marker.lat, lng: marker.lng, marker_html: marker.marker_html}
-    })
-
-    // 1. Load empty map
-    let map = new mapboxgl.Map({
-      container: this.element,
-      style: "mapbox://styles/mapbox/streets-v10",
-      center: [-0.118092, 51.509865],
-      zoom: 6,
+    // 1. If there is no destination, add empty map
+    if (Object.keys(markers).length == 0) {
+      // Update count of api calls
+      this.#countApiCalls("maploads")
+      const map = new google.maps.Map(this.element, {
+        zoom: 7,
+        center: { lat: 51.509865, lng: -0.118092 },
+        disableDefaultUI: true,
+        zoomControl: true,
+        mapTypeId: 'roadmap'
       });
-    // console.log("Created empty map")
-
-    // Update count of api calls
-    this.#countApiCalls("maploads")
-
+      this.#noRouteFound()
+    }
 
     // 2.1 If there is one destination, zoom onto that destination
-    if (Object.keys(sortedmarkers).length == 1) {
-      // console.log("There is one destination")
+    else if (Object.keys(markers).length == 1) {
 
-      map.setCenter([sortedmarkers[1].lng, sortedmarkers[1].lat]);
-      map.setZoom(13);
+      // Update count of api calls
+      this.#countApiCalls("maploads")
+      const map = new google.maps.Map(this.element, {
+        zoom: 13,
+        center: { lat: markers[1].lat, lng: markers[1].lng },
+        disableDefaultUI: true,
+        zoomControl: true,
+        mapTypeId: 'roadmap'
+      });
 
-      this.#addMarkersToMap(sortedmarkers, map);
+      new google.maps.Marker({
+        position: new google.maps.LatLng(markers[1].lat, markers[1].lng),
+        map,
+        // icon: "https://res.cloudinary.com/ditrbablt/image/upload/v1686139357/marker_1_tcfzug.png",
+      });
 
-      this.#sendPatch("_", true);
+      this.#noRouteFound()
     }
 
     // 2.2 If there are at least two destinations, fit coordinate bounds
-    else if (Object.keys(sortedmarkers).length >= 2) {
-      // console.log("There are at least 2 destinations")
+    else if (Object.keys(markers).length >= 2) {
 
-      this.#addMarkersToMap(sortedmarkers, map);
-      this.#fitMapToMarkers(sortedmarkers, map);
+      // Update count of api calls
+      this.#countApiCalls("maploads")
 
-      // 2.3.1 Get route data from mapbox
+      const map = new google.maps.Map(this.element, {
+        zoom: 13,
+        disableDefaultUI: true,
+        zoomControl: true,
+        mapTypeId: 'roadmap'
+      });
 
-      // Create  query string
-      // console.log(`Route mode: ${this.routeModeValue}`)
+      const directionsService = new google.maps.DirectionsService();
+      const directionsRenderer = new google.maps.DirectionsRenderer({ map: map });
 
-      let fetchQueryString =
-      `https://api.mapbox.com/directions/v5/mapbox/${this.routeModeValue === "driving" ? "driving-traffic" : this.routeModeValue}/`;
+      let totalDistanceMeters = 0
+      let totalTimeSeconds = 0
 
-      let i = 1;
-      for (const key in sortedmarkers) {
+      // Extract waypoints
+      const waypoints = []
+      for (let i = 2; i < Object.keys(markers).length; i++) {
+        waypoints.push({
+          location: { placeId: markers[i].place_id },
+          stopover: true,
+        })
+      }
 
-        if (i == Object.keys(sortedmarkers).length) {
-          fetchQueryString =
-            fetchQueryString +
-            sortedmarkers[key].lng +
-            "," +
-            sortedmarkers[key].lat +
-            `?${this.routeModeValue === "driving" ? "exclude=ferry%2Ctoll" : "exclude=ferry"}&geometries=geojson&access_token=${mapboxgl.accessToken}`;
-        } else {
-          fetchQueryString =
-            fetchQueryString + sortedmarkers[key].lng + "," + sortedmarkers[key].lat + ";";
-        }
-        i += 1;
-      };
-      // console.log(`Query string: ${fetchQueryString}`)
+      this.#countApiCalls("directions")
+      directionsService
+      .route({
+        origin: {
+          placeId: markers[1].place_id
+        },
+        destination: {
+          placeId: markers[Object.keys(markers).length].place_id,
+        },
+        waypoints: waypoints,
+        optimizeWaypoints: false,
+        travelMode: google.maps.TravelMode.DRIVING,
+        avoidFerries: true,
+        avoidTolls: true,
+        unitSystem: google.maps.UnitSystem.METRIC
+      })
+      .then((response) => {
+        directionsRenderer.setDirections(response);
 
-      this.#fetchRoute(fetchQueryString, map);
+        // Compute total distance and time
+        const routeLegs = response.routes[0].legs
+        console.log(routeLegs)
+        routeLegs.forEach( leg => {
+          totalDistanceMeters += leg.distance.value
+          totalTimeSeconds += leg.duration.value
+        })
+
+        // Update time and distance
+        this.#sendPatch(totalTimeSeconds, totalDistanceMeters)
+
+      })
+      .catch((e) =>
+        this.#noRouteFound()
+      );
+
     }
 
     // 2.3 If there is no destination, place default value as route specs
     else {
       // console.log("No destination found")
-      this.#sendPatch("_", true);
+      this.#sendPatch(_, _, true)
     }
   }
 
-  #addMarkersToMap(sortedmarkers, map) {
-    for (const key in sortedmarkers) {
+  #noRouteFound() {
+    console.log("No route found")
 
-      const customMarker = document.createElement("div")
-      customMarker.innerHTML = sortedmarkers[key].marker_html
+    if (window.location.href.includes("edit")) {
+      // On Edit page, replace route.google_url with "no_route_found". Update route.time and distance
+      const form = new FormData();
+      form.append('route[google_url]', "no_route_found")
 
-      new mapboxgl.Marker(customMarker)
-        .setLngLat([sortedmarkers[key].lng, sortedmarkers[key].lat])
-        .addTo(map);
-    };
-    // console.log("Added markers to map")
-  }
+      Rails.ajax({
+        url: `/routes/${this.routeIdValue}/noroute`,
+        type: "PATCH",
+        data: form,
+        success: function () {
+          console.log("Successfully updated route information for error")
+        },
+        error: function () {
+          console.log("Could not update route info for error")
+        }
+      })
 
-  #fitMapToMarkers(sortedmarkers, map) {
-    const bounds = new mapboxgl.LngLatBounds();
-
-    // Extend the 'LngLatBounds' to include every coordinate in the bounds result.
-    for (const key in sortedmarkers) {
-      bounds.extend([sortedmarkers[key].lng, sortedmarkers[key].lat]);
+      // Update database and display with time and distance
+      this.#sendPatch(_, _, true)
     }
 
-    map.fitBounds(bounds, {
-      padding: 80,
-      duration: 0,
-    });
-    // console.log("Fitted map bounds to markers")
   }
 
-  #fetchRoute(fetchQueryString, map) {
-    fetch(fetchQueryString)
-      .then((response) => response.json())
-      .then((data) => {
-
-        // Update count of api calls
-        this.#countApiCalls("directions")
-
-        // Overwrite google_url with "no_route_found" if mapbox cannot determine route
-        if (data.code === "NoRoute") {
-
-          if (window.location.href.includes("edit")) {
-            // On Edit page, replace route.google_url with "no_route_found". Update route.time and distance
-            const form = new FormData();
-            form.append('route[google_url]', "no_route_found")
-
-            Rails.ajax({
-              url: `/routes/${this.routeIdValue}/noroute`,
-              type: "PATCH",
-              data: form,
-              success: function () {
-                console.log("Successfully updated route information for error")
-              },
-              error: function () {
-                console.log("Could not update route info for error")
-              }
-            })
-            this.#sendPatch(data, true)
-          }
-          else {
-            // On Show page, don't do anything
-            // console.log("Show page. No database update needed")
-          }
-        }
-        else {
-          const route = data.routes[0].geometry.coordinates;
-          const geojson = {
-            type: "Feature",
-            properties: {},
-            geometry: {
-              type: "LineString",
-              coordinates: route,
-            },
-          };
-
-          map.on('load', function() {
-            console.log("Map has loaded")
-
-            map.addSource("route-details", {
-              type: 'geojson',
-              data: geojson,
-            });
-            console.log("1 Added route data to map")
-
-            map.addLayer({
-              id: 'route',
-              type: 'line',
-              source: 'route-details',
-              layout: {
-                "line-join": "round",
-                "line-cap": "round",
-              },
-              paint: {
-                "line-color": "#3887be",
-                "line-width": 5,
-                "line-opacity": 0.75,
-              },
-            });
-            console.log("2 Added route layer to map")
-          })
-
-          this.#sendPatch(data)
-        }
-
-      });
-  }
-
-  #sendPatch(data, route_too_short = false) {
+  #sendPatch(TimeInSeconds, DistanceInMetres, route_too_short = false) {
 
     // Only update db and route specs on edit page, not on show page
     if (window.location.href.includes("edit")) {
-      // console.log("We are on the edit page")
 
       const routeId = this.routeIdValue
       const form = new FormData();
 
-      let TimeInMinutes = 0
       let DistanceInKm = 0
+      let TimeInMinutes = 0
 
       if (route_too_short) {
         console.log("Route is too short or non-existent. Overwriting time, distance with 0")
       }
       else {
-        const DistanceInMetres = data.routes[0].distance
-        const TimeInSeconds = data.routes[0].duration
         DistanceInKm = parseFloat((DistanceInMetres / 1000).toFixed(2))
         TimeInMinutes = Math.round((TimeInSeconds / 60))
       }
 
-      // console.log(`Time in min: ${TimeInMinutes}`)
-      // console.log(`Distance in km: ${DistanceInKm}`)
+      console.log(`Time in min: ${TimeInMinutes}`)
+      console.log(`Distance in km: ${DistanceInKm}`)
 
       form.append('route[distance]', DistanceInKm)
       form.append('route[time]', TimeInMinutes)
@@ -236,9 +187,6 @@ export default class extends Controller {
           console.log("Could not update route info")
         }
       })
-    }
-    else {
-      console.log("We are on the show page")
     }
   }
 

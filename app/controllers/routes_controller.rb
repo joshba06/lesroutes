@@ -86,6 +86,16 @@ class RoutesController < ApplicationController
       @route.save
     end
 
+    @markers_hash = {}
+    @route.destinations.geocoded.map do |destination|
+      @markers_hash[@route.route_destinations.where(destination: destination).first.position] =
+      {
+        lat: destination.latitude,
+        lng: destination.longitude,
+        place_id: destination.place_id
+      }
+    end
+
     @markers = @route.destinations.geocoded.map do |destination|
       {
         pos: @route.route_destinations.where(destination: destination).first.position,
@@ -95,12 +105,14 @@ class RoutesController < ApplicationController
       }
     end
 
+
     if browser.device.mobile?
       render variants: [:mobile]
     else
       render variants: [:desktop]
     end
 
+    # raise
   end
 
   def update_mode_cycling
