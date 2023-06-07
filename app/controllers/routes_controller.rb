@@ -35,12 +35,13 @@ class RoutesController < ApplicationController
 
       update_google_redirect(@route_destinations_ordered, @route)
 
-      @markers = @route.destinations.geocoded.map do |destination|
+      @markers_hash = {}
+      @route.destinations.geocoded.map do |destination|
+        @markers_hash[@route.route_destinations.where(destination: destination).first.position] =
         {
-          pos: @route.route_destinations.where(destination: destination).first.position,
           lat: destination.latitude,
           lng: destination.longitude,
-          marker_html: render_to_string(partial: "marker#{@route.route_destinations.where(destination: destination).first.position}")
+          place_id: destination.place_id
         }
       end
 
@@ -71,7 +72,7 @@ class RoutesController < ApplicationController
     @route = Route.find(params[:id])
     @destination = Destination.new
 
-    # Display warning, if mapbox could not determine route between points
+    # Display warning, if Google could not determine route between points
     if @route.google_url == "no_route_found"
       flash.notice = "No #{@route.mode} directions found for these destinations!"
     end
@@ -96,23 +97,12 @@ class RoutesController < ApplicationController
       }
     end
 
-    @markers = @route.destinations.geocoded.map do |destination|
-      {
-        pos: @route.route_destinations.where(destination: destination).first.position,
-        lat: destination.latitude,
-        lng: destination.longitude,
-        marker_html: render_to_string(partial: "marker#{@route.route_destinations.where(destination: destination).first.position}")
-      }
-    end
-
-
     if browser.device.mobile?
       render variants: [:mobile]
     else
       render variants: [:desktop]
     end
 
-    # raise
   end
 
   def update_mode_cycling
@@ -334,6 +324,8 @@ class RoutesController < ApplicationController
 
         url << "&waypoint_place_ids="
         waypoint_place_ids.each { |id| url << "#{id}%7C"}
+
+        url << "/data=!4m4!4m3!2m2!2b1!3b1"
 
       end
       route.google_url = url

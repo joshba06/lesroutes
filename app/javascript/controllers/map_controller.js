@@ -66,10 +66,21 @@ export default class extends Controller {
       });
 
       const directionsService = new google.maps.DirectionsService();
-      const directionsRenderer = new google.maps.DirectionsRenderer({ map: map });
+      const directionsRenderer = new google.maps.DirectionsRenderer({ map: map, suppressBicyclingLayer: true });
 
       let totalDistanceMeters = 0
       let totalTimeSeconds = 0
+
+      let selectedMode = google.maps.TravelMode.WALKING
+      if (this.routeModeValue === "driving") {
+        console.log("Mode is driving")
+        selectedMode = google.maps.TravelMode.DRIVING
+      }
+      else if (this.routeModeValue === "cycling") {
+        console.log("Mode is cycling")
+        selectedMode = google.maps.TravelMode.BICYCLING
+      }
+      console.log(selectedMode)
 
       // Extract waypoints
       const waypoints = []
@@ -91,17 +102,18 @@ export default class extends Controller {
         },
         waypoints: waypoints,
         optimizeWaypoints: false,
-        travelMode: google.maps.TravelMode.DRIVING,
+        travelMode: selectedMode,
         avoidFerries: true,
         avoidTolls: true,
+        avoidHighways: true,
         unitSystem: google.maps.UnitSystem.METRIC
       })
       .then((response) => {
         directionsRenderer.setDirections(response);
+        console.log(response)
 
         // Compute total distance and time
         const routeLegs = response.routes[0].legs
-        console.log(routeLegs)
         routeLegs.forEach( leg => {
           totalDistanceMeters += leg.distance.value
           totalTimeSeconds += leg.duration.value
