@@ -9,7 +9,6 @@ export default class extends Controller {
     markersHash: Object,
     routeId: Number,
     routeMode: String,
-    googleApiKey: String
   };
 
   connect() {
@@ -33,7 +32,7 @@ export default class extends Controller {
     })
     }
 
-    const update_route_url = function(routeId) {
+    async function update_route_url (routeId) {
       const form = new FormData();
       Rails.ajax({
         url: `/routes/${routeId}/update_google_url`,
@@ -48,7 +47,7 @@ export default class extends Controller {
       })
     }
 
-    const sendPatch = function(routeId, TimeInSeconds, DistanceInMetres, route_too_short = false) {
+    async function sendPatch (routeId, TimeInSeconds, DistanceInMetres, route_too_short = false) {
 
       // Convert time and distance data
       let DistanceInKm = 0
@@ -99,103 +98,36 @@ export default class extends Controller {
       console.log("Empty map has loaded")
     }
 
-    async function loadMapWithMarkers(mapDomElement, markers) {
-      // Define marker properties
-      // const labels = "123456789";
-      // let labelIndex = 0;
-      const icon = document.createElement("div");
-      icon.innerHTML = '<span style="font-size:1.5rem;font-weight:bold;color:white;">1</span>';
+    async function loadMapWithMarkers(routeId, mapDomElement, markers, routeMode = null) {
 
-      // Load empty map
+      // Load map library
       const { Map } = await google.maps.importLibrary("maps");
-      const map = new Map(mapDomElement, {
-          zoom: 9,
-          center: { lat: markers[1].lat, lng: markers[1].lng },
+      let map;
+
+      // Load directions, if at least 2 destinations exist
+      if (Object.keys(markers).length >= 2) {
+
+        // Load empty map
+        map = new Map(mapDomElement, {
           disableDefaultUI: true,
           zoomControl: true,
           mapId: "d8743ef38144c17c",
         });
-      console.log("Map has loaded")
 
-      // Load pin
-      const { PinElement } = await google.maps.importLibrary("marker")
-      const pin = new PinElement({
-        scale: 1.3,
-        glyph: icon,
-        glyphColor: "#0F4C75",
-        background: "#0F4C75",
-        borderColor: "#3282B8",
-      });
-      console.log("Pin has loaded")
-
-      // Load marker
-      const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-      const marker = new AdvancedMarkerElement({
-        map,
-        position: { lat: markers[1].lat, lng: markers[1].lng },
-        content: pin.element,
-        title: "Some title"
-      });
-      console.log("Marker has loaded")
-    }
-
-    async function main(markers, mapElement, routeId) {
-
-      // Define function variables and load custom maps properties
-
-      // 1. If there is no destination, add empty map
-      if (Object.keys(markers).length == 0) {
-
-        // Load empty map
-        await loadEmptyMap(mapElement);
-
-        // Update count of api calls
-        countApiCalls("maploads");
-
-        // Update time, distance & google url
-        sendPatch(routeId, "_", "_", true);
-        update_route_url(routeId); // After patch, because patch updates db and update url works with new db entry
-      }
-
-      // 2.1 If there is one destination, zoom onto that destination
-      else if (Object.keys(markers).length == 1) {
-
-        // Load custom map
-        await loadMapWithMarkers(mapElement, markers)
-
-        // Update count of api calls
-        countApiCalls("maploads");
-
-        // Update time, distance & google url
-        sendPatch(routeId, "_", "_", true);
-        update_route_url(routeId); // After patch, because patch updates db and update url works with new db entry
-      }
-
-      // 2.2 If there are at least two destinations, fit coordinate bounds
-      else if (Object.keys(markers).length >= 2) {
-
-        // Update count of api calls
-        // this.#countApiCalls("maploads")
-
-        const map = new google.maps.Map(this.element, {
-          zoom: 13,
-          disableDefaultUI: true,
-          zoomControl: true,
-          mapTypeId: 'roadmap'
-        });
-        console.log("Loaded map")
-
+        // Define direction parameters
         const directionsService = new google.maps.DirectionsService();
-        const directionsRenderer = new google.maps.DirectionsRenderer({ map: map, suppressBicyclingLayer: true });
-
+        const directionsRenderer = new google.maps.DirectionsRenderer({
+                                                                        map: map,
+                                                                        suppressBicyclingLayer: true,
+                                                                        suppressMarkers: true });
         let totalDistanceMeters = 0
         let totalTimeSeconds = 0
 
         let selectedMode = google.maps.TravelMode.WALKING
-        if (this.routeModeValue === "driving") {
+        if (routeMode === "driving") {
           selectedMode = google.maps.TravelMode.DRIVING
         }
-        else if (this.routeModeValue === "cycling") {
+        else if (routeMode === "cycling") {
           selectedMode = google.maps.TravelMode.BICYCLING
         }
 
@@ -208,9 +140,8 @@ export default class extends Controller {
           })
         }
 
-        // this.#countApiCalls("directions")
-
-        directionsService
+        // Fetch directions
+        const response = await directionsService
         .route({
           origin: {
             placeId: markers[1].place_id
@@ -221,19 +152,24 @@ export default class extends Controller {
           waypoints: waypoints,
           optimizeWaypoints: false,
           travelMode: selectedMode,
-          // avoidFerries: true,
-          // avoidTolls: true,
-          // avoidHighways: true,
           unitSystem: google.maps.UnitSystem.METRIC
         })
-        .then((response) => {
+        if (response.status === "OK") {
+
+          // Replace coords in markers object with start- and end point of route leg for better visual accuracy
+          let j = 1
+          response.routes[0].legs.forEach( leg => {
+            markers[j].lat = leg.start_location.lat()
+            markers[j].lng = leg.start_location.lng()
+            if (j === response.routes[0].legs.length) {
+              markers[j+1].lat = leg.end_location.lat()
+              markers[j+1].lng = leg.end_location.lng()
+            }
+            j += 1
+          })
 
           // If route fetch was successful, add route to map
           directionsRenderer.setDirections(response);
-
-          // Remove all markers
-
-          // label: labels[labelIndex++ % labels.length],
 
           // Compute total distance and time
           const routeLegs = response.routes[0].legs
@@ -243,69 +179,104 @@ export default class extends Controller {
           })
 
           // Update time, distance & google url
-          // sendPatch(totalTimeSeconds, totalDistanceMeters)
-          // update_route_url() // After patch, because patch updates db and update url works with new db entry
-
-        })
-        .catch((e) =>
-          // If route fetch was NOT successfull, override time, distance with 0, google url with "N/A"
-          sendPatch(routeId, "_", "_", false),
-          update_route_url(routeId) // After patch, because patch updates db and update url works with new db entry
-        );
-
+          await sendPatch(routeId, totalTimeSeconds, totalDistanceMeters)
+          await update_route_url(routeId) // After patch, because patch updates db and update url works with new db entry
+        }
+        else {
+          console.log("Could not find route")
+          await sendPatch(routeId, "_", "_", true)
+          await update_route_url(routeId) // After patch, because patch updates db and update url works with new db entry
+        }
+      }
+      // Load map and center on 1 destination, if only 1 exists
+      else {
+        map = new Map(mapDomElement, {
+          zoom: 13,
+          center: { lat: parseFloat(markers[1].lat), lng: parseFloat(markers[1].lng) },
+          disableDefaultUI: true,
+          zoomControl: true,
+          mapId: "d8743ef38144c17c",
+        });
       }
 
-      // 2.3 If there is no destination, place default value as route specs
+      // Add marker(s) to the map
+      const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+      const { PinElement } = await google.maps.importLibrary("marker");
+
+      let counter = 0
+      for (const key in markers) {
+
+        // Customize pin
+        let icon = document.createElement("div")
+        icon.innerHTML = `<span style="font-size:1.3rem;font-weight:bold;color:white;">${key}</span>`;
+
+        let pin = new PinElement({
+          scale: 1.3,
+          glyph: icon,
+          glyphColor: "#0F4C75",
+          background: "#0F4C75",
+          borderColor: "#3282B8",
+        });
+
+        let marker = new AdvancedMarkerElement({
+          map,
+          position: { lat: parseFloat(markers[key].lat), lng: parseFloat(markers[key].lng) },
+          content: pin.element,
+          // title: "Some title"
+        });
+        counter += 1
+      }
+      // console.log(`Added ${counter} markers.`);
+    }
+
+    async function main(markers, mapElement, routeId, routeMode) {
+
+      // If there is one destination, zoom onto that destination
+      if (Object.keys(markers).length == 1) {
+
+        // Load custom map
+        await loadMapWithMarkers(routeId, mapElement, markers)
+
+        // Update count of api calls
+        countApiCalls("maploads");
+
+        // Update time, distance & google url
+        sendPatch(routeId, "_", "_", true);
+        update_route_url(routeId); // After patch, because patch updates db and update url works with new db entry
+      }
+
+      // If there are at least two destinations, fit coordinate bounds
+      else if (Object.keys(markers).length >= 2) {
+
+
+        // Load custom map and directions
+        await loadMapWithMarkers(routeId, mapElement, markers, routeMode)
+
+        // Update count of api calls
+        countApiCalls("maploads");
+      }
+
+      // If there is no destination, add empty map
       else {
-        sendPatch(routeId, "_", "_", true)
-        update_route_url(routeId) // After patch, because patch updates db and update url works with new db entry
+        // Load empty map
+        await loadEmptyMap(mapElement);
+
+        // Update count of api calls
+        countApiCalls("maploads");
+
+        // Update time, distance & google url
+        sendPatch(routeId, "_", "_", true);
+        update_route_url(routeId); // After patch, because patch updates db and update url works with new db entry
       }
     }
 
+    // Define variables needed in functions
     const routeId = this.routeIdValue
     const mapElement = this.element
     const markers = this.markersHashValue
-    main(markers, mapElement, routeId)
+
+    // Run main script
+    main(markers, mapElement, routeId, this.routeModeValue)
 
   }
-
-
-
-  // function countApiCalls(apiName) {
-  //   // apiName: "directions", "geocoding", or "maploads"
-
-  //   const form = new FormData();
-  //   form.append(`api_call[${apiName}]`, "update")
-
-  //   Rails.ajax({
-  //     url: `/apicalls/${apiName}`,
-  //     type: "PATCH",
-  //     data: form,
-  //     success: function () {
-  //       console.log(`Successfully updated api count for: ${apiName}`)
-  //     },
-  //     error: function () {
-  //       console.log(`Could not update api count for: ${apiName}`)
-  //     }
-  //   })
-  // }
-
-  // async #initMapAndMarkers() {
-
-    // Load empty map
-    // this.map = new Map(mapDomElement, {
-    //   zoom: 9,
-    //   center: { lat: 51.509865, lng: -0.118092 },
-    //   disableDefaultUI: true,
-    //   zoomControl: true,
-    //   mapId: "d8743ef38144c17c",
-    // });
-
-
-    // console.log("Map is")
-    // console.log(this.map)
-  // }
-  // position: { lat: 51.509865, lng: -0.118092 },
-
-
 }

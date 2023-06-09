@@ -18,10 +18,12 @@ export default class extends Controller {
       strictBounds: false,
     };
 
+
     const autocomplete = new google.maps.places.Autocomplete(input, options);
 
     // Display search results when user enters location
     autocomplete.addListener("place_changed", () => {
+
       const place = autocomplete.getPlace();
 
       if (!place.geometry || !place.geometry.location) {
@@ -34,6 +36,7 @@ export default class extends Controller {
   }
 
   #setInput(place) {
+
     // Update Google API Autocomplete + Place Details - Per session "count"
     this.#countApiCalls("geocoding")
 

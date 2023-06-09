@@ -5,25 +5,17 @@ class RoutesController < ApplicationController
   def index
     routes_unfiltered = Route.all.select { |route| route.user == current_user}
     filter_routes_for_query(routes_unfiltered)
-
-    # Create Google Maps URLs for all routes
-    # @routes_filtered.each do |route|
-    #   route_destinations_ordered = route.route_destinations.order(position: :asc).map { |route_destination| route_destination.destination }
-    #   update_google_redirect(route_destinations_ordered, route)
-    # end
-
     render_device_specific_view
   end
 
   def index_public
     routes_unfiltered = Route.all
     filter_routes_for_query(routes_unfiltered, true)
-
     render_device_specific_view
   end
 
   def show
-    # If limit of mapbox api calls is reached, redirect to index or public index page
+    # If limit of google api calls is reached, redirect to index or public index page
     if @website_offline && request.referrer.include?("routes/public")
       redirect_to public_routes_path, alert: "We are currently experiencing a very large number of visits. Please check back at the beginning of next month. You can still start navigation from here"
     elsif @website_offline
@@ -34,7 +26,7 @@ class RoutesController < ApplicationController
       @route_destinations_ordered = @route.route_destinations.order(position: :asc).map { |route_destination| route_destination.destination }
 
       @markers_hash = {}
-      @route.destinations.geocoded.map do |destination|
+      @route.destinations.map do |destination|
         @markers_hash[@route.route_destinations.where(destination: destination).first.position] =
         {
           lat: destination.latitude,
@@ -69,31 +61,16 @@ class RoutesController < ApplicationController
   def edit
     @route = Route.find(params[:id])
     @destination = Destination.new
-
-    # Display warning, if Google could not determine route between points
-    if @route.google_url == "no_route_found"
-      flash.notice = "No #{@route.mode} directions found for these destinations!"
-    end
-
     @route_destinations_ordered = @route.route_destinations.order(position: :asc).map { |route_destination| route_destination.destination }
 
-    # If the current route has more than or equal to 2 destinations, update the routes google maps link
-    if @route_destinations_ordered.length >= 2
-      update_google_redirect(@route_destinations_ordered, @route)
-    else
-      @route.google_url = "not_enough_destinations"
-      @route.save
-    end
-
     @markers_hash = {}
-    @route.destinations.geocoded.map do |destination|
+    @route.destinations.map do |destination|
       position = @route.route_destinations.where(destination: destination).first.position
       @markers_hash[position] =
       {
         lat: destination.latitude,
         lng: destination.longitude,
         place_id: destination.place_id,
-        image_path: ActionController::Base.helpers.image_url("marker_#{position}.png")
       }
     end
 
@@ -161,8 +138,6 @@ class RoutesController < ApplicationController
     @route.update(ajax_params)
   end
 
-  # Used for "saving" route on edit page -> Making sure user has at least two destinations
-  # If user leaves webpage (since route is still saved in background) index page will filter routes with less than two destinations
   def save
     @route = Route.find(params[:id])
     if @route.route_destinations.length < 2
@@ -224,11 +199,13 @@ class RoutesController < ApplicationController
         waypoint_place_ids.each { |id| url << "#{id}%7C"}
       end
     else
-      url = "https://www.lesroute.co.uk/#{route.id}"
+      url = "https://www.lesroutes.co.uk/#{route.id}"
+      flash.notice = "No #{route.mode} directions found for these destinations!"
     end
 
     route.google_url = url
     route.save
+
   end
 
   private
@@ -325,11 +302,6 @@ class RoutesController < ApplicationController
 
     # Sort routes alphabetically
     @routes_filtered = @routes_filtered.sort { |a, b| a.title <=> b.title}
-
-  end
-
-  def update_google_redirect(route_destinations_ordered, route)
-
 
   end
 
