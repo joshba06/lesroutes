@@ -1,10 +1,12 @@
 class RoutesController < ApplicationController
-  skip_before_action :authenticate_user!, only: [ :index_public, :show]
+  skip_before_action :authenticate_user!, only: [:index_public, :show]
   before_action :check_number_of_api_calls
 
   def index
-    routes_unfiltered = Route.all.select { |route| route.user == current_user}
-    filter_routes_for_query(routes_unfiltered)
+    routes = policy_scope(Route)
+    authorize routes
+
+    filter_routes_for_query(routes)
     render_device_specific_view
   end
 
@@ -22,6 +24,8 @@ class RoutesController < ApplicationController
       redirect_to myroutes_path, alert: "We are currently experiencing a very large number of visits. Please check back at the beginning of next month. You can still start navigation from here"
     else
       @route = Route.find(params[:id])
+      authorize @route
+
       @destination = Destination.new
       @route_destinations_ordered = @route.route_destinations.order(position: :asc).map { |route_destination| route_destination.destination }
 
@@ -41,11 +45,13 @@ class RoutesController < ApplicationController
 
   def new
     @route = Route.new
+    authorize @route
     render_device_specific_view
   end
 
   def create
     @route = Route.new(route_params)
+    authorize @route
     @route.user = current_user
     if @route.save
       redirect_to edit_route_path(@route), notice: "You created a new route. Add no more than 9 destinations."
@@ -60,6 +66,8 @@ class RoutesController < ApplicationController
 
   def edit
     @route = Route.find(params[:id])
+    authorize @route
+
     @destination = Destination.new
     @route_destinations_ordered = @route.route_destinations.order(position: :asc).map { |route_destination| route_destination.destination }
 
@@ -122,6 +130,7 @@ class RoutesController < ApplicationController
 
   def update
     @route = Route.find(params[:id])
+    authorize @route
     @route.update(route_params)
     redirect_to route_path(@route)
   end
@@ -302,6 +311,8 @@ class RoutesController < ApplicationController
 
     # Sort routes alphabetically
     @routes_filtered = @routes_filtered.sort { |a, b| a.title <=> b.title}
+
+
 
   end
 
