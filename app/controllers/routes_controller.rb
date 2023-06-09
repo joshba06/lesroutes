@@ -7,10 +7,10 @@ class RoutesController < ApplicationController
     filter_routes_for_query(routes_unfiltered)
 
     # Create Google Maps URLs for all routes
-    @routes_filtered.each do |route|
-      route_destinations_ordered = route.route_destinations.order(position: :asc).map { |route_destination| route_destination.destination }
-      # update_google_redirect(route_destinations_ordered, route)
-    end
+    # @routes_filtered.each do |route|
+    #   route_destinations_ordered = route.route_destinations.order(position: :asc).map { |route_destination| route_destination.destination }
+    #   update_google_redirect(route_destinations_ordered, route)
+    # end
 
     render_device_specific_view
   end
@@ -32,8 +32,6 @@ class RoutesController < ApplicationController
       @route = Route.find(params[:id])
       @destination = Destination.new
       @route_destinations_ordered = @route.route_destinations.order(position: :asc).map { |route_destination| route_destination.destination }
-
-      update_google_redirect(@route_destinations_ordered, @route)
 
       @markers_hash = {}
       @route.destinations.geocoded.map do |destination|
@@ -89,11 +87,13 @@ class RoutesController < ApplicationController
 
     @markers_hash = {}
     @route.destinations.geocoded.map do |destination|
-      @markers_hash[@route.route_destinations.where(destination: destination).first.position] =
+      position = @route.route_destinations.where(destination: destination).first.position
+      @markers_hash[position] =
       {
         lat: destination.latitude,
         lng: destination.longitude,
-        place_id: destination.place_id
+        place_id: destination.place_id,
+        image_path: ActionController::Base.helpers.image_url("marker_#{position}.png")
       }
     end
 
@@ -178,16 +178,57 @@ class RoutesController < ApplicationController
     @route.update(ajax_params)
   end
 
-  def noroute
-    @route = Route.find(params[:id])
-    @route.update(no_route_params)
-  end
-
   def destroy
     @route = Route.find(params[:id])
     @route.destroy
     flash.notice = "Route successfully deleted!"
     redirect_to routes_path
+  end
+
+  def update_google_url
+    route = Route.find(params[:id])
+    route_destinations_ordered = route.route_destinations.order(position: :asc).map { |route_destination| route_destination.destination }
+
+    if route_destinations_ordered.length >= 2
+
+      origin = route_destinations_ordered.first.title
+      origin_place_id = route_destinations_ordered.first.place_id
+
+      destination = route_destinations_ordered.last.title
+      destination_place_id = route_destinations_ordered.last.place_id
+
+      route.mode == "cycling" ? travelmode = "bicycling" : travelmode = route.mode
+      url = "https://www.google.com/maps/dir/?api=1&origin=#{origin}&origin_place_id=#{origin_place_id}&destination=#{destination}&destination_place_id=#{destination_place_id}&travelmode=#{travelmode}"
+
+      if route_destinations_ordered.length >= 3
+        waypoint_place_ids = []
+
+        waypoint = route_destinations_ordered[1].title
+        waypoint_place_ids << route_destinations_ordered[1].place_id
+
+        url << "&waypoints=#{waypoint}"
+
+        if route_destinations_ordered.length >= 4
+          route_destinations_ordered.each_with_index do |destination, index|
+            if index >= 2 && index != (route_destinations_ordered.length - 1)
+              unless destination.place_id.nil?
+                waypoint = destination.title
+                waypoint_place_ids << destination.place_id
+                url << "%7C#{waypoint}"
+              end
+            end
+          end
+        end
+
+        url << "&waypoint_place_ids="
+        waypoint_place_ids.each { |id| url << "#{id}%7C"}
+      end
+    else
+      url = "https://www.lesroute.co.uk/#{route.id}"
+    end
+
+    route.google_url = url
+    route.save
   end
 
   private
@@ -289,50 +330,7 @@ class RoutesController < ApplicationController
 
   def update_google_redirect(route_destinations_ordered, route)
 
-    if route_destinations_ordered.length >= 2
 
-      origin = route_destinations_ordered.first.title
-      origin_place_id = route_destinations_ordered.first.place_id
-
-      destination = route_destinations_ordered.last.title
-      destination_place_id = route_destinations_ordered.last.place_id
-
-      route.mode == "cycling" ? travelmode = "bicycling" : travelmode = route.mode
-      url = "https://www.google.com/maps/dir/?api=1&origin=#{origin}&origin_place_id=#{origin_place_id}&destination=#{destination}&destination_place_id=#{destination_place_id}&travelmode=#{travelmode}"
-
-      if route_destinations_ordered.length >= 3
-        waypoint_place_ids = []
-
-        waypoint = route_destinations_ordered[1].title
-        waypoint_place_ids << route_destinations_ordered[1].place_id
-
-        url << "&waypoints=#{waypoint}"
-
-        if route_destinations_ordered.length >= 4
-          route_destinations_ordered.each_with_index do |destination, index|
-            if index >= 2 && index != (route_destinations_ordered.length - 1)
-              unless destination.place_id.nil?
-                waypoint = destination.title
-                waypoint_place_ids << destination.place_id
-                url << "%7C#{waypoint}"
-              else
-                flash.notice = "An error occurred while generating the google url"
-              end
-            end
-          end
-        end
-
-        url << "&waypoint_place_ids="
-        waypoint_place_ids.each { |id| url << "#{id}%7C"}
-
-        url << "/data=!4m4!4m3!2m2!2b1!3b1"
-
-      end
-      route.google_url = url
-      route.save
-    else
-      puts "Well, that didnt work"
-    end
   end
 
   def route_params
@@ -341,10 +339,6 @@ class RoutesController < ApplicationController
 
   def ajax_params
     params.require(:route).permit(:distance, :time, :shared)
-  end
-
-  def no_route_params
-    params.require(:route).permit(:google_url)
   end
 
 end

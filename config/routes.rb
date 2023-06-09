@@ -24,7 +24,7 @@ Rails.application.routes.draw do
   resources :routes do
     member do
       patch :move
-      patch :noroute
+      patch :update_google_url
       patch :share_route
       patch :stop_sharing_route
     end
