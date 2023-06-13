@@ -61,7 +61,7 @@
       <%# Add delete button seperately to avoid issues with sortable %>
       <% @route.route_destinations.order(position: :asc).each_with_index do |route_destination, index| %>
         <div class="delete-button-area" style="top:<%="#{16+(index * 72.5)}px;"%>">
-          <%= link_to '<i class="fa-regular fa-trash-can"></i>'.html_safe, destination_path(route_destination.destination), data: {turbo_method: :delete, turbo_confirm: 'Remove this stop from your route?'} %>
+          <%= link_to '<i class="fa-regular fa-trash-can"></i>'.html_safe, route_destination_path(route_destination), data: {turbo_method: :delete, turbo_confirm: 'Remove this stop from your route?'} %>
         </div>
       <% end %>
     </div>

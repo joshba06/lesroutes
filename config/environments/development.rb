@@ -5,18 +5,7 @@ Rails.application.configure do
   # Local configuration for development
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
-  # GEM to send emails locally
-  # config.action_mailer.delivery_method = :letter_opener
-  # config.action_mailer.perform_deliveries = true
-  # GEM end
-
-  # config.action_mailer.perform_deliveries = true
-  # config.action_mailer.raise_delivery_errors = true
-  # config.action_mailer.default :charset => "utf-8"
-
-  # Mailer using real GMAIL
   config.action_mailer.delivery_method = :smtp
-  # config.action_mailer.default_url_options = { host: "https://www.lesroutes.co.uk" }
 
   # SMTP settings for gmail
   config.action_mailer.smtp_settings = {

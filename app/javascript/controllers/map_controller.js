@@ -32,20 +32,23 @@ export default class extends Controller {
     })
     }
 
-    async function update_route_url (routeId) {
-      const form = new FormData();
-      Rails.ajax({
-        url: `/routes/${routeId}/update_google_url`,
-        type: "PATCH",
-        data: form,
-        success: function () {
-          console.log("Successfully updated google url")
-        },
-        error: function () {
-          console.log("Could not update google url")
-        }
-      })
-    }
+    // async function update_route_url(routeId) {
+    //   const form_url = new FormData();
+    //   form_url.append(`google_url[value]`, "update")
+    //   // console.log(form_url)
+
+    //   Rails.ajax({
+    //     url: `/routes/${routeId}/update_google_url`,
+    //     type: "PATCH",
+    //     data: form_url,
+    //     success: function () {
+    //       console.log("Successfully updated google url")
+    //     },
+    //     error: function () {
+    //       console.log("Could not update google url")
+    //     }
+    //   })
+    // }
 
     async function sendPatch (routeId, TimeInSeconds, DistanceInMetres, route_too_short = false) {
 
@@ -180,12 +183,12 @@ export default class extends Controller {
 
           // Update time, distance & google url
           await sendPatch(routeId, totalTimeSeconds, totalDistanceMeters)
-          await update_route_url(routeId) // After patch, because patch updates db and update url works with new db entry
+          // await update_route_url(routeId) // After patch, because patch updates db and update url works with new db entry
         }
         else {
           console.log("Could not find route")
           await sendPatch(routeId, "_", "_", true)
-          await update_route_url(routeId) // After patch, because patch updates db and update url works with new db entry
+          // await update_route_url(routeId) // After patch, because patch updates db and update url works with new db entry
         }
       }
       // Load map and center on 1 destination, if only 1 exists
@@ -241,8 +244,8 @@ export default class extends Controller {
         countApiCalls("maploads");
 
         // Update time, distance & google url
-        sendPatch(routeId, "_", "_", true);
-        update_route_url(routeId); // After patch, because patch updates db and update url works with new db entry
+        await sendPatch(routeId, "_", "_", true);
+        // await update_route_url(routeId); // After patch, because patch updates db and update url works with new db entry
       }
 
       // If there are at least two destinations, fit coordinate bounds
@@ -265,8 +268,8 @@ export default class extends Controller {
         countApiCalls("maploads");
 
         // Update time, distance & google url
-        sendPatch(routeId, "_", "_", true);
-        update_route_url(routeId); // After patch, because patch updates db and update url works with new db entry
+        await sendPatch(routeId, "_", "_", true);
+        // await update_route_url(routeId); // After patch, because patch updates db and update url works with new db entry
       }
     }
 

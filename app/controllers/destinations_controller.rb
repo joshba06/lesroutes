@@ -1,6 +1,9 @@
 class DestinationsController < ApplicationController
+
   def create
     @route = Route.find(params[:route_id])
+    # Only user who created route can add destinations
+    authorize @route
 
     # Reload page if no input value was given
     if params[:destination][:address] == ""
@@ -29,13 +32,6 @@ class DestinationsController < ApplicationController
       flash.notice = "Stop successfully added!"
       redirect_to edit_route_path(@route), status: :unprocessable_entity
     end
-  end
-
-  def destroy
-    @destination = Destination.find(params[:id])
-    @destination.destroy
-    flash.notice = "Stop successfully deleted!"
-    redirect_back(fallback_location: routes_path, status: :unprocessable_entity)
   end
 
   private

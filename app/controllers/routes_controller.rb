@@ -26,6 +26,8 @@ class RoutesController < ApplicationController
       @route = Route.find(params[:id])
       authorize @route
 
+      update_google_url(@route)
+
       @destination = Destination.new
       @route_destinations_ordered = @route.route_destinations.order(position: :asc).map { |route_destination| route_destination.destination }
 
@@ -44,14 +46,18 @@ class RoutesController < ApplicationController
   end
 
   def new
+    # Only logged in users may create a new route
     @route = Route.new
     authorize @route
+
     render_device_specific_view
   end
 
   def create
+    # Only logged in users may create a new route
     @route = Route.new(route_params)
     authorize @route
+
     @route.user = current_user
     if @route.save
       redirect_to edit_route_path(@route), notice: "You created a new route. Add no more than 9 destinations."
@@ -65,6 +71,7 @@ class RoutesController < ApplicationController
   end
 
   def edit
+    # Only user, who created route, may edit it
     @route = Route.find(params[:id])
     authorize @route
 
@@ -82,24 +89,26 @@ class RoutesController < ApplicationController
       }
     end
 
-    if browser.device.mobile?
-      render variants: [:mobile]
-    else
-      render variants: [:desktop]
-    end
-
+    render_device_specific_view
   end
 
   def update_mode_cycling
+    # Only user, who created route, may edit it
     @route = Route.find(params[:id])
+    authorize @route
+
     @route.mode = "cycling"
     @route.save
     flash.notice = "Route mode changed to #{@route.mode}"
+
     redirect_to edit_route_path(@route)
   end
 
   def update_mode_walking
+    # Only user, who created route, may edit it
     @route = Route.find(params[:id])
+    authorize @route
+
     @route.mode = "walking"
     @route.save
     flash.notice = "Route mode changed to #{@route.mode}"
@@ -107,7 +116,10 @@ class RoutesController < ApplicationController
   end
 
   def update_mode_driving
+    # Only user, who created route, may edit it
     @route = Route.find(params[:id])
+    authorize @route
+
     @route.mode = "driving"
     @route.save
     flash.notice = "Route mode changed to #{@route.mode}"
@@ -115,62 +127,89 @@ class RoutesController < ApplicationController
   end
 
   def updateroutetitle
+    # Only user, who created route, may edit it
     @route = Route.find(params[:id])
+    authorize @route
+
     @route.update(route_params)
     flash.notice = "Route title updated"
     redirect_to edit_route_path(@route)
   end
 
   def updateroutecity
+    # Only user, who created route, may edit it
     @route = Route.find(params[:id])
+    authorize @route
+
     @route.update(route_params)
     flash.notice = "Route city updated"
     redirect_to edit_route_path(@route)
   end
 
   def update
+    # Only user, who created route, may edit it
     @route = Route.find(params[:id])
     authorize @route
+
     @route.update(route_params)
     redirect_to route_path(@route)
   end
 
   def share_route
+    # Only user, who created route, may edit it
     @route = Route.find(params[:id])
+    authorize @route
+
     flash.alert = "#{@route.title} is now publicly available"
     @route.update(ajax_params)
   end
 
   def stop_sharing_route
+    # Only user, who created route, may edit it
     @route = Route.find(params[:id])
+    authorize @route
+
     flash.alert = "Stopped sharing #{@route.title} with community."
     @route.update(ajax_params)
   end
 
   def save
+    # Only user, who created route, may edit it
     @route = Route.find(params[:id])
+    authorize @route
+
     if @route.route_destinations.length < 2
       flash.notice = "You need at least 2 destinations to save a route"
       redirect_to edit_route_path(@route)
     else
+      update_google_url(@route)
       redirect_to route_path(@route)
     end
   end
 
   def move
+    # Only user, who created route, may edit it
     @route = Route.find(params[:id])
+    authorize @route
+
     @route.update(ajax_params)
   end
 
   def destroy
+    # Only user, who created route, may edit it
     @route = Route.find(params[:id])
+    authorize @route
+
     @route.destroy
     flash.notice = "Route successfully deleted!"
     redirect_to routes_path
   end
 
-  def update_google_url
-    route = Route.find(params[:id])
+  private
+
+  def update_google_url(route)
+    # Only user, who created route, may edit it
+
     route_destinations_ordered = route.route_destinations.order(position: :asc).map { |route_destination| route_destination.destination }
 
     if route_destinations_ordered.length >= 2
@@ -216,8 +255,6 @@ class RoutesController < ApplicationController
     route.save
 
   end
-
-  private
 
   def render_device_specific_view(view = false)
     if view

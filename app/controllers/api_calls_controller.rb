@@ -1,18 +1,20 @@
 class ApiCallsController < ApplicationController
 
   def add_directions
-    directions_column = ApiCall.first
-    directions_count = directions_column.directions
+    authorize ApiCall
+    row = ApiCall.first
+    column = row.directions
 
-    if directions_column.directions.key?(Date.today.to_s)
-      directions_count[Date.today.to_s] += 1
+    if row.directions.key?(Date.today.to_s)
+      column[Date.today.to_s] += 1
     else
-      directions_count[Date.today.to_s] = 1
+      column[Date.today.to_s] = 1
     end
-    directions_column.save
+    row.save
   end
 
   def add_geocoding
+    authorize ApiCall
     geocoding_column = ApiCall.first
     geocoding_count = geocoding_column.geocoding
     if geocoding_column.geocoding.key?(Date.today.to_s)
@@ -24,6 +26,7 @@ class ApiCallsController < ApplicationController
   end
 
   def add_maploads
+    authorize ApiCall
     maploads_column = ApiCall.first
     maploads_count = maploads_column.maploads
     if maploads_column.maploads.key?(Date.today.to_s)
