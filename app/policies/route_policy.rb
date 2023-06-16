@@ -68,6 +68,14 @@ class RoutePolicy < ApplicationPolicy
     true
   end
 
+  def admin?
+    user.admin?
+  end
+
+  def export?
+    user.admin?
+  end
+
 
 
   class Scope < Scope

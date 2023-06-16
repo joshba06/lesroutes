@@ -290,7 +290,7 @@ class RoutesController < ApplicationController
       maploads_calls += calls if date.to_s >= current_month_startdate.to_s
     end
 
-    if maploads_calls >= 47500 || direction_calls >= 95000
+    if maploads_calls >= 1000 || direction_calls >= 1000
       @website_offline = true
     end
   end

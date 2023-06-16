@@ -1,5 +1,6 @@
 .route-cards {
   overflow-y: auto; // Allows to scroll down all route cards if they exceed the screen size
+  height: 75vh;
 }
 
 // Link-Divs in front (z-index) of card-coute

@@ -7,6 +7,8 @@ Rails.application.routes.draw do
 
   get '/routes', to: 'routes#index', as: :myroutes
   get '/routes/public', to: 'routes#index_public', as: :public_routes
+  get '/admin', to: 'pages#admin', as: :admin
+  get '/admin/export', to: 'pages#export', as: :export
 
   get '/routes/:id/update_title', to: 'routes#updateroutetitle', as: :updateroutetitle
   get '/routes/:id/update_city', to: 'routes#updateroutecity', as: :updateroutecity
