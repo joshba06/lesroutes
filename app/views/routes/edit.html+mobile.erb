@@ -18,10 +18,10 @@
 
   <div id="map-mobile"
     data-controller="map"
-    data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>"
-    data-map-markers-value="<%= @markers.to_json %>"
+    data-map-markers-hash-value="<%= @markers_hash.to_json %>"
     data-map-route-id-value="<%= @route.id %>"
     data-map-route-mode-value="<%= @route.mode %>"
+    data-map-google-api-key-value="<%= ENV['GOOGLE_API_KEY'] %>"
   ></div>
 
   <div class="route-specs mx-3 my-2 py-1" id="nikspecs" data-controller="route">
@@ -61,7 +61,7 @@
       <%# Add delete button seperately to avoid issues with sortable %>
       <% @route.route_destinations.order(position: :asc).each_with_index do |route_destination, index| %>
         <div class="delete-button-area" style="top:<%="#{16+(index * 72.5)}px;"%>">
-          <%= link_to '<i class="fa-regular fa-trash-can"></i>'.html_safe, destination_path(route_destination.destination), data: {turbo_method: :delete, turbo_confirm: 'Remove this stop from your route?'} %>
+          <%= link_to '<i class="fa-regular fa-trash-can"></i>'.html_safe, route_destination_path(route_destination), data: {turbo_method: :delete, turbo_confirm: 'Remove this stop from your route?'} %>
         </div>
       <% end %>
     </div>

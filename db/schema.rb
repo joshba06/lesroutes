@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_25_110605) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_13_074631) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -51,16 +51,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_25_110605) do
   end
 
   create_table "destinations", force: :cascade do |t|
-    t.float "latitude"
-    t.float "longitude"
-    t.bigint "user_id", null: false
+    t.decimal "latitude", precision: 10, scale: 6
+    t.decimal "longitude", precision: 10, scale: 6
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "title"
     t.string "address"
-    t.string "city"
-    t.boolean "unspecific_placename", default: false
-    t.index ["user_id"], name: "index_destinations_on_user_id"
+    t.string "place_id"
+    t.string "full_address"
   end
 
   create_table "route_destinations", force: :cascade do |t|
@@ -106,6 +104,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_25_110605) do
     t.datetime "last_sign_in_at"
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
+    t.boolean "admin"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -113,7 +112,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_25_110605) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "destinations", "users"
   add_foreign_key "route_destinations", "destinations"
   add_foreign_key "route_destinations", "routes"
   add_foreign_key "routes", "users"

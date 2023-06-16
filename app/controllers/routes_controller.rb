@@ -1,44 +1,43 @@
 class RoutesController < ApplicationController
-  skip_before_action :authenticate_user!, only: [ :index_public, :show]
+  skip_before_action :authenticate_user!, only: [:index_public, :show]
   before_action :check_number_of_api_calls
 
   def index
-    routes_unfiltered = Route.all.select { |route| route.user == current_user}
-    filter_routes_for_query(routes_unfiltered)
+    routes = policy_scope(Route)
+    authorize routes
 
-    # Create Google Maps URLs for all routes
-    @routes_filtered.each do |route|
-      route_destinations_ordered = route.route_destinations.order(position: :asc).map { |route_destination| route_destination.destination }
-      update_google_redirect(route_destinations_ordered, route)
-    end
-
+    filter_routes_for_query(routes)
     render_device_specific_view
   end
 
   def index_public
     routes_unfiltered = Route.all
     filter_routes_for_query(routes_unfiltered, true)
-
     render_device_specific_view
   end
 
   def show
-    # If limit of mapbox api calls is reached, redirect to index or public index page
+    # If limit of google api calls is reached, redirect to index or public index page
     if @website_offline && request.referrer.include?("routes/public")
       redirect_to public_routes_path, alert: "We are currently experiencing a very large number of visits. Please check back at the beginning of next month. You can still start navigation from here"
     elsif @website_offline
       redirect_to myroutes_path, alert: "We are currently experiencing a very large number of visits. Please check back at the beginning of next month. You can still start navigation from here"
     else
       @route = Route.find(params[:id])
+      authorize @route
+
+      update_google_url(@route)
+
       @destination = Destination.new
       @route_destinations_ordered = @route.route_destinations.order(position: :asc).map { |route_destination| route_destination.destination }
 
-      @markers = @route.destinations.geocoded.map do |destination|
+      @markers_hash = {}
+      @route.destinations.map do |destination|
+        @markers_hash[@route.route_destinations.where(destination: destination).first.position] =
         {
-          pos: @route.route_destinations.where(destination: destination).first.position,
           lat: destination.latitude,
           lng: destination.longitude,
-          marker_html: render_to_string(partial: "marker#{@route.route_destinations.where(destination: destination).first.position}")
+          place_id: destination.place_id
         }
       end
 
@@ -47,12 +46,18 @@ class RoutesController < ApplicationController
   end
 
   def new
+    # Only logged in users may create a new route
     @route = Route.new
+    authorize @route
+
     render_device_specific_view
   end
 
   def create
+    # Only logged in users may create a new route
     @route = Route.new(route_params)
+    authorize @route
+
     @route.user = current_user
     if @route.save
       redirect_to edit_route_path(@route), notice: "You created a new route. Add no more than 9 destinations."
@@ -66,51 +71,44 @@ class RoutesController < ApplicationController
   end
 
   def edit
+    # Only user, who created route, may edit it
     @route = Route.find(params[:id])
+    authorize @route
+
     @destination = Destination.new
-
-    # Display warning, if mapbox could not determine route between points
-    if @route.google_url == "no_route_found"
-      flash.notice = "No #{@route.mode} directions found for these destinations!"
-    end
-
     @route_destinations_ordered = @route.route_destinations.order(position: :asc).map { |route_destination| route_destination.destination }
 
-    # If the current route has more than or equal to 2 destinations, update the routes google maps link
-    if @route_destinations_ordered.length >= 2
-      update_google_redirect(@route_destinations_ordered, @route)
-    else
-      @route.google_url = "not_enough_destinations"
-      @route.save
-    end
-
-    @markers = @route.destinations.geocoded.map do |destination|
+    @markers_hash = {}
+    @route.destinations.map do |destination|
+      position = @route.route_destinations.where(destination: destination).first.position
+      @markers_hash[position] =
       {
-        pos: @route.route_destinations.where(destination: destination).first.position,
         lat: destination.latitude,
         lng: destination.longitude,
-        marker_html: render_to_string(partial: "marker#{@route.route_destinations.where(destination: destination).first.position}")
+        place_id: destination.place_id,
       }
     end
 
-    if browser.device.mobile?
-      render variants: [:mobile]
-    else
-      render variants: [:desktop]
-    end
-
+    render_device_specific_view
   end
 
   def update_mode_cycling
+    # Only user, who created route, may edit it
     @route = Route.find(params[:id])
+    authorize @route
+
     @route.mode = "cycling"
     @route.save
     flash.notice = "Route mode changed to #{@route.mode}"
+
     redirect_to edit_route_path(@route)
   end
 
   def update_mode_walking
+    # Only user, who created route, may edit it
     @route = Route.find(params[:id])
+    authorize @route
+
     @route.mode = "walking"
     @route.save
     flash.notice = "Route mode changed to #{@route.mode}"
@@ -118,7 +116,10 @@ class RoutesController < ApplicationController
   end
 
   def update_mode_driving
+    # Only user, who created route, may edit it
     @route = Route.find(params[:id])
+    authorize @route
+
     @route.mode = "driving"
     @route.save
     flash.notice = "Route mode changed to #{@route.mode}"
@@ -126,67 +127,134 @@ class RoutesController < ApplicationController
   end
 
   def updateroutetitle
+    # Only user, who created route, may edit it
     @route = Route.find(params[:id])
+    authorize @route
+
     @route.update(route_params)
     flash.notice = "Route title updated"
     redirect_to edit_route_path(@route)
   end
 
   def updateroutecity
+    # Only user, who created route, may edit it
     @route = Route.find(params[:id])
+    authorize @route
+
     @route.update(route_params)
     flash.notice = "Route city updated"
     redirect_to edit_route_path(@route)
   end
 
   def update
+    # Only user, who created route, may edit it
     @route = Route.find(params[:id])
+    authorize @route
+
     @route.update(route_params)
     redirect_to route_path(@route)
   end
 
   def share_route
+    # Only user, who created route, may edit it
     @route = Route.find(params[:id])
+    authorize @route
+
     flash.alert = "#{@route.title} is now publicly available"
     @route.update(ajax_params)
   end
 
   def stop_sharing_route
+    # Only user, who created route, may edit it
     @route = Route.find(params[:id])
+    authorize @route
+
     flash.alert = "Stopped sharing #{@route.title} with community."
     @route.update(ajax_params)
   end
 
-  # Used for "saving" route on edit page -> Making sure user has at least two destinations
-  # If user leaves webpage (since route is still saved in background) index page will filter routes with less than two destinations
   def save
+    # Only user, who created route, may edit it
     @route = Route.find(params[:id])
+    authorize @route
+
     if @route.route_destinations.length < 2
       flash.notice = "You need at least 2 destinations to save a route"
       redirect_to edit_route_path(@route)
     else
+      update_google_url(@route)
       redirect_to route_path(@route)
     end
   end
 
   def move
+    # Only user, who created route, may edit it
     @route = Route.find(params[:id])
+    authorize @route
+
     @route.update(ajax_params)
   end
 
-  def noroute
-    @route = Route.find(params[:id])
-    @route.update(no_route_params)
-  end
-
   def destroy
+    # Only user, who created route, may edit it
     @route = Route.find(params[:id])
+    authorize @route
+
     @route.destroy
     flash.notice = "Route successfully deleted!"
     redirect_to routes_path
   end
 
   private
+
+  def update_google_url(route)
+    # Only user, who created route, may edit it
+
+    route_destinations_ordered = route.route_destinations.order(position: :asc).map { |route_destination| route_destination.destination }
+
+    if route_destinations_ordered.length >= 2
+
+      origin = route_destinations_ordered.first.title
+      origin_place_id = route_destinations_ordered.first.place_id
+
+      destination = route_destinations_ordered.last.title
+      destination_place_id = route_destinations_ordered.last.place_id
+
+      route.mode == "cycling" ? travelmode = "bicycling" : travelmode = route.mode
+      url = "https://www.google.com/maps/dir/?api=1&origin=#{origin}&origin_place_id=#{origin_place_id}&destination=#{destination}&destination_place_id=#{destination_place_id}&travelmode=#{travelmode}"
+
+      if route_destinations_ordered.length >= 3
+        waypoint_place_ids = []
+
+        waypoint = route_destinations_ordered[1].title
+        waypoint_place_ids << route_destinations_ordered[1].place_id
+
+        url << "&waypoints=#{waypoint}"
+
+        if route_destinations_ordered.length >= 4
+          route_destinations_ordered.each_with_index do |destination, index|
+            if index >= 2 && index != (route_destinations_ordered.length - 1)
+              unless destination.place_id.nil?
+                waypoint = destination.title
+                waypoint_place_ids << destination.place_id
+                url << "%7C#{waypoint}"
+              end
+            end
+          end
+        end
+
+        url << "&waypoint_place_ids="
+        waypoint_place_ids.each { |id| url << "#{id}%7C"}
+      end
+    else
+      url = "https://www.lesroutes.co.uk/#{route.id}"
+      flash.notice = "No #{route.mode} directions found for these destinations!"
+    end
+
+    route.google_url = url
+    route.save
+
+  end
 
   def render_device_specific_view(view = false)
     if view
@@ -222,7 +290,7 @@ class RoutesController < ApplicationController
       maploads_calls += calls if date.to_s >= current_month_startdate.to_s
     end
 
-    if maploads_calls >= 47500 || direction_calls >= 95000
+    if maploads_calls >= 1000 || direction_calls >= 1000
       @website_offline = true
     end
   end
@@ -281,61 +349,8 @@ class RoutesController < ApplicationController
     # Sort routes alphabetically
     @routes_filtered = @routes_filtered.sort { |a, b| a.title <=> b.title}
 
-  end
 
-  def update_google_redirect(route_destinations_ordered, route)
 
-    if route_destinations_ordered.length >= 2
-
-      if route_destinations_ordered.first.title == "Custom location" || route_destinations_ordered.first.unspecific_placename
-        origin = route_destinations_ordered.first.address.gsub(/\s/, "+")
-      else
-        origin = route_destinations_ordered.first.title.gsub(/\s/, "+")
-        origin << "%2C"
-        origin << route_destinations_ordered.first.city.gsub(/\s/, "+")
-      end
-
-      if route_destinations_ordered.last.title == "Custom location" || route_destinations_ordered.last.unspecific_placename
-        destination = route_destinations_ordered.last.address.gsub(/\s/, "+")
-      else
-        destination = route_destinations_ordered.last.title.gsub(/\s/, "+")
-        destination << "%2C"
-        destination << route_destinations_ordered.last.city.gsub(/\s/, "+")
-      end
-
-      route.mode == "cycling" ? travelmode = "bicycling" : travelmode = route.mode
-      url = "https://www.google.com/maps/dir/?api=1&origin=#{origin}&destination=#{destination}&travelmode=#{travelmode}"
-
-      if route_destinations_ordered.length >= 3
-        if route_destinations_ordered[1].title == "Custom location" || route_destinations_ordered[1].unspecific_placename
-          waypoint = route_destinations_ordered[1].address.gsub(/\s/, "+")
-        else
-          waypoint = route_destinations_ordered[1].title.gsub(/\s/, "+")
-          waypoint << "%2C"
-          waypoint << route_destinations_ordered[1].city.gsub(/\s/, "+")
-        end
-        url << "&waypoints=#{waypoint}"
-
-        if route_destinations_ordered.length >= 4
-          route_destinations_ordered.each_with_index do |destination, index|
-            if index >= 2 && index != (route_destinations_ordered.length - 1)
-              if destination.title == "Custom location" || destination.unspecific_placename
-                waypoint = destination.address.gsub(/\s/, "+")
-              else
-                waypoint = destination.title.gsub(/\s/, "+")
-                waypoint << "%2C"
-                waypoint << destination.city.gsub(/\s/, "+")
-              end
-              url << "%7C#{waypoint}"
-            end
-          end
-        end
-      end
-      route.google_url = url
-      route.save
-    else
-      puts "Well, that didnt work"
-    end
   end
 
   def route_params
@@ -344,10 +359,6 @@ class RoutesController < ApplicationController
 
   def ajax_params
     params.require(:route).permit(:distance, :time, :shared)
-  end
-
-  def no_route_params
-    params.require(:route).permit(:google_url)
   end
 
 end

@@ -34,8 +34,7 @@
 
   <div id="map-mobile"
     data-controller="map"
-    data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>"
-    data-map-markers-value="<%= @markers.to_json %>"
+    data-map-markers-hash-value="<%= @markers_hash.to_json %>"
     data-map-route-id-value="<%= @route.id %>"
     data-map-route-mode-value="<%= @route.mode %>"
   ></div>

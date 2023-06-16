@@ -33,17 +33,8 @@ export default class extends Controller {
       data.append("position", event.newIndex + 1);
     }
 
-    // for (const [key, value] of data.entries()) {
-    //   console.log(`${key}: ${value}`);
-    // }
-
     // * Route ID
     let routeId = this.element.dataset.routeId;
-
-    // console.log(`Changing order of route id: ${this.element.dataset.routeId}`)
-    // console.log(`${oldIndex + 1} -> ${event.newIndex + 1}`)
-
-    // console.log(this.data.get("url").replace(":id", id))
 
     // Update route_destination position in "route_destination" table
     Rails.ajax({
@@ -51,7 +42,7 @@ export default class extends Controller {
       type: "PATCH",
       data: data,
       success: function () {
-        console.log("Page is reloading...");
+        console.log("Order of route destinations updated");
         document.location.reload();
       },
     });

@@ -19,17 +19,17 @@
     color: $lr-font-dark;
     text-decoration: none !important;
   }
-  // .dropdown-menu {
-  //   transform: translate3d(-150px, 5px, 0px) !important;
-  // }
+  .dropdown-menu {
+    transform: translate3d(-30px, -5px, 0px) !important;
+  }
 
-  // .dropdown-submenu {
-  //   position: relative;
-  // }
+  .dropdown-submenu {
+    position: relative;
+  }
 
-  // .dropdown-submenu .dropdown-menu {
-  //   transform: translate3d(-95%, 0px, 0px) !important;
-  // }
+  .dropdown-submenu .dropdown-menu {
+    transform: translate3d(-110px, 0px, 0px) !important;
+  }
 
   // .dropdown-submenu .menu-shared {
   //   transform: translate3d(-100%, 0px, 0px) !important;

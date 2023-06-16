@@ -1,6 +1,9 @@
 class DestinationsController < ApplicationController
+
   def create
     @route = Route.find(params[:route_id])
+    # Only user who created route can add destinations
+    authorize @route
 
     # Reload page if no input value was given
     if params[:destination][:address] == ""
@@ -10,17 +13,11 @@ class DestinationsController < ApplicationController
       flash.notice = "You cannot add more than 9 destinations"
       redirect_to edit_route_path(@route)
     else
-      dest = Destination.find_by(address: params[:destination][:address])
+      dest = Destination.find_by(place_id: params[:destination][:place_id])
       if dest
         @destination = dest
       else
         @destination = Destination.new(destination_params)
-        @destination.user = current_user
-        if params[:destination][:unspecific_placename] == "1"
-          @destination.unspecific_placename = true
-        else
-          @destination.unspecific_placename = false
-        end
         @destination.save
       end
 
@@ -37,16 +34,9 @@ class DestinationsController < ApplicationController
     end
   end
 
-  def destroy
-    @destination = Destination.find(params[:id])
-    @destination.destroy
-    flash.notice = "Stop successfully deleted!"
-    redirect_back(fallback_location: routes_path, status: :unprocessable_entity)
-  end
-
   private
 
   def destination_params
-    params.require(:destination).permit(:title, :longitude, :latitude, :address, :city, :unspecific_placename)
+    params.require(:destination).permit(:title, :longitude, :latitude, :address, :full_address, :place_id)
   end
 end

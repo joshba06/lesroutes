@@ -1,33 +1,39 @@
-<%= simple_form_for [route, destination], html: { class: 'form-inline w-100 d-flex flex-row-reverse' }, data: {controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"], address_autocomplete_route_id_value: route.id } do |f| %>
-    <%= f.input :title,
+<%= simple_form_for [route, destination], html: { class: 'form-inline w-100 d-flex add-destination-form' }, data: {controller: "address-autocomplete", address_autocomplete_route_id_value: route.id } do |f| %>
+    <div class="left">
+
+      <%= f.input :full_address,
+            input_html: {data: { class: "mb-0", address_autocomplete_target: "fullAddress"}},
+            label: false %>
+
+      <%= f.input :title,
           input_html: {data: { class: "mb-0", address_autocomplete_target: "title"}},
           label: false,
           as: :hidden %>
 
-    <%= f.input :latitude,
-        input_html: {data: { class: "mb-0", address_autocomplete_target: "latitude" }},
-        label: false,
-        as: :hidden %>
-
-    <%= f.input :longitude,
-        input_html: {data: { class: "mb-0", address_autocomplete_target: "longitude" }},
-        label: false,
-        as: :hidden %>
-
-    <%= f.input :city,
-          input_html: {data: { class: "mb-0", address_autocomplete_target: "city" }},
+      <%= f.input :latitude,
+          input_html: {data: { class: "mb-0", address_autocomplete_target: "latitude" }},
           label: false,
           as: :hidden %>
 
-    <%= f.input :address,
-          input_html: {data: { class: "mb-0", address_autocomplete_target: "address"}},
-          label: false
-          %>
-
-    <%= f.input :unspecific_placename,
-          input_html: {data: { class: "mb-0", address_autocomplete_target: "unspecificPlacename"}},
+      <%= f.input :longitude,
+          input_html: {data: { class: "mb-0", address_autocomplete_target: "longitude" }},
           label: false,
           as: :hidden %>
 
-    <%= f.submit "Add", class: "btn btn-outline-primary submit-button #{"btn-sm" if browser.device.mobile?}" %>
+      <%= f.input :address,
+            input_html: {data: { class: "mb-0", address_autocomplete_target: "address"}},
+            label: false,
+            as: :hidden %>
+
+      <%= f.input :place_id,
+            input_html: {data: { class: "mb-0", address_autocomplete_target: "placeId"}},
+            label: false,
+            as: :hidden %>
+
+    </div>
+    <div class="right">
+      <%= f.submit "Add", class: "btn btn-outline-primary submit-button #{"btn-sm" if browser.device.mobile?}" %>
+    </div>
+
+
 <% end %>

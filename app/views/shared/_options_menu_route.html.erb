@@ -17,7 +17,7 @@
       <ul class="dropdown-menu <%= "menu-shared" if route.shared%>" data-route-target="dropdownElement" data-controller="sharing" data-sharing-route-url-value="<%=route.google_url%>">
 
       <% if route.shared == false && (not request.original_url.include? "routes/public")%>
-        <li class="shared" data-action="click->route#share_route" data-route-id="<%= route.id %>" ><i class="fa-solid fa-earth-europe"></i> Share with public</li>
+        <li class="dropdown-item shared" data-action="click->route#share_route" data-route-id="<%= route.id %>" ><i class="fa-solid fa-earth-europe"></i> Community</li>
       <% end %>
       <% if (browser.device.mobile?) %>
         <li class="dropdown-item" data-action="click->sharing#send_whatsapp"><i class="fa-brands fa-whatsapp"></i> Whatsapp</li>
