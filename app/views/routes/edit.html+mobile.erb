@@ -1,8 +1,10 @@
 <div class="editpage-container-mobile">
 
   <div class="page-actions my-2">
+
     <div class="left-side">
     </div>
+    
     <div class="right-side">
       <%= link_to '<i class="fa-regular fa-trash-can"></i> Delete'.html_safe, route_path(@route), data: {turbo_method: :delete, turbo_confirm: 'Are you sure you want to delete the entire route?'}, class: "btn btn-outline-danger btn-sm"%>
       <%= link_to '<i class="fa-solid fa-floppy-disk"></i> Save'.html_safe, save_route_path(@route), class: "btn btn-outline-primary btn-sm"%>
@@ -24,17 +26,7 @@
     data-map-google-api-key-value="<%= ENV['GOOGLE_API_KEY'] %>"
   ></div>
 
-  <div class="route-specs mx-3 my-2 py-1" id="nikspecs" data-controller="route">
-    <div data-route-target="specElement"><i class="fa-solid fa-location-dot me-1"></i><%= @route.route_destinations.length %> stops</div>
-    <div data-route-target="specElement"><i class="fa-solid fa-stopwatch me-1"></i><span data-route-target="time"><%= @route.time.nil? ? "0" : "#{@route.time}"%></span> min</div>
-    <div data-route-target="specElement"><i class="fa-solid fa-road me-1"></i><span data-route-target="distance"><%= @route.distance.nil? ? "0" : "#{@route.distance}" %></span> km</div>
-    <div data-route-target="specElement">
-      <i class="fa-solid fa-globe me-1" style="color: $lr-font-light"></i><%= @route.city %> <i class="fa-solid fa-pen-nib fa-xs" data-action="click->route#edit_city"></i>
-    </div>
-    <div class="form-update-route-city hidden" data-route-target="formUpdateRouteCity">
-      <%= render partial: "shared/form_edit_route_city", locals: {route: @route} %>
-    </div>
-  </div>
+  <%= render partial: "shared/route_specs", locals: {route: @route} %>
 
   <div class="route-settings">
     <div class="btn-group">
