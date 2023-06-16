@@ -44,8 +44,6 @@ export default class extends Controller {
       else {
         DistanceInKm = parseFloat((DistanceInMetres / 1000).toFixed(2))
         TimeInMinutes = Math.round((TimeInSeconds / 60))
-        console.log(`Time in min: ${TimeInMinutes}`)
-        console.log(`Distance in km: ${DistanceInKm}`)
       }
 
       // Update route time & distance in db only on edit page
@@ -61,13 +59,18 @@ export default class extends Controller {
           type: "PATCH",
           data: form,
           success: function () {
-            console.log("Successfully updated db for time and distance")
+            console.log("Updated database entries for time and distance")
             document.querySelector('#nikspecs').route.add(TimeInMinutes, DistanceInKm)
+            console.log(`Updated route specs on edit page. Time: ${TimeInMinutes} min, distance: ${DistanceInKm} km`)
           },
           error: function () {
             console.log("Could not update db for time and distance")
           }
         })
+      }
+      else {
+        document.querySelector('#nikspecs').route.add(TimeInMinutes, DistanceInKm)
+        console.log(`Updated route specs on show page. Time: ${TimeInMinutes} min, distance: ${DistanceInKm} km`)
       }
     }
 
@@ -140,6 +143,8 @@ export default class extends Controller {
           unitSystem: google.maps.UnitSystem.METRIC
         })
         if (response.status === "OK") {
+
+          console.log("Fetched route information")
 
           // Replace coords in markers object with start- and end point of route leg for better visual accuracy
           let j = 1
