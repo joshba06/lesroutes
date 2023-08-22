@@ -61,7 +61,13 @@
 
       <div class="spec-item mb-0">
         <i class="fa-solid fa-road me-2" style="color: $lr-font-dark;width:15px;"></i>
-        <%= route.distance.nil? ? "0 km" : "#{route.distance} km" %>
+        <% if route.distance.nil? %>
+          <span>"0 km"</span>
+        <% elsif route.distance.to_i > 100 %>
+          <span><%= "#{route.distance.to_f.ceil} km" %></span>
+        <% else %>
+          <span><%= "#{route.distance} km" %></span>
+        <% end %>
       </div>
     </div>
   </div>

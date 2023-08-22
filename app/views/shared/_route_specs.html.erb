@@ -13,7 +13,18 @@
       <% end %>
     </span>
   </div>
-  <div data-route-target="specElement"><i class="fa-solid fa-road me-1"></i><span data-route-target="distance"><%= @route.distance.nil? ? "0" : "#{@route.distance}" %></span> km</div>
+  <div data-route-target="specElement">
+    <i class="fa-solid fa-road me-1"></i>
+    <span data-route-target="distance">
+     <% if @route.distance.nil? %>
+        "0 km"
+      <% elsif @route.distance.to_f > 100 %>
+        <%= "#{@route.distance.to_f.ceil} km" %>
+      <% else %>
+        <%= "#{@route.distance} km" %>
+      <% end %>
+    </span>
+  </div>
 
   <div data-route-target="specElement">
     <% if request.original_url.include?("edit") %>
