@@ -40,7 +40,7 @@ if use_exported_routes
 
   routes.each do |key, route_hash|
     puts "Seeding route: #{key}"
-    route = Route.create!(title: key, user: users.sample, distance: route_hash[:distance], time: route_hash[:time], city: route_hash[:city], mode: route_hash[:mode])
+    route = Route.create!(title: key, user: users.sample, distance: route_hash[:distance], time: route_hash[:time], city: route_hash[:city], mode: route_hash[:mode], shared: true)
 
     i = 1
     route_hash[:destination_place_ids].each do |place_id|

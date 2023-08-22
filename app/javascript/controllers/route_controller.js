@@ -14,8 +14,24 @@ export default class extends Controller {
   }
 
   add(TimeInMinutes, DistanceInKm) {
-    this.distanceTarget.innerText = DistanceInKm
-    this.timeTarget.innerText = TimeInMinutes
+
+    // Format time for display
+    if (TimeInMinutes < 60){
+      this.timeTarget.innerText = `${TimeInMinutes} min`
+    }
+    else {
+      const m = TimeInMinutes % 60
+      const h = (TimeInMinutes-m)/60
+      this.timeTarget.innerText = `${h}:${m} h`
+    }
+
+    // Format distance for display
+    if (DistanceInKm < 100){
+      this.distanceTarget.innerText = `${DistanceInKm} km`
+    }
+    else {
+      this.distanceTarget.innerText = `${Math.ceil(DistanceInKm)} km`
+    }
   }
 
   edit_title (event) {

@@ -122,6 +122,12 @@
     .card-route-details {
       padding-left: 15px;
       font-size: 0.95rem;
+      .spec-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+      }
     }
   }
 
