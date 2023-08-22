@@ -1,7 +1,18 @@
 <div class="route-specs mx-3 my-2 py-1" id="nikspecs" data-controller="route">
 
   <div data-route-target="specElement"><i class="fa-solid fa-location-dot me-1"></i><%= @route.route_destinations.length %> stops</div>
-  <div data-route-target="specElement"><i class="fa-solid fa-stopwatch me-1"></i><span data-route-target="time"><%= @route.time.nil? ? "0" : "#{@route.time}"%></span> min</div>
+  <div data-route-target="specElement">
+    <i class="fa-solid fa-stopwatch me-1"></i>
+    <span data-route-target="time">
+      <% if @route.time.nil? %>
+        "0 min"
+      <% elsif @route.time.to_i < 60 %>
+        <%= "#{@route.time} min" %>
+      <% else %>
+        <%= "#{@route.time.to_i.divmod(60)[0]}:#{@route.time.to_i.divmod(60)[1]} h" %>
+      <% end %>
+    </span>
+  </div>
   <div data-route-target="specElement"><i class="fa-solid fa-road me-1"></i><span data-route-target="distance"><%= @route.distance.nil? ? "0" : "#{@route.distance}" %></span> km</div>
 
   <div data-route-target="specElement">
@@ -15,5 +26,5 @@
   <div class="form-update-route-city hidden" data-route-target="formUpdateRouteCity">
     <%= render partial: "shared/form_edit_route_city", locals: {route: @route} %>
   </div>
-  
+
 </div>

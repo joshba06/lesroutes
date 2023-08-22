@@ -44,9 +44,25 @@
     </div>
 
     <div class="card-route-details">
-      <p class="mb-0"><i class="fa-solid fa-location-dot me-2" style="color: $lr-font-dark;"></i><%= route.route_destinations.length %> stops</p>
-      <p class="mb-0"><i class="fa-solid fa-stopwatch me-2" style="color: $lr-font-dark;"></i><%= route.time.nil? ? "0 min" : "#{route.time} min"%></p>
-      <p class="mb-0"><i class="fa-solid fa-road me-2" style="color: $lr-font-dark;"></i><%= route.distance.nil? ? "0 km" : "#{route.distance} km" %></p>
+      <div class="spec-item mb-0">
+        <i class="fa-solid fa-location-dot me-2" style="color: $lr-font-dark;width:15px;padding-left: 3px"></i>
+        <%= route.route_destinations.length %> stops
+      </div>
+      <div class="spec-item mb-0">
+        <i class="fa-solid fa-stopwatch me-2" style="color: $lr-font-dark;width:15px;padding-left: 2px;"></i>
+        <% if route.time.nil? %>
+          <span>"0 min"</span>
+        <% elsif route.time.to_i < 60 %>
+          <span><%= "#{route.time} min" %></span>
+        <% else %>
+          <span><%= "#{route.time.to_i.divmod(60)[0]}:#{route.time.to_i.divmod(60)[1]} h" %></span>
+        <% end %>
+      </div>
+
+      <div class="spec-item mb-0">
+        <i class="fa-solid fa-road me-2" style="color: $lr-font-dark;width:15px;"></i>
+        <%= route.distance.nil? ? "0 km" : "#{route.distance} km" %>
+      </div>
     </div>
   </div>
 
